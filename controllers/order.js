@@ -1,0 +1,172 @@
+var sequence = require('futures').sequence;
+
+exports.add = function (respond, mealID, mealtimeID, userID) {
+
+    var seq = sequence();
+    var ObjectId = module.mongoose.Types.ObjectId;
+
+    var mealObjectID     = new ObjectId(mealID);
+    var userObjectID     = new ObjectId(userID);
+    var mealtimeObjectID = new ObjectId(mealtimeID);
+
+    seq
+
+    // already ordered ?
+    .then(function (next) {
+
+        var date     = new Date();
+        var today    = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+        var tomorrow = new Date(today.getTime() + (24 * 60 * 60 * 1000));
+
+        module.model.find({
+            'created' : {
+                $gte : today, 
+                $lte : tomorrow
+            },
+            'user': userObjectID
+        }, function (err, results) {
+
+            if(results.length < 1) {
+                next();
+            } else {
+                respond(400, {
+                    statusInternal: 1,
+                    statusText: 'already ordered today: ' + today
+                })
+            }
+        });
+
+    })
+
+    // amount of meals < 0
+    .then(function (next) {
+
+        module.models.meal
+            .findOne({ _id: mealObjectID })
+            .exec(function (err, result) {
+                if (err) return respond(400, err);
+
+                if(result.amount < 1) {
+                    respond(400, {
+                        statusInternal: 2,
+                        statusText: 'amount of meal is too small'
+                    });
+                } else {
+                    next();
+                }
+            });
+    })
+
+    // save
+    .then(function (next) {
+
+        var order = new module.model({
+            meal    : mealObjectID,
+            mealtime: mealtimeObjectID,
+            user    : userObjectID,
+        });
+
+        order.save(function (err, results) {
+            if (err) {
+                respond(400, err);
+            } else {
+                next(order);
+            }
+        });
+
+    })
+
+    .then(function (next, order) {
+
+        module.models.meal
+            .findByIdAndUpdate(mealObjectID, {
+                $inc: { amount: -1 } 
+            }, function(err, result) {
+                respond(201, {
+                    meal: result,
+                    order: order
+                });
+            });
+    });
+};
+
+exports.getList = function (respond, offset, limit) {
+
+    var limit  = limit || 30;
+    var offset = offset || 0;
+
+    module.model.find()
+        .populate('mealtime')
+        .populate('user')
+        .populate('meal')
+        .sort('-created')
+        .limit(limit)
+        .skip(offset)
+        .exec(function (err, results) {
+            if (err) return respond(400, err);
+            return respond(200, results);
+        });
+};
+
+exports.getListByUser = function (respond, userID, offset, limit) {
+
+    var ObjectId     = module.mongoose.Types.ObjectId;
+    var userObjectID = new ObjectId(userID);
+
+    var limit  = limit || 30;
+    var offset = offset || 0;
+
+    var meals = [];
+
+    module.model
+        .find({ user: userObjectID })
+        .populate('mealtime')
+        .populate('user')
+        .populate('meal')
+        .sort('-created')
+        .limit(limit)
+        .skip(offset)
+        .exec(function (err, results) {
+            if (err) return respond(400, err);
+
+            respond(200, results);
+        });
+}
+
+exports.count = function (respond) {
+
+    module.model.count({}, function (err, count) {
+        if (err) {
+            respond(400, err);
+        } else {
+            respond(200, count);
+        }
+    });
+
+};
+
+exports.delete = function (respond, id) {
+
+    module.model.remove({
+        _id: id
+    }, function (err, results) {
+        if(results === 0) return respond(404, 'id not found');
+        if(err) return respond(400, err);
+
+        return respond(200, {
+            _id: id
+        });
+    });
+};
+
+module.exports = function(app, model) {
+
+    module.db       = app.get('db');
+    module.mongoose = app.get('mongoose');
+    module.config   = app.get('config');
+
+    module.models   = app.get('models');
+    module.model    = app.get('models').order;
+
+    return exports;
+};
