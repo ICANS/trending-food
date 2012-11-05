@@ -80,7 +80,7 @@ exports.add = function (respond, mealID, mealtimeID, userID) {
 
         module.models.meal
             .findByIdAndUpdate(mealObjectID, {
-                $inc: { amount: -1 } 
+                $inc: { amount: -1, votes: 1 }
             }, function(err, result) {
                 respond(201, {
                     meal: result,
@@ -147,15 +147,42 @@ exports.count = function (respond) {
 
 exports.delete = function (respond, id) {
 
-    module.model.remove({
-        _id: id
-    }, function (err, results) {
-        if(results === 0) return respond(404, 'id not found');
-        if(err) return respond(400, err);
+    var seq = sequence();
+    var ObjectId = module.mongoose.Types.ObjectId;
+    var orderObjectID = new ObjectId(id);
 
-        return respond(200, {
+    seq.then(function (next) {
+        module.model
+            .findById(orderObjectID)
+            .populate('meal')
+            .exec(function(err, result) {
+                if(result.length === 0) return respond(400, 'order id not found');
+                if(err) return respond(400, err);
+
+                result.meal.update({
+                    $inc: { amount: 1, votes: -1 }
+                }, function(err, meal) {
+                    if(meal === 0) return respond(404, 'sub document meal not found');
+                    if(err) return respond(400, err);
+
+                    next();
+                });
+            });
+    })
+
+    .then(function (next) {
+
+        module.model.remove({
             _id: id
+        }, function (err, results) {
+            if(results === 0) return respond(404, 'id not found');
+            if(err) return respond(400, err);
+
+            return respond(200, {
+                _id: id
+            });
         });
+
     });
 };
 
