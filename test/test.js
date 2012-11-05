@@ -135,9 +135,9 @@ suite.addBatch({
                 assert.equal(res.statusCode, 200);
             },
 
-            "should respond the same id": function (err, res, body) {
+            "should with default votes count": function (err, res, body) {
                 var res = JSON.parse(body);
-                assert.equal(res.votes, 1);
+                assert.equal(res.votes, 2);
             }
         },
     },
@@ -277,7 +277,7 @@ suite.addBatch({
 
             "should respond the same id": function (err, res, body) {
                 var res = JSON.parse(body);
-                assert.equal(res.votes, 0);
+                assert.equal(res.votes, 1);
             }
         }
     }
@@ -304,6 +304,8 @@ suite.addBatch({
             }
         }
     },
+
+}).addBatch({
 
     "meal controller => ": {
         "GET request to /meal/delete/#id": {
@@ -347,10 +349,6 @@ suite.addBatch({
             }
         }
     }
-
-}).addBatch({
-
-
 
 })
 .export(module);
