@@ -1,5 +1,4 @@
 var sequence = require('futures').sequence;
-var _ = require('underscore');
 
 exports.add = function (respond, title, amount) {
 
