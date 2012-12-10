@@ -1,19 +1,32 @@
 var express  = require('express')
-  , http     = require('http')
-  , path     = require('path')
-  , mongoose = require('mongoose')
-  , https    = require('https')
-  , http     = require('http')
-  , fs       = require('fs')
-  , config   = require('./config');
+    , http     = require('http')
+    , path     = require('path')
+    , mongoose = require('mongoose')
+    , https    = require('https')
+    , http     = require('http')
+    , fs       = require('fs')
+
+    // file upload library
+    , filePluginLib        = require('mongoose-file')
+    , filePlugin           = filePluginLib.filePlugin
+    , make_upload_to_model = filePluginLib.make_upload_to_model
+
+    // config file
+    , config   = require('./config');
+
 
 var app     = express();
 var db      = mongoose.createConnection(config.db.domain, config.db.name);
 
 var httpsOptions = {
-  key   : fs.readFileSync('https/server.key'),
-  cert  : fs.readFileSync('https/server.crt')
+    key   : fs.readFileSync('https/server.key'),
+    cert  : fs.readFileSync('https/server.crt')
 };
+
+app.use(express.bodyParser({ 
+    keepExtensions: true,
+    uploadDir: './uploads' 
+}));
 
 app.set('config', config);
 app.set('mongoose', mongoose);
@@ -80,6 +93,9 @@ app.get('/meal/get/:id', routes.meal.getById);
 app.get('/meal/delete/:id', routes.meal.delete);
 app.get('/meal/vote/up/:id', routes.meal.voteUp);
 app.get('/meal/vote/down/:id', routes.meal.voteDown);
+app.get('/meal/amount/up/:id', routes.meal.amountUp);
+app.get('/meal/amount/down/:id', routes.meal.amountDown);
+app.get('/meal/image/:id', routes.meal.getImageById);
 
 // routes - mealtimes
 

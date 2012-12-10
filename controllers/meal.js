@@ -1,10 +1,40 @@
 var sequence = require('futures').sequence;
+var fs       = require('fs');
 
-exports.add = function (respond, title, amount) {
+var _updateById = function(respond, id, options) {
+
+    module.model.update({ _id: id }, options, { safe: true }, function (err, results) {
+        if (err || results == 0) return respond(400, err);
+
+        module.model.findOne({ _id: id }, function (err, results) {
+            if (err) return respond(400, err);
+
+            results.validate(function (err) {
+                if (err) return respond(400, err);
+                
+                respond(200, results);
+            });
+        });
+    });
+}
+
+exports.add = function (respond, title, amount, image) {
+
+    if(image && image.size > 0) {
+        var imageData = fs.readFileSync(image.path);
+        var imageType = image.type;
+    } else {
+        var imageData = null;
+        var imageType = null;
+    }
 
     var meal = new module.model({
         title : title,
-        amount: amount
+        amount: amount,
+        image: {
+            data        : imageData,
+            contentType : imageType
+        }
     });
 
     meal.save(function (err, results) {
@@ -21,7 +51,8 @@ exports.count = function (respond, id, title, amount) {
     var options = {
         _id     : id     || null,
         title   : title  || null,
-        amount  : amount || null
+        amount  : amount || null,
+        deleted : false
     };
 
     for (option in options) {
@@ -44,7 +75,7 @@ exports.getById = function (respond, id) {
     var userObjectID = new ObjectId(id);
 
     module.model
-        .findOne({ _id: id })
+        .findOne({ _id: id, deleted: false })
         .exec(function (err, results) {
             if (err) return respond(400, err);
             respond(200, results);
@@ -65,14 +96,16 @@ exports.getList = function (respond, offset, limit, sort, order) {
 
     .then(function (next) {
 
-        module.model.find()
-            .sort(order + sort)
-            .limit(limit)
-            .skip(offset)
-            .exec(function (err, results) {
-                if (err) return respond(400, err);
-                next(results);
-            });
+        module.model.find({
+            deleted: false
+        })
+        .sort(order + sort)
+        .limit(limit)
+        .skip(offset)
+        .exec(function (err, results) {
+            if (err) return respond(400, err);
+            next(results);
+        });
     })
 
     .then(function (next, results) {
@@ -85,67 +118,55 @@ exports.getList = function (respond, offset, limit, sort, order) {
     });
 };
 
+exports.getImageById = function (respond, id) {
+    module.model.findById(id, function (err, result) {
+
+        var result = result || {};
+
+        if(!result || err || !result.image.data || !result.image.contentType) {
+            result.image = {
+                data: fs.readFileSync('./assets/default.jpg'),
+                contentType: 'image/jpeg'
+            }
+        }
+
+        return respond(200, result.image);
+    });
+};
+
 exports.delete = function (respond, id) {
-
-    module.model.remove({
-        _id: id
-    }, function (err, results) {
-
-        if(results === 0) return respond(404, 'id not found');
-        if (err) return respond(400, err);
-
-        return respond(200, {
-            _id: id
-        });
+    _updateById(respond, id, {
+        deleted: true
     });
 };
 
 exports.voteUp = function (respond, id) {
-
-    module.model.update(
-        { _id: id }, 
-        { $inc: { votes: 1 } }, 
-        { safe: true }, 
-        function (err, results) {
-            if (err || results == 0) return respond(400, err);
-
-            module.model.findOne({ _id: id }, function (err, results) {
-                if (err) return respond(400, err);
-
-                results.validate(function (err) {
-                    if (err) return respond(400, err);
-
-                    respond(200, results);
-                });
-            });
-        }
-    );
+    _updateById(respond, id, {
+        $inc: { votes: 1 }
+    });
 };
 
 exports.voteDown = function (respond, id) {
+    _updateById(respond, id, {
+        $inc: { votes: -1 }
+    });
+};
 
-    module.model.update(
-        { _id: id }, 
-        { $inc: { votes: -1 } }, 
-        { safe: true }, 
-        function (err, results) {
-            if (err || results == 0) return respond(400, err);
+exports.amountUp = function (respond, id) {
+    _updateById(respond, id, {
+        $inc: { amount: 1 }
+    });
+};
 
-            module.model.findOne({ _id: id }, function (err, results) {
-                if (err) return respond(400, err);
-
-                results.validate(function (err) {
-                    if (err) return respond(400, err);
-                    
-                    respond(200, results);
-                });
-            });
-        }
-    );
+exports.amountDown = function (respond, id) {
+    _updateById(respond, id, {
+        $inc: { amount: -1 }
+    });
 };
 
 module.exports = function(app) {
 
+    module.ex       = module.exports;
     module.db       = app.get('db');
     module.mongoose = app.get('mongoose');
     module.config   = app.get('config');

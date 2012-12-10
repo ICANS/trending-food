@@ -14,7 +14,7 @@ exports.add = function (req, res) {
 
 exports.getByUsername = function (req, res) {
 
-    var username = req.param('username');
+    var username = req.param('username') || null;
 
     var callback = function (statusCode, response) {
         res

@@ -34,6 +34,16 @@ module.exports = function (app, model) {
         updated: { 
             type   : Date, 
             default: Date.now 
+        },
+
+        image: {
+            data: Buffer,
+            contentType: String
+        },
+
+        deleted: {
+            type: Boolean,
+            default: false
         }
     });
 

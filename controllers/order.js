@@ -116,8 +116,6 @@ exports.getListByUser = function (respond, userID, offset, limit) {
     var limit  = limit || 30;
     var offset = offset || 0;
 
-    var meals = [];
-
     module.model
         .find({ user: userObjectID })
         .populate('mealtime')

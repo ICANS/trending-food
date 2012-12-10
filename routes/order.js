@@ -1,8 +1,8 @@
 exports.add = function (req, res) {
 
-    var meal     = req.param('meal');
-    var user     = req.param('user');
-    var mealtime = req.param('mealtime');
+    var meal     = req.param('meal') || null;
+    var user     = req.param('user') || null;
+    var mealtime = req.param('mealtime') || null;
 
     var callback = function (statusCode, response) {
         res
@@ -15,8 +15,8 @@ exports.add = function (req, res) {
 
 exports.getList = function (req, res) {
 
-    var offset  = req.param('offset');
-    var limit   = req.param('limit');
+    var offset  = req.param('offset') || 0;
+    var limit   = req.param('limit') || 0;
 
     var callback = function (statusCode, response) {
         res
@@ -29,9 +29,9 @@ exports.getList = function (req, res) {
 
 exports.getListByUser = function (req, res) {
 
-    var offset  = req.param('offset');
-    var limit   = req.param('limit');
-    var user    = req.param('user');
+    var offset  = req.param('offset') || 0;
+    var limit   = req.param('limit') || 0;
+    var user    = req.param('user') || null;
 
     var callback = function (statusCode, response) {
         res
@@ -56,7 +56,7 @@ exports.count = function (req, res) {
 
 exports.delete = function (req, res) {
 
-    var id = req.param('id');
+    var id = req.param('id') || null;
 
     var callback = function (statusCode, response) {
         res

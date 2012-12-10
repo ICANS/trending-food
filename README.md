@@ -14,6 +14,7 @@
 
 * add
 * list
+* image
 * count
 * get
 * delete

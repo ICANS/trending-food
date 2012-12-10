@@ -1,10 +1,14 @@
 var crypto = require('crypto');
 
-exports.add = function (respond, username, password) {
-
+var cryptPassword = function(password) {
     var shasum = crypto.createHash('sha1');
     shasum.update(password);
-    password_hash = shasum.digest('hex');
+    return shasum.digest('hex');
+};
+
+exports.add = function (respond, username, password) {
+
+    var password_hash = cryptPassword(password);
 
     var user = new module.model({
         username: username,

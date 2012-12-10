@@ -2,6 +2,7 @@ exports.add = function (req, res) {
 
     var title  = req.param('title');
     var amount = req.param('amount');
+    var image = req.files && req.files.image ? req.files.image : null;
 
     var callback = function (statusCode, response) {
         res
@@ -9,7 +10,7 @@ exports.add = function (req, res) {
             .json(response);
     };
 
-    module.controller.add(callback, title, amount);
+    module.controller.add(callback, title, amount, image);
 };
 
 exports.count = function (req, res) {
@@ -98,6 +99,46 @@ exports.voteUp = function (req, res) {
     };
 
     module.controller.voteUp(callback, id);
+};
+
+exports.amountUp = function (req, res) {
+
+    var id = req.param('id');
+
+    var callback = function (statusCode, response) {
+        res
+            .status(statusCode)
+            .json(response);
+    };
+
+    module.controller.voteDown(callback, id);
+};
+
+exports.amountDown = function (req, res) {
+
+    var id = req.param('id');
+
+    var callback = function (statusCode, response) {
+        res
+            .status(statusCode)
+            .json(response);
+    };
+
+    module.controller.voteUp(callback, id);
+};
+
+exports.getImageById = function (req, res) {
+
+    var id = req.param('id');
+
+    var callback = function (statusCode, response) {
+        res
+            .status(statusCode)
+            .type(response.contentType)
+            .end(response.data, 'binary');
+    };
+
+    module.controller.getImageById(callback, id);
 };
 
 module.exports = function(app, controller) {
