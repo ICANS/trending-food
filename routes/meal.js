@@ -111,7 +111,7 @@ exports.amountUp = function (req, res) {
             .json(response);
     };
 
-    module.controller.voteUp(callback, id);
+    module.controller.amountUp(callback, id);
 };
 
 exports.amountDown = function (req, res) {
@@ -124,7 +124,7 @@ exports.amountDown = function (req, res) {
             .json(response);
     };
 
-    module.controller.voteDown(callback, id);
+    module.controller.amountDown(callback, id);
 };
 
 exports.getImageById = function (req, res) {
