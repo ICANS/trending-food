@@ -22,9 +22,61 @@ var testMealTimeID  = '';
 
 var testOrderID     = '';
 
+var testOrderCount = null;
+var testMealCount = null;
+
 var suite = vows.describe('API');
 
 suite.addBatch({
+
+    "meal controller => ": {
+        "GET request to /meal/count": {
+
+            topic: function () {
+                request({
+                    uri     : testDomain + '/meal/count',
+                    method  : 'GET'
+                }, this.callback);
+            },
+
+            "should respond with 200": function (err, res) {
+                assert.equal(res.statusCode, 200);
+            },
+
+            "should respond valid object": function (err, res, body) {
+                var res = JSON.parse(body);
+                assert.isNumber(res.count);
+
+                testMealCount = res.count;
+            },
+        },
+    },
+
+    "order controller => ": {
+        "GET request to /order/count": {
+
+            topic: function () {
+                request({
+                    uri     : testDomain + '/order/count',
+                    method  : 'GET'
+                }, this.callback);
+            },
+
+            "should respond with 200": function (err, res) {
+                assert.equal(res.statusCode, 200);
+            },
+
+            "should respond valid object": function (err, res, body) {
+                var res = JSON.parse(body);
+                assert.isNumber(res.count);
+
+                testOrderCount = res.count;
+            },
+
+        },
+    },
+
+}).addBatch({
 
     "user controller => ": {
         "GET request to /user/add": {
@@ -368,5 +420,50 @@ suite.addBatch({
         }
     }
 
+}).addBatch({
+
+    "meal controller => ": {
+        "GET request to /meal/count": {
+
+            topic: function () {
+                request({
+                    uri     : testDomain + '/meal/count',
+                    method  : 'GET'
+                }, this.callback);
+            },
+
+            "should respond with 200": function (err, res) {
+                assert.equal(res.statusCode, 200);
+            },
+
+            "should respond origin count": function (err, res, body) {
+                var res = JSON.parse(body);
+                assert.equal(res.count, testMealCount);
+            }
+        },
+    },
+
+    "order controller => ": {
+        "GET request to /order/count": {
+
+            topic: function () {
+                request({
+                    uri     : testDomain + '/order/count',
+                    method  : 'GET'
+                }, this.callback);
+            },
+
+            "should respond with 200": function (err, res) {
+                assert.equal(res.statusCode, 200);
+            },
+
+            "should respond origin count": function (err, res, body) {
+                var res = JSON.parse(body);
+                assert.equal(res.count, testOrderCount);
+            }
+
+        },
+    },
 })
+
 .export(module);

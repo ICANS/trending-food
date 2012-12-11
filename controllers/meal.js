@@ -6,10 +6,17 @@ var _updateById = function(respond, id, options) {
     module.model.findOne({ _id: id }, function (err, foundDocument) {
 
         for(var optionsProp in options) {
-            if(optionsProp === '$inc') {
-                for(var incProp in options[optionsProp]) {
-                    foundDocument[incProp] += options[optionsProp][incProp];
+
+            if(typeof options[optionsProp] === 'object') {
+
+                if(optionsProp === '$inc') {
+                    for(var incProp in options[optionsProp]) {
+                        foundDocument[incProp] += options[optionsProp][incProp];
+                    }
                 }
+
+            } else {
+                foundDocument[optionsProp] += options[optionsProp];
             }
         }
 
