@@ -3,16 +3,23 @@ var fs       = require('fs');
 
 var _updateById = function(respond, id, options) {
 
-    module.model.update({ _id: id }, options, { safe: true }, function (err, results) {
-        if (err || results == 0) return respond(400, err);
+    module.model.findOne({ _id: id }, function (err, foundDocument) {
 
-        module.model.findOne({ _id: id }, function (err, results) {
+        for(var optionsProp in options) {
+            if(optionsProp === '$inc') {
+                for(var incProp in options[optionsProp]) {
+                    foundDocument[incProp] += options[optionsProp][incProp];
+                }
+            }
+        }
+
+        foundDocument.validate(function (err) {
             if (err) return respond(400, err);
 
-            results.validate(function (err) {
+            foundDocument.save(function (err, savedDocument) {
                 if (err) return respond(400, err);
-                
-                respond(200, results);
+
+                return respond(200, savedDocument);
             });
         });
     });
