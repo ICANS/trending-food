@@ -108,16 +108,28 @@ exports.getList = function (respond, offset, limit) {
         });
 };
 
-exports.getListByUser = function (respond, userID, offset, limit) {
+exports.getListByUser = function (respond, userID, offset, limit, dateStart, dateEnd) {
 
     var ObjectId     = module.mongoose.Types.ObjectId;
     var userObjectID = new ObjectId(userID);
 
-    var limit  = limit || 30;
-    var offset = offset || 0;
+    if(dateStart) dateStart = new Date(dateStart);
+    if(dateEnd) dateEnd = new Date(dateEnd);
+
+    var date      = new Date();
+    var dateStart = dateStart || new Date(date.getFullYear(), date.getMonth(), date.getDate());
+    var dateEnd   = dateEnd || new Date(dateStart.getTime() + (24 * 60 * 60 * 1000));
+    var limit     = limit || 30;
+    var offset    = offset || 0;
 
     module.model
-        .find({ user: userObjectID })
+        .find({ 
+            user: userObjectID,
+            created : {
+                $gte : dateStart, 
+                $lte : dateEnd
+            }
+        })
         .populate('mealtime')
         .populate('user')
         .populate('meal')
