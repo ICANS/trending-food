@@ -29,9 +29,11 @@ exports.getList = function (req, res) {
 
 exports.getListByUser = function (req, res) {
 
-    var offset  = req.param('offset') || 0;
-    var limit   = req.param('limit') || 0;
-    var user    = req.param('user') || null;
+    var offset    = req.param('offset') || 0;
+    var limit     = req.param('limit') || 0;
+    var user      = req.param('user') || null;
+    var dateStart = req.param('dateStart') || null;
+    var dateEnd   = req.param('dateEnd') || null;
 
     var callback = function (statusCode, response) {
         res
@@ -39,7 +41,7 @@ exports.getListByUser = function (req, res) {
             .json(response);
     };
 
-    module.controller.getListByUser(callback, user, offset, limit);
+    module.controller.getListByUser(callback, user, offset, limit, dateStart, dateEnd);
 };
 
 exports.count = function (req, res) {

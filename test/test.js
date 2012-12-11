@@ -9,13 +9,16 @@ var shasum = crypto.createHash('sha1');
 
 shasum.update('test');
 
+var testNow      = (new Date()).getTime();
+var testTomorrow = testNow + (24 * 60 * 60 * 1000);
+
 var testUserID   = '';
 var testUsername = Math.ceil(Math.random() * 1000) + '@' + Math.ceil(Math.random() * 1000) + '.com';
 var testPassword = 'test';
 var testPasswordCheck = shasum.digest('hex');
 
 var testMealID      = '';
-var testMealTimeID  = '506c53953a266324d953421b'; // C
+var testMealTimeID  = '';
 
 var testOrderID     = '';
 
@@ -84,6 +87,35 @@ suite.addBatch({
             }
         },
     },
+
+    "mealtimes controller => ": {
+        "GET request to /mealtimes/list": {
+
+            topic: function () {
+                request({
+                    uri     : testDomain + '/mealtimes/list',
+                    method  : 'GET'
+                }, this.callback);
+            },
+
+            "should respond with 200": function (err, res) {
+                assert.equal(res.statusCode, 200);
+            },
+
+            "should respond a valid array": function (err, res, body) {
+                var res = JSON.parse(body);
+                assert.isArray(res);
+            },
+    
+            "should respond with more than zero objects": function (err, res, body) {
+                var res = JSON.parse(body);
+                assert.greater(res.length, 0);
+
+                testMealTimeID = res[0]._id;
+            }
+        }
+    },
+
 }).addBatch({
 
     "order controller => ": {
@@ -195,30 +227,16 @@ suite.addBatch({
                     uri     : testDomain + '/order/list_by_user',
                     method  : 'GET',
                     qs      : {
-                        username: testUsername
+                        user      : testUserID,
+                        dateStart : testNow,
+                        dateEnd   : testTomorrow
                     }
                 }, this.callback);
             },
 
-            "should respond with 200": function (err, res) {
-                assert.equal(res.statusCode, 200);
-            },
-
-            "should respond a valid array": function (err, res, body) {
-                var res = JSON.parse(body);
-                assert.isArray(res);
-            }
-        }
-    },
-
-    "mealtimes controller => ": {
-        "GET request to /mealtimes/list": {
-
-            topic: function () {
-                request({
-                    uri     : testDomain + '/mealtimes/list',
-                    method  : 'GET'
-                }, this.callback);
+            "should have a older date then testNow": function (err, res) {
+                assert.greater(res.created, testNow);
+                assert.lesser(res.created, testTomorrow);
             },
 
             "should respond with 200": function (err, res) {

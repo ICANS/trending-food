@@ -111,7 +111,13 @@ exports.getList = function (respond, offset, limit) {
 exports.getListByUser = function (respond, userID, offset, limit, dateStart, dateEnd) {
 
     var ObjectId     = module.mongoose.Types.ObjectId;
-    var userObjectID = new ObjectId(userID);
+    var userObjectID = null;
+
+    if(userID.toString().length !== 24) {
+        return respond(400, {});
+    } else {
+        userObjectID = new ObjectId(userID);
+    }
 
     if(dateStart) dateStart = new Date(dateStart);
     if(dateEnd) dateEnd = new Date(dateEnd);
@@ -126,7 +132,7 @@ exports.getListByUser = function (respond, userID, offset, limit, dateStart, dat
         .find({ 
             user: userObjectID,
             created : {
-                $gte : dateStart, 
+                $gte : dateStart,
                 $lte : dateEnd
             }
         })
