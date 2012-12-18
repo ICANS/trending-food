@@ -117,7 +117,6 @@ exports.getList = function (respond, offset, limit, sort, order) {
         .skip(offset)
         .sort(order + sort)
         .exec(function (err, results) {
-            console.log(err, results);
             if (err) return respond(400, err);
             next(results);
         });
