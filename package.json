@@ -1,20 +1,20 @@
 {
-  "name": "trending-food-backend",
-  "version": "0.0.1",
-  "private": true,
-  "scripts": {
-    "start": "node app"
-  },
-  "dependencies": {
-    "express": "3.0.0rc1",
-    "jade": "*",
-    "api-easy": "0.3.7",
-    "futures": "*",
-    "mongoose": "*",
-    "mongoose-file": "*",
-    "mongoose-subpopulate": "*",
-    "request": "*",
-    "underscore": "*",
-    "vows": "*",
-  }
+    "name": "trending-food",
+    "version": "0.0.1",
+    "private": true,
+    "scripts": {
+        "start": "node app"
+    },
+    "dependencies": {
+        "express": ">=3.0.0rc1",
+        "jade": ">=0.27.5",
+        "api-easy": ">=0.3.7",
+        "futures": ">=2.3.1",
+        "mongoose": ">=3.1.2",
+        "mongoose-file": ">=0.0.2",
+        "mongoose-subpopulate": ">=0.0.7",
+        "request": ">=2.11.4",
+        "underscore": ">=1.4.2",
+        "vows": ">=0.6.4"
+    }
 }
