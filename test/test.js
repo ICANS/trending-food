@@ -12,16 +12,19 @@ shasum.update('test');
 var testNow      = (new Date()).getTime();
 var testTomorrow = testNow + (24 * 60 * 60 * 1000);
 
+var testMealtimeIdString = 'B1';
+var testMealtimeTitle = '12:30'
+
 var testUserID   = '';
 var testUsername = Math.ceil(Math.random() * 1000) + '@' + Math.ceil(Math.random() * 1000) + '.com';
 var testPassword = 'test';
 var testPasswordCheck = shasum.digest('hex');
 
 var testMealID      = '';
-var testMealTimeID  = '';
-
+var testMealtimeID  = '';
 var testOrderID     = '';
 
+var testMealCount = null;
 var testOrderCount = null;
 var testMealCount = null;
 
@@ -76,7 +79,62 @@ suite.addBatch({
         },
     },
 
+    "mealtime controller => ": {
+        "GET request to /mealtime/count": {
+
+            topic: function () {
+                request({
+                    uri     : testDomain + '/mealtime/count',
+                    method  : 'GET'
+                }, this.callback);
+            },
+
+            "should respond with 200": function (err, res) {
+                assert.equal(res.statusCode, 200);
+            },
+
+            "should respond valid object": function (err, res, body) {
+                var res = JSON.parse(body);
+                assert.isNumber(res.count);
+
+                testMealtimeCount = res.count;
+            },
+
+        },
+    },
+
 }).addBatch({
+
+    "mealtime controller => ": {
+        "POST request to /mealtime/add": {
+
+            topic: function () {
+                request({
+                    uri     : testDomain + '/mealtime/add',
+                    method  : 'POST',
+                    body    : {
+                        id   : testMealtimeIdString,
+                        title: testMealtimeTitle
+                    },
+                    json: true
+                }, this.callback);
+            },
+
+            "should respond with 201": function (err, res) {
+                assert.equal(res.statusCode, 201);
+            },
+
+            "should respond valid object": function (err, res, body) {
+                testMealtimeID = body._id;
+
+                assert.isObject(body);
+                assert.isString(body.id);
+                assert.isString(body.title);
+            },
+
+        },
+    },
+
 
     "user controller => ": {
         "GET request to /user/add": {
@@ -120,7 +178,7 @@ suite.addBatch({
                     method  : 'POST',
                     body    : {
                         title: 'Some meal title',
-                        amount: 1
+                        amount: 12
                     },
                     json: true
                 }, this.callback);
@@ -134,18 +192,20 @@ suite.addBatch({
 
                 testMealID = body._id;
 
-                assert.equal(body.amount, 1);
+                assert.equal(body.amount, 12);
                 assert.equal(body.title, 'Some meal title');
             }
         },
     },
 
-    "mealtimes controller => ": {
-        "GET request to /mealtimes/list": {
+}).addBatch({
+
+    "mealtime controller => ": {
+        "GET request to /mealtime/list": {
 
             topic: function () {
                 request({
-                    uri     : testDomain + '/mealtimes/list',
+                    uri     : testDomain + '/mealtime/list',
                     method  : 'GET'
                 }, this.callback);
             },
@@ -162,13 +222,9 @@ suite.addBatch({
             "should respond with more than zero objects": function (err, res, body) {
                 var res = JSON.parse(body);
                 assert.greater(res.length, 0);
-
-                testMealTimeID = res[0]._id;
             }
         }
     },
-
-}).addBatch({
 
     "order controller => ": {
         "POST request to /order/add": {
@@ -179,7 +235,7 @@ suite.addBatch({
                     method  : 'POST',
                     body    : {
                         meal     : testMealID,
-                        mealtime : testMealTimeID,
+                        mealtime : testMealtimeID,
                         user     : testUserID,
                     },
                     json: true
@@ -190,14 +246,13 @@ suite.addBatch({
                 assert.equal(res.statusCode, 201);
             },
 
-             "should respond valid user, mealtimeID and mealID": function (err, res, body) {
+             "should respond valid userID, mealtimeID and mealID": function (err, res, body) {
 
                 testOrderID = body.order._id;
 
                 assert.equal(body.meal._id, testMealID);
                 assert.equal(body.order.user, testUserID);
-                assert.equal(body.order.meal, testMealID);
-                assert.equal(body.order.mealtime, testMealTimeID);
+                assert.equal(body.order.mealtime, testMealtimeID);
             }
         }
     },
@@ -418,7 +473,29 @@ suite.addBatch({
                 assert.equal(res._id, testUserID);
             }
         }
-    }
+    },
+
+    "mealtime controller => ": {
+        "GET request to /mealtime/delete/#id": {
+
+            topic: function () {
+                request({
+                    uri     : testDomain + '/mealtime/delete/' + testMealtimeID,
+                    method  : 'GET'
+                }, this.callback);
+            },
+
+            "should respond with 200": function (err, res) {
+                assert.equal(res.statusCode, 200);
+            },
+
+            "should respond the same id": function (err, res, body) {
+                var res = JSON.parse(body);
+                assert.equal(res._id, testMealtimeID);
+            }
+        }
+    },
+
 
 }).addBatch({
 
@@ -464,6 +541,30 @@ suite.addBatch({
 
         },
     },
+
+    "mealtime controller => ": {
+        "GET request to /mealtime/count": {
+
+            topic: function () {
+                request({
+                    uri     : testDomain + '/mealtime/count',
+                    method  : 'GET'
+                }, this.callback);
+            },
+
+            "should respond with 200": function (err, res) {
+                assert.equal(res.statusCode, 200);
+            },
+
+            "should respond origin count": function (err, res, body) {
+                var res = JSON.parse(body);
+                assert.equal(res.count, testMealtimeCount);
+            }
+
+        },
+    },
+
+
 })
 
 .export(module);

@@ -18,6 +18,53 @@ exports.getList = function (respond, offset, limit, sort, order) {
     });
 };
 
+exports.add = function (respond, id, title) {
+
+    var id = id || null;
+    var title = title || null;
+
+    var mealtime = new module.model({
+        id   : id,
+        title: title,
+    });
+
+    mealtime.save(function (err, doc) {
+        if (err) {
+            respond(400, err);
+        } else {
+            respond(201, doc);
+        }
+    });
+};
+
+exports.delete = function (respond, id) {
+
+    var id = id || null;
+
+    module.model.remove({
+        _id: id
+    }, function (err, docs) {
+        if(docs === 0) return respond(404, 'id not found');
+        if(err) return respond(400, err);
+
+        return respond(200, {
+            _id: id
+        });
+    });
+};
+
+exports.count = function (respond) {
+
+    module.model.count({}, function (err, count) {
+        if (err) {
+            respond(400, err);
+        } else {
+            respond(200, count);
+        }
+    });
+
+};
+
 module.exports = function(app) {
 
     module.db       = app.get('db');

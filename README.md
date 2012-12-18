@@ -23,6 +23,9 @@
 
 #### Mealtimes
 
+* add
+* delete
+* count
 * list
 
 #### User

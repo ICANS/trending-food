@@ -46,8 +46,15 @@ exports.add = function (respond, mealID, mealtimeID, userID) {
             .exec(function (err, result) {
                 if (err) return respond(400, err);
 
-                if(result.amount < 1) {
-                    respond(400, {
+                if(!result) {
+                    return respond(400, {
+                        statusInternal: 3,
+                        statusText: 'meal not found'
+                    });
+                }
+
+                if(!result.amount || result.amount < 1) {
+                    return respond(400, {
                         statusInternal: 2,
                         statusText: 'amount of meal is too small'
                     });

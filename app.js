@@ -99,7 +99,10 @@ app.get('/meal/image/:id', routes.meal.getImageById);
 
 // routes - mealtimes
 
-app.get('/mealtimes/list', routes.mealtime.getList);
+app.post('/mealtime/add', routes.mealtime.add);
+app.get('/mealtime/list', routes.mealtime.getList);
+app.get('/mealtime/count', routes.mealtime.count);
+app.get('/mealtime/delete/:id', routes.mealtime.delete);
 
 // routes - user
 

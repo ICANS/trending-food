@@ -14,6 +14,46 @@ exports.getList = function (req, res) {
     module.controller.getList(callback, offset, limit, sort, order);
 };
 
+exports.add = function (req, res) {
+
+    var id      = req.param('id') || null;
+    var title   = req.param('title') || null;
+
+    var callback = function (statusCode, response) {
+        res
+            .status(statusCode)
+            .json(response);
+    };
+
+    module.controller.add(callback, id, title);
+};
+
+exports.count = function (req, res) {
+    var callback = function (statusCode, response) {
+        res
+            .status(statusCode)
+            .json({
+                count: response
+            });
+    };
+
+    module.controller.count(callback);
+};
+
+exports.delete = function (req, res) {
+
+    var id = req.param('id') || null;
+
+    var callback = function (statusCode, response) {
+        res
+            .status(statusCode)
+            .json(response);
+    };
+
+    module.controller.delete(callback, id);
+};
+
+
 module.exports = function(app, controller) {
 
     module.db       = app.get('db');
