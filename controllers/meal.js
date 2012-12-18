@@ -125,7 +125,7 @@ exports.getList = function (respond, offset, limit, sort, order) {
     .then(function (next, results) {
         module.model.findOne().sort('-votes').exec(function (err, maxVotesResult) {
             if(err) return respond(400, err);
-            if(!!maxVotesResult) return respond(400, err);
+            if(!maxVotesResult) return respond(400, err);
 
             respond(200, {
                 max: maxVotesResult.votes,
