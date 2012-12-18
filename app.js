@@ -5,13 +5,6 @@ var express  = require('express')
     , https    = require('https')
     , http     = require('http')
     , fs       = require('fs')
-
-    // file upload library
-    , filePluginLib        = require('mongoose-file')
-    , filePlugin           = filePluginLib.filePlugin
-    , make_upload_to_model = filePluginLib.make_upload_to_model
-
-    // config file
     , config   = require('./config');
 
 
@@ -58,7 +51,7 @@ var routes  = {
 };
 
 app.configure(function() {
-    app.set('port', 3000);
+    app.set('port', config.port);
     app.use(express.logger('dev'));
     app.use(express.bodyParser());
     app.use(express.methodOverride());

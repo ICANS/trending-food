@@ -1,5 +1,5 @@
 exports.name = 'trending-food';
-
+exports.port = 3000;
 exports.db = {
     domain 	: '127.0.0.1',
     name 	: 'trending-food'
