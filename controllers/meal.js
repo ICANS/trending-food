@@ -110,26 +110,26 @@ exports.getList = function (respond, offset, limit, sort, order) {
     seq
 
     .then(function (next) {
-
         module.model.find({
             deleted: false
         })
-        .sort(order + sort)
         .limit(limit)
         .skip(offset)
+        .sort(order + sort)
         .exec(function (err, results) {
+            console.log(err, results);
             if (err) return respond(400, err);
             next(results);
         });
     })
 
     .then(function (next, results) {
-        module.model.findOne().sort('-votes').exec(function (err, maxVotesResult) {
+        module.model.findOne().sort('-votes').exec(function (err, doc) {
             if(err) return respond(400, err);
-            if(!maxVotesResult) return respond(400, []);
+            if(!doc) return respond(400, []);
 
             respond(200, {
-                max: maxVotesResult.votes,
+                max: doc.votes,
                 items: results
             });
         });

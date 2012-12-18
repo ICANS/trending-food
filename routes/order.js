@@ -15,8 +15,11 @@ exports.add = function (req, res) {
 
 exports.getList = function (req, res) {
 
-    var offset  = req.param('offset') || 0;
-    var limit   = req.param('limit') || 0;
+    var offset    = req.param('offset') || 0;
+    var limit     = req.param('limit') || 0;
+    var sort      = req.param('sort');
+    var dateStart = req.param('dateStart');
+    var dateEnd   = req.param('dateEnd');
 
     var callback = function (statusCode, response) {
         res
@@ -24,16 +27,16 @@ exports.getList = function (req, res) {
             .json(response);
     };
 
-    module.controller.getList(callback, offset, limit);
+    module.controller.getList(callback, offset, limit, sort, dateStart, dateEnd);
 };
 
 exports.getListByUser = function (req, res) {
 
-    var offset    = req.param('offset') || 0;
-    var limit     = req.param('limit') || 0;
-    var user      = req.param('user') || null;
-    var dateStart = req.param('dateStart') || null;
-    var dateEnd   = req.param('dateEnd') || null;
+    var offset    = req.param('offset');
+    var limit     = req.param('limit');
+    var user      = req.param('user');
+    var sort      = req.param('sort');
+    var order     = req.param('order');
 
     var callback = function (statusCode, response) {
         res
@@ -41,7 +44,7 @@ exports.getListByUser = function (req, res) {
             .json(response);
     };
 
-    module.controller.getListByUser(callback, user, offset, limit, dateStart, dateEnd);
+    module.controller.getListByUser(callback, user, offset, limit, sort, order);
 };
 
 exports.count = function (req, res) {

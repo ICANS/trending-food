@@ -97,56 +97,13 @@ exports.add = function (respond, mealID, mealtimeID, userID) {
     });
 };
 
-exports.getList = function (respond, offset, limit, dateStart, dateEnd) {
+exports.getList = function (respond, offset, limit, sort, order, dateStart, dateEnd) {
 
-    var date      = new Date();
-    var limit     = limit || 30;
-    var offset    = offset || 0;
-
-    if(dateStart) {
-        dateStart = new Date(dateStart);
-    } else {
-        dateStart = new Date(date.getFullYear(), date.getMonth(), date.getDate());
-    }
-
-    if(dateEnd) {
-        dateEnd = new Date(dateEnd);  
-    } else {
-        dateEnd = new Date(date.getTime() + (24 * 60 * 60 * 1000));
-    }
-
-    module.model.find({
-        created : {
-            $gte : dateStart,
-            $lte : dateEnd
-        }
-    })
-    .populate('mealtime')
-    .populate('user')
-    .populate('meal')
-    .sort('-created')
-    .limit(limit)
-    .skip(offset)
-    .exec(function (err, results) {
-        if (err) return respond(400, err);
-        return respond(200, results);
-    });
-};
-
-exports.getListByUser = function (respond, userID, offset, limit, dateStart, dateEnd) {
-
-    var ObjectId     = module.mongoose.Types.ObjectId;
-    var userObjectID = null;
-
-    if(userID.toString().length !== 24) {
-        return respond(400, {});
-    } else {
-        userObjectID = new ObjectId(userID);
-    }
-
-    var date      = new Date();
-    var limit     = limit || 30;
-    var offset    = offset || 0;
+    var date   = new Date();
+    var limit  = limit || 30;
+    var offset = offset || 0;
+    var sort   = sort || 'created';
+    var order  = order == 'desc' ? '-' : '';
 
     if(dateStart) {
         dateStart = new Date(dateStart);
@@ -160,18 +117,49 @@ exports.getListByUser = function (respond, userID, offset, limit, dateStart, dat
         dateEnd = new Date(date.getTime() + (24 * 60 * 60 * 1000));
     }
 
+    module.model.find({
+        created : {
+            $gte : dateStart,
+            $lte : dateEnd
+        }
+    })
+    .populate('mealtime')
+    .populate('user')
+    .populate('meal')
+    .sort(order + sort)
+    .limit(limit)
+    .skip(offset)
+    .exec(function (err, results) {
+        if (err) return respond(400, err);
+        return respond(200, results);
+    });
+};
+
+exports.getListByUser = function (respond, userID, offset, limit, sort, order) {
+
+    var ObjectId     = module.mongoose.Types.ObjectId;
+    var userObjectID = null;
+
+    var date   = new Date();
+    var limit  = limit || 30;
+    var offset = offset || 0;
+    var sort   = sort || 'created';
+    var order  = order == 'desc' ? '-' : '';
+
+    if(userID.toString().length !== 24) {
+        return respond(400, {});
+    } else {
+        userObjectID = new ObjectId(userID);
+    }
+
     module.model
         .find({ 
-            user: userObjectID,
-            created : {
-                $gte : dateStart,
-                $lte : dateEnd
-            }
+            user: userObjectID
         })
         .populate('mealtime')
         .populate('user')
         .populate('meal')
-        .sort('-created')
+        .sort(order + sort)
         .limit(limit)
         .skip(offset)
         .exec(function (err, results) {

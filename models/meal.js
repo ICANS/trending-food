@@ -43,6 +43,7 @@ module.exports = function (app, model) {
 
         category: {
             type: String,
+            default: null
         },
 
         deleted: {
