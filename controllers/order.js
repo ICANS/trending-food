@@ -90,22 +90,40 @@ exports.add = function (respond, mealID, mealtimeID, userID) {
     });
 };
 
-exports.getList = function (respond, offset, limit) {
+exports.getList = function (respond, offset, limit, dateStart, dateEnd) {
 
-    var limit  = limit || 30;
-    var offset = offset || 0;
+    var date      = new Date();
+    var limit     = limit || 30;
+    var offset    = offset || 0;
 
-    module.model.find()
-        .populate('mealtime')
-        .populate('user')
-        .populate('meal')
-        .sort('-created')
-        .limit(limit)
-        .skip(offset)
-        .exec(function (err, results) {
-            if (err) return respond(400, err);
-            return respond(200, results);
-        });
+    if(dateStart) {
+        dateStart = new Date(dateStart);
+    } else {
+        dateStart = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+    }
+
+    if(dateEnd) {
+        dateEnd = new Date(dateEnd);  
+    } else {
+        dateEnd = new Date(date.getTime() + (24 * 60 * 60 * 1000));
+    }
+
+    module.model.find({
+        created : {
+            $gte : dateStart,
+            $lte : dateEnd
+        }
+    })
+    .populate('mealtime')
+    .populate('user')
+    .populate('meal')
+    .sort('-created')
+    .limit(limit)
+    .skip(offset)
+    .exec(function (err, results) {
+        if (err) return respond(400, err);
+        return respond(200, results);
+    });
 };
 
 exports.getListByUser = function (respond, userID, offset, limit, dateStart, dateEnd) {
@@ -119,14 +137,21 @@ exports.getListByUser = function (respond, userID, offset, limit, dateStart, dat
         userObjectID = new ObjectId(userID);
     }
 
-    if(dateStart) dateStart = new Date(dateStart);
-    if(dateEnd) dateEnd = new Date(dateEnd);
-
     var date      = new Date();
-    var dateStart = dateStart || new Date(date.getFullYear(), date.getMonth(), date.getDate());
-    var dateEnd   = dateEnd || new Date(dateStart.getTime() + (24 * 60 * 60 * 1000));
     var limit     = limit || 30;
     var offset    = offset || 0;
+
+    if(dateStart) {
+        dateStart = new Date(dateStart);
+    } else {
+        dateStart = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+    }
+
+    if(dateEnd) {
+        dateEnd = new Date(dateEnd);
+    } else {
+        dateEnd = new Date(date.getTime() + (24 * 60 * 60 * 1000));
+    }
 
     module.model
         .find({ 
