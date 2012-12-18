@@ -1,8 +1,9 @@
 exports.add = function (req, res) {
 
-    var title  = req.param('title');
-    var amount = req.param('amount');
-    var image = req.files && req.files.image ? req.files.image : null;
+    var title    = req.param('title');
+    var amount   = req.param('amount');
+    var category = req.param('category');
+    var image    = req.files && req.files.image ? req.files.image : null;
 
     var callback = function (statusCode, response) {
         res
@@ -10,7 +11,7 @@ exports.add = function (req, res) {
             .json(response);
     };
 
-    module.controller.add(callback, title, amount, image);
+    module.controller.add(callback, title, amount, image, category);
 };
 
 exports.count = function (req, res) {

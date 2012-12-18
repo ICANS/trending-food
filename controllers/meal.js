@@ -32,7 +32,7 @@ var _updateById = function(respond, id, options) {
     });
 }
 
-exports.add = function (respond, title, amount, image) {
+exports.add = function (respond, title, amount, image, category) {
 
     if(image && image.size > 0) {
         var imageData = fs.readFileSync(image.path);
@@ -45,6 +45,7 @@ exports.add = function (respond, title, amount, image) {
     var meal = new module.model({
         title : title,
         amount: amount,
+        category: category,
         image: {
             data        : imageData,
             contentType : imageType

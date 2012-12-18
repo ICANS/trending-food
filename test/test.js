@@ -177,8 +177,9 @@ suite.addBatch({
                     uri     : testDomain + '/meal/add',
                     method  : 'POST',
                     body    : {
-                        title: 'Some meal title',
-                        amount: 12
+                        title: 'test meal',
+                        amount: 12,
+                        category: 'test category'
                     },
                     json: true
                 }, this.callback);
@@ -193,7 +194,8 @@ suite.addBatch({
                 testMealID = body._id;
 
                 assert.equal(body.amount, 12);
-                assert.equal(body.title, 'Some meal title');
+                assert.equal(body.title, 'test meal');
+                assert.equal(body.category, 'test category');
             }
         },
     },

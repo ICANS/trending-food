@@ -37,8 +37,12 @@ module.exports = function (app, model) {
         },
 
         image: {
-            data: Buffer,
-            contentType: String
+            data        : Buffer,
+            contentType : String
+        },
+
+        category: {
+            type: String,
         },
 
         deleted: {
