@@ -3,9 +3,7 @@ var config  = require('../config');
 
 var fs = require('fs');
 var path = require('path');
-var sys = require('sys');
 var fut = require('futures').sequence;
-var exec = require('child_process').exec;
 
 fs.exists(config.uploadDir, function (exists) {
     if(!exists) fs.mkdir(config.uploadDir);

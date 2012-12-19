@@ -1,4 +1,4 @@
-var express  = require('express')
+var express    = require('express')
     , http     = require('http')
     , path     = require('path')
     , mongoose = require('mongoose')
@@ -7,9 +7,8 @@ var express  = require('express')
     , fs       = require('fs')
     , config   = require('./config');
 
-
-var app     = express();
-var db      = mongoose.createConnection(config.db.domain, config.db.name);
+var app = express();
+var db  = mongoose.createConnection(config.db.domain, config.db.name);
 
 var httpsOptions = {
     key   : fs.readFileSync(config.sslDir + '/server.key'),

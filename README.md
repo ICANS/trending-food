@@ -1,35 +1,59 @@
 
 
 ### Supported Methods
+______________
 
 #### Order
+<table>
 
-* add
-* list
-* list by user
-* count
-* delete
+	<tr>
+		<td>add</td>
+		<td>list</td>
+		<td>list by user</td>
+		<td>count</td>
+		<td>delete</td>
+	</tr>
+
+</table>
 
 #### Meal
 
-* add
-* list
-* image
-* count
-* get
-* delete
-* vote up/down
-* amount up/down
+<table>
+
+	<tr>
+		<td>add</td>
+		<td>list</td>
+		<td>image</td>
+		<td>count</td>
+		<td>get</td>
+		<td>delete</td>
+		<td>vote up/down</td>
+		<td>amount up/down</td>
+	</tr>
+
+</table>
 
 #### Mealtimes
 
-* add
-* delete
-* count
-* list
+<table>
+
+	<tr>
+		<td>add</td>
+		<td>list</td>
+		<td>count</td>
+		<td>delete</td>
+	</tr>
+
+</table>
 
 #### User
 
-* add
-* get by username
-* delete
+<table>
+
+	<tr>
+		<td>add</td>
+		<td>get by username</td>
+		<td>delete</td>
+	</tr>
+
+</table>
