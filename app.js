@@ -102,6 +102,6 @@ app.post('/user/add', routes.user.add);
 app.get('/user/get_by_username', routes.user.getByUsername);
 app.get('/user/delete/:id', routes.user.delete);
 
-https.createServer(httpsOptions, app).listen(app.get('port'), function(){
-    console.log("HTTPS: " + app.get('port'));
+http.createServer(app).listen(app.get('port'), function(){
+    console.log("HTTP: " + app.get('port'));
 });

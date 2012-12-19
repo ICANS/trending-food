@@ -204,6 +204,6 @@ app.use(function (req, res) {
     res.type('txt').send('Not found');
 });
 
-https.createServer(httpsOptions, app).listen(app.get('port'), function(){
-  console.log("HTTPS: " + app.get('port'));
+http.createServer(app).listen(app.get('port'), function(){
+  console.log("HTTP: " + app.get('port'));
 });
