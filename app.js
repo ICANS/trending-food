@@ -12,13 +12,13 @@ var app     = express();
 var db      = mongoose.createConnection(config.db.domain, config.db.name);
 
 var httpsOptions = {
-    key   : fs.readFileSync('https/server.key'),
-    cert  : fs.readFileSync('https/server.crt')
+    key   : fs.readFileSync(config.sslDir + '/server.key'),
+    cert  : fs.readFileSync(config.sslDir + '/server.crt')
 };
 
 app.use(express.bodyParser({ 
     keepExtensions: true,
-    uploadDir: './uploads' 
+    uploadDir: config.uploadDir
 }));
 
 app.set('config', config);

@@ -7,6 +7,14 @@ var sys = require('sys');
 var fut = require('futures').sequence;
 var exec = require('child_process').exec;
 
+fs.exists(config.uploadDir, function (exists) {
+    if(!exists) fs.mkdir(config.uploadDir);
+});
+
+fs.exists(config.sslDir, function (exists) {
+    if(!exists) fs.mkdir(config.sslDir);
+});
+
 var seq = new fut();
 
 fs.readdir(path.join(__dirname, '/assets/images/'), function (err, files) {
