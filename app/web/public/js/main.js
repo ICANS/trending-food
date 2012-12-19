@@ -139,7 +139,7 @@ $(function () {
                 parent
                     .data('meal-amount', meal_amount)
                     .find('.meal-amount')
-                    .text(meal_amount);
+                    .text(meal_amount + 'x');
             }
         });
     });
@@ -160,7 +160,7 @@ $(function () {
                 parent
                     .data('meal-amount', meal_amount)
                     .find('.meal-amount')
-                    .text(meal_amount);
+                    .text(meal_amount + 'x');
             }
         });
     });
@@ -181,7 +181,7 @@ $(function () {
         layoutMode: 'cellsByRow',
         cellsByRow: {
             columnWidth: $('.meal-item').outerWidth() + 10,
-            rowHeight: $('.meal-item').height() + 106
+            rowHeight: 320
         },
         sortBy : 'votes',
         sortAscending : false

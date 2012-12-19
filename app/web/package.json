@@ -9,7 +9,7 @@
     "express": ">=3.0.0beta7",
     "hjs": ">=0.0.4",
     "ejs": ">=0.8.3",
-    "ejs-locals": "~0.2.5",
+    "ejs-locals": "~0.2.6",
     "simple-xmpp": ">=0.1.6",
     "request": ">=2.11.4",
     "futures": ">=2.3.1",
