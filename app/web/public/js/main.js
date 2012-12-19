@@ -181,7 +181,7 @@ $(function () {
         layoutMode: 'cellsByRow',
         cellsByRow: {
             columnWidth: $('.meal-item').outerWidth() + 10,
-            rowHeight: 320
+            rowHeight: 350
         },
         sortBy : 'votes',
         sortAscending : false

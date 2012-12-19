@@ -114,8 +114,7 @@ footer {
 
 .meal-item .progress {
     height: 15px;
-    margin-bottom: 0;
-    margin-top: 10px;
+    margin-bottom: 10px;
     border-radius: 100px;
 }
 

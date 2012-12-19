@@ -20,6 +20,19 @@
                     </div>
                 </div>
 
+                <div class="row-fluid">
+                    <div class="span12">
+                        <%- 
+                            partial('partials/votes', { 
+                                votes: {
+                                    value: meals.items[m].votes,
+                                    max: meals.max 
+                                }
+                            }) 
+                        %>         
+                    </div>
+                </div>
+
                 <div class="row-fluid meal-image-container">
                     <a href="/meal/<%= meals.items[m]._id %>">
                         <img src="<%= config.api.uri %>/meal/image/<%= meals.items[m]._id %>" alt="" class="meal-image">

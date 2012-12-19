@@ -1,3 +1,5 @@
 <div class="progress progress-striped">
-    <div class="bar meal-votes" style="width: <%= Math.ceil((Math.abs(votes.value) / votes.max) * 100) %>%"></div>
+    <div class="bar meal-votes" style="width: <%= Math.ceil((Math.abs(votes.value) / votes.max) * 100) %>%">
+    	<%= Math.abs(votes.value) %> Vote<%= Math.abs(votes.value) > 1 ? 's' : '' %>
+    </div>
 </div>

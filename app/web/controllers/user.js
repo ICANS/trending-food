@@ -87,7 +87,7 @@ exports.login = function (respond, session, username, password) {
     module.xmpp.on('error', onError);
 
     var opts = {
-        jid         : username,  
+        jid         : username + '@' + host,  
         password    : password,
         host        : host,
         port        : module.config.xmpp.port,
