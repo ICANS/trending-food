@@ -6,7 +6,7 @@ exports.renderMeals = function (req, res, next) {
 
     var callback = function (mealtimes, pages, meals) {
 
-        res.render('meals', { 
+        res.render('meals', {
             config      : module.config,
             session     : req.session,
             meals       : meals,
