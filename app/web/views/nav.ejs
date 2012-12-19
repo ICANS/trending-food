@@ -1,0 +1,42 @@
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+            <a class="brand" href="/"><%= config.name %></a>
+            <div class="nav-collapse collapse">
+                
+                <ul class="nav">
+                    <% if(session.auth) { %>
+                    <li><a href="/"><i class="icon-home"></i> Home</a></li>
+                    <li><a href="/meals"><i class="icon-truck"></i> All Meals</a></li>
+                    <li><a href="/orders"><i class="icon-bullhorn"></i> All Orders</a></li>
+                    <% } %>
+                    <li><a href="/faq"><i class="icon-question-sign"></i> FAQ</a></li>
+                </ul>
+                <% if(session.auth) { %>
+                <ul class="nav pull-right">
+                    <li class="dropdown">
+                        <a href="#" data-user-id="<%= session.user_id %>" class="dropdown-toggle" data-toggle="dropdown">
+                            <i class="icon-user"></i> <%= session.username %>
+                            <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/account/orders" title="My Orders"><i class="icon-bullhorn"></i> My Orders</a></li>
+                            <li class="divider"></li>
+                            <li><a href="/logout" title="Logout"><i class="icon-signout"></i> Logout</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                <% } else { %>
+                <ul class="nav pull-right">
+                    <li><a href="/login"><i class="icon-off"></i> Login</a></li>
+                </ul>
+                <% } %>
+            </div><!--/.nav-collapse -->
+        </div>
+    </div>
+</div>

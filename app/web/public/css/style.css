@@ -1,0 +1,154 @@
+body {
+        padding-top: 80px;
+        padding-bottom: 40px;
+        font: 14px "Helvetica Neue", Arial, sans-serif;
+}
+
+footer a,
+footer {
+        color: #999;
+}
+
+.center {
+    text-align: center;
+}
+
+#home dl {
+        margin-bottom: 0;
+        margin-top: 0;
+}
+
+#home h3 {
+        margin-bottom: 0;
+}
+#home h3 + hr {
+        margin-top: 0px;
+}
+
+.modal {
+        outline: none;
+}
+
+.page-header {
+        margin: 0px 0 30px;
+}
+
+.navbar .brand {
+        padding: 8.5px 20px;
+}
+
+.order-meal-time {
+        margin-bottom: 0;
+        height: 25px;
+        font-size: 12px;
+        width: 120px;
+}
+
+.table td {
+        vertical-align: middle;
+}
+
+.muted {
+        font-style: italic;
+}
+
+#meal-container {
+        padding-top: 10px;
+}
+
+.meal-item {
+        background: white;
+        width: 225px;
+        height: 240px;
+}
+
+.thumbnail {
+    background: white;
+}
+
+.meal-item-title h5 {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.meal-item .row-fluid {
+    margin-top: 5px;
+}
+
+.meal-item .row-fluid [class*="span"] {
+    min-height: 27px;
+}
+
+.meal-item.is-admin {
+    height: 280px;
+}
+
+.meal-item .meal-image-container {
+    height: 220px;
+    overflow: hidden;
+}
+
+.meal-item .meal-image {
+    width: 215px;
+}
+
+.meal-item .meal-votes {
+    font-size: 12px;
+    line-height: 16px;
+}
+
+.meal-item:first-child {
+    margin-left: 2.564102564102564% !important;
+}
+
+.meal-item .progress {
+    height: 15px;
+    margin-bottom: 0;
+    margin-top: 10px;
+    border-radius: 100px;
+}
+
+.meal-item .label {
+    margin-top: 10px;
+}
+
+.meal-item .btn-small {
+    font-size: 18px;
+}
+
+/**** Isotope ****/
+
+.isotope-item {
+    z-index: 2;
+}
+
+.isotope-hidden.isotope-item {
+    pointer-events: none;
+    z-index: 1;
+}
+
+.isotope,
+.isotope .isotope-item {
+    -webkit-transition-duration: 0.8s;
+         -moz-transition-duration: 0.8s;
+            -ms-transition-duration: 0.8s;
+             -o-transition-duration: 0.8s;
+                    transition-duration: 0.8s;
+}
+
+.isotope {
+    -webkit-transition-property: height, width;
+         -moz-transition-property: height, width;
+            -ms-transition-property: height, width;
+             -o-transition-property: height, width;
+                    transition-property: height, width;
+}
+
+.isotope .isotope-item {
+    -webkit-transition-property: -webkit-transform, opacity;
+         -moz-transition-property:    -moz-transform, opacity;
+            -ms-transition-property:     -ms-transform, opacity;
+             -o-transition-property:         top, left, opacity;
+                    transition-property:         transform, opacity;
+}

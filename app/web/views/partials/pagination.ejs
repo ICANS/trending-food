@@ -1,0 +1,11 @@
+<% if(pages > 1) { %>
+<div class="pagination pagination-centered">
+    <ul>
+        <% for(var p = 1; p <= pages; p++) { %>
+        <li <% if(page+1 == p) { %>class="active"<% } %>>
+            <a href="/<%= page_domain %>/<%= p %>"><%= p %></a>
+        </li>
+        <% } %>
+    </ul>
+</div>
+<% } %>

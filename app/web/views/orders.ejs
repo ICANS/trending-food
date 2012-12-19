@@ -1,0 +1,48 @@
+<% layout('layout') -%>
+
+<div class="page-header">
+    <h1><i class="icon-bullhorn"></i> <%= title %> <small>of Today</small></h1>
+</div>
+
+<% for(var mt = 0; mt < mealtimes.length; mt++) { %>
+    
+    <h3><%= mealtimes[mt].title %></h3>
+
+    <% if(mealtimes[mt].orderCount > 0) { %>
+
+    <table class="table table-striped table-bordered table-condensed">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>User</th>
+                <th>Ordertime</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% for(var i = 0; i < orders.length; i++) { %>
+                <% if(orders[i].mealtime.id === mealtimes[mt].id) { %>
+                <tr data-order-id="<%= orders[i]._id %>">
+                    <td class="meal-title"><%= orders[i].meal.title %></td>
+                    <td class="meal-user"><%= orders[i].user.username %></td>
+                    <td class="meal-date">
+                        <% var d = new Date(orders[i].created) %>
+                        <%= utilities.getFormattedDate(d) %>
+                        <span class="muted">(<%= utilities.nicetime(d) %>)</span>
+                    </td>
+                    <td class="meal-action">
+                    <% if(orders[i].user._id === session.user_id) { %>
+                        <a href="#" class="btn btn-small order-delete" data-order-id="<%= orders[i]._id %>"><i class="icon-trash"></i> Delete</a>
+                    <% } %>
+                    </td>
+                </tr>
+                <% } %>
+            <% } %>
+        </tbody>
+    </table>
+
+    <% } else { %>
+
+    <div class="well well-small">No orders for this time</div>
+
+    <% } %>
+<% } %>

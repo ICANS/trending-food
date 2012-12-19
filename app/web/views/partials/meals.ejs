@@ -1,0 +1,95 @@
+<ul id="meal-container" class="thumbnails">
+
+    <% for(var m = 0; m < meals.items.length; m++) { %>
+
+        <li class="meal-item <% if(isAdmin(session)) { %>is-admin<% } %>" 
+            data-meal-id="<%= meals.items[m]._id %>" 
+            data-meal-votes="<%= meals.items[m].votes %>" 
+            data-meal-created="<%= new Date(meals.items[m].created).getTime() %>" 
+            data-meal-amount="<%= meals.items[m].amount %>" 
+            data-meal-title="<%= meals.items[m].title %>"
+            data-meal-index="<%= m %>"
+        >
+            <div class="thumbnail">
+                <div class="meal-image-container">
+                    <a href="/meal/<%= meals.items[m]._id %>">
+                        <img src="<%= config.api.uri %>/meal/image/<%= meals.items[m]._id %>" alt="" class="meal-image">
+                    </a>
+                </div>
+                <div class="caption clearfix">
+                    <div class="row-fluid">
+                        <div class="span9 meal-item-title">
+                            <a href="/meal/<%= meals.items[m]._id %>">
+                                <h5><%= meals.items[m].title %></h5>
+                            </a>
+                        </div>
+                        <div class="span3">
+                            <span class="label label-inverse meal-amount pull-right"><%= meals.items[m].amount %></span>
+                        </div>
+                    </div>
+                    <div class="row-fluid">
+
+                        <% if(meals.items[m].amount >= 0) { %>
+                        <div class="span12">
+
+                            <div class="row-fluid">
+
+                                <% if(isAdmin(session)) { %>
+                                <div class="btn-group span6">
+
+                                    <a class="btn btn-small meal-amount-up-action">
+                                        <i class="icon-plus"></i>
+                                    </a>
+                                    <a class="btn btn-small meal-amount-down-action">
+                                        <i class="icon-minus"></i>
+                                    </a>
+
+                                </div>
+                                <% } %>
+                                <div class="span6">
+
+                                    <% if(isAdmin(session)) { %>
+                                    <a class="btn btn-small meal-delete-action">
+                                        <i class="icon-trash"></i>
+                                    </a>
+                                    <% } %>
+                                    <a href="#modal-order-add-container" class="btn btn-small order-modal-open" data-toggle="modal">
+                                        <i class="icon-bullhorn"></i>
+                                    </a>
+                                </div>
+
+                            </div>
+                        </div>
+                        <% } %>
+                    </div>
+                    <% if(isAdmin(session)) { %>
+                    <div class="modal-from-dom modal hide fade">
+                        <div class="modal-header">
+                          <a href="#" class="close">&times;</a>
+                          <h3><i class="icon-truck"></i> Delete Meal</h3>
+                        </div>
+                        <div class="modal-body">
+                          <p>You are about to delete one meal, this procedure is irreversible.</p>
+                          <p>Do you want to proceed?</p>
+                        </div>
+                        <div class="modal-footer">
+                          <a href="delete.php?ref=" class="btn danger">Yes</a>
+                          <a href="javascript:$('.modal-from-dom').modal('hide')" class="btn secondary">No</a>
+                        </div>
+                    </div>
+                    <% } %>
+                    <!--
+                    <%- 
+                        partial('partials/votes', { 
+                            votes: {
+                                value: meals.items[m].votes,
+                                max: meals.max 
+                            }
+                        }) 
+                    %>
+                -->
+                </div>
+            </div>
+        </li>
+    <% } %>
+</ul>
