@@ -12,7 +12,7 @@
     "ejs-locals": "~0.2.5",
     "simple-xmpp": ">=0.1.6",
     "request": ">=2.11.4",
-    "futures": ">=2.3.5",
+    "futures": ">=2.3.1",
     "node-stringprep": ">=0.1.5"
   }
 }
