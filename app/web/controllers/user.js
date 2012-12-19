@@ -87,10 +87,10 @@ exports.login = function (respond, session, username, password) {
     module.xmpp.on('error', onError);
 
     var opts = {
-        jid         : username,    // m0ritz.m3yer@gmail.com
-        password    : password, // qvbdqjcqylrcxmxq
-        host        : host,     // default: talk.google.com
-        port        : module.config.xmpp.port, // default: 5222
+        jid         : username,  
+        password    : password,
+        host        : host,
+        port        : module.config.xmpp.port,
     };
 
     module.xmpp.connect(opts);
