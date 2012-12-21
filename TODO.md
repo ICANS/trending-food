@@ -15,3 +15,7 @@
 * extend meal page (amount, order action, order count, comments)
 * add trending page
 * user: add/remove votes
+
+# Mobile App
+
+* picture upload
