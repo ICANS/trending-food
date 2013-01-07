@@ -1,10 +1,11 @@
 var path = require('path');
 
 exports.name = 'trending-food';
-exports.port = 3000;
+exports.port = port = 3000;
+exports.url = "http://127.0.0.1:" + port;
 
 exports.uploadDir = path.join(__dirname, 'uploads');
-exports.sslDir = path.join(__dirname, 'https');
+exports.sslDir 	  = path.join(__dirname, 'https');
 
 exports.db = {
     domain 	: '127.0.0.1',
@@ -23,6 +24,4 @@ exports.meal = {
 	}
 }
 
-exports.order = {
-	
-}
+exports.order = {}

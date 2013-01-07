@@ -1,8 +1,9 @@
-var request = require('request'),
+var config  = require('../config'),
+    request = require('request'),
     vows    = require('vows'),
     assert  = require('assert');
 
-var testDomain = 'https://127.0.0.1:3000';
+var testDomain = config.url;
 
 var crypto = require('crypto');
 var shasum = crypto.createHash('sha1');

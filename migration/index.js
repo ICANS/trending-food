@@ -1,16 +1,12 @@
 var request = require('request');
 var config  = require('../config');
 
-var fs = require('fs');
+var fs   = require('fs');
 var path = require('path');
-var fut = require('futures').sequence;
+var fut  = require('futures').sequence;
 
 fs.exists(config.uploadDir, function (exists) {
     if(!exists) fs.mkdir(config.uploadDir);
-});
-
-fs.exists(config.sslDir, function (exists) {
-    if(!exists) fs.mkdir(config.sslDir);
 });
 
 var seq = new fut();
@@ -21,7 +17,7 @@ fs.readdir(path.join(__dirname, '/assets/images/'), function (err, files) {
 
         seq.then(function (next) {
 
-            var req  = request.post('https://127.0.0.1:' + config.port + '/meal/add');
+            var req  = request.post(config.url + '/meal/add');
             var form = req.form()
 
             form.append('title', path.basename(file, '.jpg'));
@@ -45,7 +41,7 @@ var mealtimes = [
 
 mealtimes.forEach(function (item) {
     request({
-        uri     :  'https://127.0.0.1:' + config.port + '/mealtime/add',
+        uri     :  config.url + '/mealtime/add',
         method  : 'POST',
         body    : {
             id   : item.id,

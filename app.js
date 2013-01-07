@@ -2,7 +2,6 @@ var express    = require('express')
     , http     = require('http')
     , path     = require('path')
     , mongoose = require('mongoose')
-    , https    = require('https')
     , http     = require('http')
     , fs       = require('fs')
     , config   = require('./config');
@@ -10,12 +9,7 @@ var express    = require('express')
 var app = express();
 var db  = mongoose.createConnection(config.db.domain, config.db.name);
 
-var httpsOptions = {
-    key   : fs.readFileSync(config.sslDir + '/server.key'),
-    cert  : fs.readFileSync(config.sslDir + '/server.crt')
-};
-
-app.use(express.bodyParser({ 
+app.use(express.bodyParser({
     keepExtensions: true,
     uploadDir: config.uploadDir
 }));
