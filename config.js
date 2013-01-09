@@ -1,28 +1,28 @@
 var path = require('path');
 
+var port = process.env.PORT;
+var domain = 'http://' + process.env.IP;
+
 exports.name = 'trending-food';
-exports.port = 3000;
+exports.port = port;
+exports.url = domain + ':' + port;
 
 exports.uploadDir = path.join(__dirname, 'uploads');
-exports.sslDir = path.join(__dirname, 'https');
+
+var db = {};
 
 exports.db = {
-    domain 	: '127.0.0.1',
-    name 	: 'trending-food'
-}
+    domain: 'mongodb://' + db.username + ':' + db.password + '@' + db.domain + ':' + db.port + '/' + db.name
+};
 
 exports.meal = {
-	amount: {
-		default: 0,
-		min: 0,
-		max: 99
-	},
-	votes: {
-		default: 0,
-		min: 0
-	}
-}
-
-exports.order = {
-	
-}
+    amount: {
+        default: 0,
+        min: 0,
+        max: 99
+    },
+    votes: {
+        default: 0,
+        min: 0
+    }
+};

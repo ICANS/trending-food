@@ -3,7 +3,6 @@ var express   = require('express')
   , engine    = require('ejs-locals')
   , request   = require('request')
   , futures   = require('futures')
-  , https     = require('https')
   , http      = require('http')
   , fs        = require('fs')
   , config    = require('./config')
@@ -18,16 +17,11 @@ var requirements = {
 
 process.on('uncaughtException', function (err) {
     console.log(err);
-}); 
+});
 
 app.set('config', config);
 app.set('utilities', utilities);
 app.set('requirements', requirements);
-
-var httpsOptions = {
-    key   : fs.readFileSync('https/server.key'),
-    cert  : fs.readFileSync('https/server.crt')
-};
 
 // controllers - setup
 // ----------------------------------------------------------------------
@@ -98,7 +92,7 @@ app.get('/meals/?:page?', routes.user.checkLogin, routes.meal.renderMeals);
 // ----------------------------------------------------------------------
 
 app.get('/faq', function (req, res) {
-    res.render('faq', { 
+    res.render('faq', {
         config  : config,
         session : req.session
     });
@@ -171,7 +165,7 @@ app.get('/', routes.user.checkLogin, function (req, res, next) {
 
     .then(function (next, meals_last, meals_trending, orders_last, meals_trending_maxvotes) {
 
-        res.render('index', { 
+        res.render('index', {
             config    : config,
             session   : req.session,
             utilities : utilities,
