@@ -5,3 +5,5 @@ assets/
 uploads/
 npm-*
 .c9revisions/
+migration/assets
+config.js

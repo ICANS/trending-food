@@ -34,12 +34,12 @@ var _updateById = function(respond, id, options) {
 
 exports.add = function (respond, title, amount, image, category) {
 
+    var imageData = null;
+    var imageType = null;
+
     if(image && image.size > 0) {
-        var imageData = fs.readFileSync(image.path);
-        var imageType = image.type;
-    } else {
-        var imageData = null;
-        var imageType = null;
+        imageData = fs.readFileSync(image.path);
+        imageType = image.type;
     }
 
     var meal = new module.model({
@@ -61,18 +61,17 @@ exports.add = function (respond, title, amount, image, category) {
     });
 };
 
-exports.count = function (respond, id, title, amount) {
+exports.count = function (respond, title, amount) {
 
     var options = {
-        _id     : id     || null,
         title   : title  || null,
         amount  : amount || null,
         deleted : false
     };
 
-    for (option in options) {
+    for (var option in options) {
         if(options[option] === null) delete options[option];
-    };
+    }
 
     module.model.count(options, function (err, count) {
         if (err) {
@@ -85,25 +84,25 @@ exports.count = function (respond, id, title, amount) {
 };
 
 exports.getById = function (respond, id) {
-
+    
     var ObjectId     = module.mongoose.Types.ObjectId;
     var userObjectID = new ObjectId(id);
-
-    module.model
-        .findOne({ _id: id, deleted: false })
-        .exec(function (err, results) {
-            if (err) return respond(400, err);
-            respond(200, results);
-        });
-
+    
+    module.model.findOne({
+        _id: userObjectID,
+        deleted: false
+    }).exec(function(err, results) {
+        if (err) return respond(400, err);
+        respond(200, results);
+    });
 };
 
 exports.getList = function (respond, offset, limit, sort, order) {
 
-    var limit  = limit  || 30;
-    var offset = offset || 0;
-    var sort   = sort   || 'created';
-    var order  = order == 'desc' ? '-' : '';
+    limit  = limit  || 30;
+    offset = offset || 0;
+    sort   = sort   || 'created';
+    order  = order == 'desc' ? '-' : '';
 
     var seq = sequence();
 
@@ -138,13 +137,13 @@ exports.getList = function (respond, offset, limit, sort, order) {
 exports.getImageById = function (respond, id) {
     module.model.findById(id, function (err, result) {
 
-        var result = result || {};
+        result = result || {};
 
-        if(!result || err || !result.image.data || !result.image.contentType) {
+        if (!result || err || !result.image.data || !result.image.contentType) {
             result.image = {
                 data: fs.readFileSync('./assets/default.jpg'),
                 contentType: 'image/jpeg'
-            }
+            };
         }
 
         return respond(200, result.image);
@@ -183,7 +182,6 @@ exports.amountDown = function (respond, id) {
 
 module.exports = function(app) {
 
-    module.ex       = module.exports;
     module.db       = app.get('db');
     module.mongoose = app.get('mongoose');
     module.config   = app.get('config');

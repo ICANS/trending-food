@@ -14,7 +14,7 @@ var testNow      = (new Date()).getTime();
 var testTomorrow = testNow + (24 * 60 * 60 * 1000);
 
 var testMealtimeIdString = 'B1';
-var testMealtimeTitle = '12:30'
+var testMealtimeTitle    = '12:30';
 
 var testUserID   = '';
 var testUsername = Math.ceil(Math.random() * 1000) + '@' + Math.ceil(Math.random() * 1000) + '.com';
@@ -28,6 +28,7 @@ var testOrderID     = '';
 var testMealCount = null;
 var testOrderCount = null;
 var testMealCount = null;
+var testMealtimeCount = null;
 
 var suite = vows.describe('API');
 
@@ -48,10 +49,10 @@ suite.addBatch({
             },
 
             "should respond valid object": function (err, res, body) {
-                var res = JSON.parse(body);
-                assert.isNumber(res.count);
+                var out = JSON.parse(body);
+                assert.isNumber(out.count);
 
-                testMealCount = res.count;
+                testMealCount = out.count;
             },
         },
     },
@@ -71,10 +72,10 @@ suite.addBatch({
             },
 
             "should respond valid object": function (err, res, body) {
-                var res = JSON.parse(body);
-                assert.isNumber(res.count);
+                var out = JSON.parse(body);
+                assert.isNumber(out.count);
 
-                testOrderCount = res.count;
+                testOrderCount = out.count;
             },
 
         },
@@ -95,8 +96,8 @@ suite.addBatch({
             },
 
             "should respond valid object": function (err, res, body) {
-                var res = JSON.parse(body);
-                assert.isNumber(res.count);
+                var out = JSON.parse(body);
+                assert.isNumber(out.count);
 
                 testMealtimeCount = res.count;
             },
@@ -107,11 +108,11 @@ suite.addBatch({
 }).addBatch({
 
     "mealtime controller => ": {
-        "POST request to /mealtime/add": {
+        "POST request to /mealtime": {
 
             topic: function () {
                 request({
-                    uri     : testDomain + '/mealtime/add',
+                    uri     : testDomain + '/mealtime',
                     method  : 'POST',
                     body    : {
                         id   : testMealtimeIdString,
@@ -138,11 +139,11 @@ suite.addBatch({
 
 
     "user controller => ": {
-        "GET request to /user/add": {
+        "POST request to /user": {
 
             topic: function () {
                 request({
-                    uri     : testDomain + '/user/add',
+                    uri     : testDomain + '/user',
                     method  : 'POST',
                     body    : {
                         username: testUsername,
@@ -171,11 +172,11 @@ suite.addBatch({
     },
 
     "meal controller => ": {
-        "POST request to /meal/add": {
+        "POST request to /meal": {
 
             topic: function () {
                 request({
-                    uri     : testDomain + '/meal/add',
+                    uri     : testDomain + '/meal',
                     method  : 'POST',
                     body    : {
                         title: 'test meal',
@@ -230,11 +231,11 @@ suite.addBatch({
     },
 
     "order controller => ": {
-        "POST request to /order/add": {
+        "POST request to /order": {
 
             topic: function () {
                 request({
-                    uri     : testDomain + '/order/add',
+                    uri     : testDomain + '/order',
                     method  : 'POST',
                     body    : {
                         meal     : testMealID,
@@ -269,7 +270,7 @@ suite.addBatch({
             topic: function () {
                 request({
                     uri     : testDomain + '/meal/vote/up/' + testMealID,
-                    method  : 'GET'
+                    method  : 'PUT'
                 }, this.callback);
             },
 
@@ -301,9 +302,9 @@ suite.addBatch({
             },
 
             "should respond a valid array": function (err, res, body) {
-                var res = JSON.parse(body);
-                assert.isArray(res.items);
-                assert.isNumber(res.max);
+                var out = JSON.parse(body);
+                assert.isArray(out.items);
+                assert.isNumber(out.max);
             },
         },
     },
@@ -324,8 +325,8 @@ suite.addBatch({
             },
 
             "should respond a valid array": function (err, res, body) {
-                var res = JSON.parse(body);
-                assert.isArray(res);
+                var out = JSON.parse(body);
+                assert.isArray(out);
             }
 
         },
@@ -354,8 +355,8 @@ suite.addBatch({
             },
 
             "should respond a valid array": function (err, res, body) {
-                var res = JSON.parse(body);
-                assert.isArray(res);
+                var out = JSON.parse(body);
+                assert.isArray(out);
             }
         }
     },
@@ -379,9 +380,8 @@ suite.addBatch({
             },
 
             "should respond a valid username": function (err, res, body) {
-                var res = JSON.parse(body);
-                
-                assert.equal(res.username, testUsername);
+                var out = JSON.parse(body);
+                assert.equal(out.username, testUsername);
             }
         },
 
@@ -395,7 +395,7 @@ suite.addBatch({
             topic: function () {
                 request({
                     uri     : testDomain + '/meal/vote/down/' + testMealID,
-                    method  : 'GET'
+                    method  : 'PUT'
                 }, this.callback);
             },
 
@@ -413,12 +413,12 @@ suite.addBatch({
 }).addBatch({ // teardown
 
     "order controller => ": {
-        "GET request to /order/delete/#id": {
+        "DELETE request to /order/#id": {
 
             topic: function () {
                 request({
-                    uri     : testDomain + '/order/delete/' + testOrderID,
-                    method  : 'GET'
+                    uri     : testDomain + '/order/item/' + testOrderID,
+                    method  : 'DELETE'
                 }, this.callback);
             },
 
@@ -436,12 +436,12 @@ suite.addBatch({
 }).addBatch({
 
     "meal controller => ": {
-        "GET request to /meal/delete/#id": {
+        "DELETE request to /meal/#id": {
 
             topic: function () {
                 request({
-                    uri     : testDomain + '/meal/delete/' + testMealID,
-                    method  : 'GET'
+                    uri     : testDomain + '/meal/item/' + testMealID,
+                    method  : 'DELETE'
                 }, this.callback);
             },
 
@@ -457,12 +457,12 @@ suite.addBatch({
     },
 
     "user controller => ": {
-        "GET request to /user/delete": {
+        "DELETE request to /user/#id": {
 
             topic: function () {
                 request({
-                    uri     : testDomain + '/user/delete/' + testUserID,
-                    method  : 'GET'
+                    uri     : testDomain + '/user/item/' + testUserID,
+                    method  : 'DELETE'
                 }, this.callback);
             },
 
@@ -479,12 +479,12 @@ suite.addBatch({
     },
 
     "mealtime controller => ": {
-        "GET request to /mealtime/delete/#id": {
+        "DELETE request to /mealtime/#id": {
 
             topic: function () {
                 request({
-                    uri     : testDomain + '/mealtime/delete/' + testMealtimeID,
-                    method  : 'GET'
+                    uri     : testDomain + '/mealtime/item/' + testMealtimeID,
+                    method  : 'DELETE'
                 }, this.callback);
             },
 

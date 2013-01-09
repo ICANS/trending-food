@@ -17,7 +17,7 @@ fs.readdir(path.join(__dirname, '/assets/images/'), function (err, files) {
 
         seq.then(function (next) {
 
-            var req  = request.post(config.url + '/meal/add');
+            var req  = request.post(config.url + '/meal');
             var form = req.form()
 
             form.append('title', path.basename(file, '.jpg'));
@@ -41,7 +41,7 @@ var mealtimes = [
 
 mealtimes.forEach(function (item) {
     request({
-        uri     :  config.url + '/mealtime/add',
+        uri     :  config.url + '/mealtime',
         method  : 'POST',
         body    : {
             id   : item.id,

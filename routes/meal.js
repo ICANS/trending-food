@@ -5,10 +5,8 @@ exports.add = function (req, res) {
     var category = req.param('category');
     var image    = req.files && req.files.image ? req.files.image : null;
 
-    var callback = function (statusCode, response) {
-        res
-            .status(statusCode)
-            .json(response);
+    var callback = function(statusCode, response) {
+        res.status(statusCode).json(response);
     };
 
     module.controller.add(callback, title, amount, image, category);
@@ -16,29 +14,24 @@ exports.add = function (req, res) {
 
 exports.count = function (req, res) {
 
-    var id     = req.param('id');
     var title  = req.param('title');
     var amount = req.param('amount');
 
-    var callback = function (statusCode, response) {
-        res
-            .status(statusCode)
-            .json({
-                count: response
-            });
+    var callback = function(statusCode, response) {
+        res.status(statusCode).json({
+            count: response
+        });
     };
 
-    module.controller.count(callback, id, title, amount);
+    module.controller.count(callback, title, amount);
 };
 
 exports.getById = function (req, res) {
 
     var id = req.param('id');
 
-    var callback = function (statusCode, response) {
-        res
-            .status(statusCode)
-            .json(response);
+    var callback = function(statusCode, response) {
+        res.status(statusCode).json(response);
     };
 
     module.controller.getById(callback, id);
@@ -51,13 +44,8 @@ exports.getList = function (req, res) {
     var sort    = req.param('sort');
     var order   = req.param('order');
 
-    var callback = function (statusCode, response) {
-        
-        // console.log(response);
-
-        res
-            .status(statusCode)
-            .json(response);
+    var callback = function(statusCode, response) {
+        res.status(statusCode).json(response);
     };
 
     module.controller.getList(callback, offset, limit, sort, order);
@@ -67,10 +55,8 @@ exports.delete = function (req, res) {
 
     var id = req.param('id');
 
-    var callback = function (statusCode, response) {
-        res
-            .status(statusCode)
-            .json(response);
+    var callback = function(statusCode, response) {
+        res.status(statusCode).json(response);
     };
 
     module.controller.delete(callback, id);
@@ -80,10 +66,8 @@ exports.voteDown = function (req, res) {
 
     var id = req.param('id');
 
-    var callback = function (statusCode, response) {
-        res
-            .status(statusCode)
-            .json(response);
+    var callback = function(statusCode, response) {
+        res.status(statusCode).json(response);
     };
 
     module.controller.voteDown(callback, id);
@@ -93,10 +77,8 @@ exports.voteUp = function (req, res) {
 
     var id = req.param('id');
 
-    var callback = function (statusCode, response) {
-        res
-            .status(statusCode)
-            .json(response);
+    var callback = function(statusCode, response) {
+        res.status(statusCode).json(response);
     };
 
     module.controller.voteUp(callback, id);
@@ -106,10 +88,8 @@ exports.amountUp = function (req, res) {
 
     var id = req.param('id');
 
-    var callback = function (statusCode, response) {
-        res
-            .status(statusCode)
-            .json(response);
+    var callback = function(statusCode, response) {
+        res.status(statusCode).json(response);
     };
 
     module.controller.amountUp(callback, id);
@@ -119,10 +99,8 @@ exports.amountDown = function (req, res) {
 
     var id = req.param('id');
 
-    var callback = function (statusCode, response) {
-        res
-            .status(statusCode)
-            .json(response);
+    var callback = function(statusCode, response) {
+        res.status(statusCode).json(response);
     };
 
     module.controller.amountDown(callback, id);
@@ -142,12 +120,11 @@ exports.getImageById = function (req, res) {
     module.controller.getImageById(callback, id);
 };
 
-module.exports = function(app, controller) {
+module.exports = function(app) {
 
-    module.db       = app.get('db');
-    module.mongoose = app.get('mongoose');
-    module.config   = app.get('config');
-
+    module.db         = app.get('db');
+    module.mongoose   = app.get('mongoose');
+    module.config     = app.get('config');
     module.controller = app.get('controllers').meal;
 
     return exports;
