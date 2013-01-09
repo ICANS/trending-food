@@ -4,3 +4,4 @@ node_modules
 assets/
 uploads/
 npm-*
+.c9revisions/
