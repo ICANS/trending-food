@@ -40,6 +40,11 @@ exports.add = function (respond, title, amount, image, category) {
     if(image && image.size > 0) {
         imageData = fs.readFileSync(image.path);
         imageType = image.type;
+        
+        fs.unlink(image.path, function(err) {
+            if(err) throw err;
+            console.log('deleted: ' + image.path)
+        });
     }
 
     var meal = new module.model({

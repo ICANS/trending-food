@@ -99,7 +99,7 @@ suite.addBatch({
                 var out = JSON.parse(body);
                 assert.isNumber(out.count);
 
-                testMealtimeCount = res.count;
+                testMealtimeCount = out.count;
             },
 
         },
@@ -219,13 +219,13 @@ suite.addBatch({
             },
 
             "should respond a valid array": function (err, res, body) {
-                var res = JSON.parse(body);
-                assert.isArray(res);
+                var out = JSON.parse(body);
+                assert.isArray(out);
             },
     
             "should respond with more than zero objects": function (err, res, body) {
-                var res = JSON.parse(body);
-                assert.greater(res.length, 0);
+                var out = JSON.parse(body);
+                assert.greater(out.length, 0);
             }
         }
     },
@@ -279,8 +279,8 @@ suite.addBatch({
             },
 
             "should with default votes count": function (err, res, body) {
-                var res = JSON.parse(body);
-                assert.equal(res.votes, 2);
+                var out = JSON.parse(body);
+                assert.equal(out.votes, 2);
             }
         },
     },
@@ -404,8 +404,8 @@ suite.addBatch({
             },
 
             "should respond the same id": function (err, res, body) {
-                var res = JSON.parse(body);
-                assert.equal(res.votes, 1);
+                var out = JSON.parse(body);
+                assert.equal(out.votes, 1);
             }
         }
     }
@@ -427,8 +427,8 @@ suite.addBatch({
             },
 
             "should respond the same id": function (err, res, body) {
-                var res = JSON.parse(body);
-                assert.equal(res._id, testOrderID);
+                var out = JSON.parse(body);
+                assert.equal(out._id, testOrderID);
             }
         }
     },

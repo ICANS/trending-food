@@ -1,5 +1,4 @@
 var path = require('path');
-var fs = require('fs');
 
 var port = process.env.PORT;
 var domain = 'http://' + process.env.IP;
@@ -10,13 +9,7 @@ exports.url = domain + ':' + port;
 
 exports.uploadDir = path.join(__dirname, 'uploads');
 
-var db = {
-    username: "",
-    password: "",
-    domain: "",
-    port: 0,
-    name: ""
-};
+var db = {};
 
 exports.db = {
     domain: 'mongodb://' + db.username + ':' + db.password + '@' + db.domain + ':' + db.port + '/' + db.name

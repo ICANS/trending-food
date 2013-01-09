@@ -1,7 +1,7 @@
 module.exports = function (app, model) {
 
     var config   = app.get('config'),
-        mongoose = app.get('mongoose');
+        mongoose = app.get('mongoose'),
         db       = app.get('db');
 
     var Schema = mongoose.Schema;
