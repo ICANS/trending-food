@@ -29,9 +29,8 @@ exports.login = function (respond, session, username, password) {
         .then(function (nextSeq) {
 
             module.requirements.request({
-                uri     : module.config.api.uri + '/user/get_by_username',
-                method  : 'GET',
-                qs      : { username: username }
+                uri     : module.config.api.uri + '/users/' + username,
+                method  : 'GET'
             }, function (err, response, body) {
 
                 if(err) {
@@ -56,7 +55,7 @@ exports.login = function (respond, session, username, password) {
         .then(function (nextSeq) {
 
             module.requirements.request({
-                uri     : module.config.api.uri + '/user/add',
+                uri     : module.config.api.uri + '/users/',
                 method  : 'POST',
                 json    : true,
                 body    : {

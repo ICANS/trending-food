@@ -1,3 +1,4 @@
+.DS_STORE
 node_modules
 *.sublime-project
 *.sublime-workspace
@@ -7,3 +8,4 @@ npm-*
 .c9revisions/
 migration/assets
 config.js
+debug/

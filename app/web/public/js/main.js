@@ -35,7 +35,7 @@ $(function() {
 
         $.ajax({
             type: 'POST',
-            url: api_url + '/order/add',
+            url: api_url + '/orders/',
             data: data,
             success: function(data) {
                 window.location.href = '/account/orders';
@@ -78,7 +78,7 @@ $(function() {
 
         $.ajax({
             type: 'POST',
-            url: api_url + '/meal/add',
+            url: api_url + '/meals/',
             data: data,
             success: function(data) {
                 window.location.reload();
@@ -96,7 +96,7 @@ $(function() {
 
         $.ajax({
             type: 'DELETE',
-            url: api_url + '/meal/' + meal_id,
+            url: api_url + '/meals/' + meal_id,
             success: function(data) {
                 container.isotope('remove', parent, function() {});
             }
@@ -113,7 +113,7 @@ $(function() {
 
         $.ajax({
             type: 'DELETE',
-            url: api_url + '/order/' + order_id,
+            url: api_url + '/orders/' + order_id,
             success: function(data) {
                 window.location.reload();
             }
@@ -129,7 +129,7 @@ $(function() {
 
         $.ajax({
             type: 'PUT',
-            url: api_url + '/meal/amount/up/' + meal_id,
+            url: api_url + '/meals/' + meal_id + '/amountup',
             success: function(data) {
                 console.log(meal_amount);
                 meal_amount++;
@@ -148,7 +148,7 @@ $(function() {
 
         $.ajax({
             type: 'PUT',
-            url: api_url + '/meal/amount/down/' + meal_id,
+            url: api_url + '/meals/' + meal_id + 'amountdown',
             success: function(data) {
                 console.log(meal_amount);
                 meal_amount--;

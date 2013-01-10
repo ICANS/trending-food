@@ -1,10 +1,10 @@
 var path = require('path');
 
-var port = process.env.PORT;
-var domain = 'http://' + process.env.IP;
+var port = 3000;
+var domain = 'http://127.0.0.1';
 
 exports.name = 'trending-food';
-exports.port = 3000;
+exports.port = port;
 exports.url = domain + ':' + port;
 
 exports.uploadDir = path.join(__dirname, 'uploads');
