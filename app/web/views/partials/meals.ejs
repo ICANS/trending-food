@@ -2,11 +2,11 @@
 
     <% for(var m = 0; m < meals.items.length; m++) { %>
 
-        <li class="meal-item span4 <% if(isAdmin(session)) { %>is-admin<% } %>" 
-            data-meal-id="<%= meals.items[m]._id %>" 
-            data-meal-votes="<%= meals.items[m].votes %>" 
-            data-meal-created="<%= new Date(meals.items[m].created).getTime() %>" 
-            data-meal-amount="<%= meals.items[m].amount %>" 
+        <li class="meal-item span4 <% if(isAdmin(session)) { %>is-admin<% } %>"
+            data-meal-id="<%= meals.items[m]._id %>"
+            data-meal-votes="<%= meals.items[m].votes %>"
+            data-meal-created="<%= new Date(meals.items[m].created).getTime() %>"
+            data-meal-amount="<%= meals.items[m].amount %>"
             data-meal-title="<%= meals.items[m].title %>"
             data-meal-index="<%= m %>"
         >
@@ -22,14 +22,14 @@
 
                 <div class="row-fluid">
                     <div class="span12">
-                        <%- 
-                            partial('partials/votes', { 
+                        <%-
+                            partial('votes', {
                                 votes: {
                                     value: meals.items[m].votes,
-                                    max: meals.max 
+                                    max: meals.max
                                 }
-                            }) 
-                        %>         
+                            })
+                        %>
                     </div>
                 </div>
 
@@ -91,13 +91,13 @@
                     </div>
                     <% } %>
                     <!--
-                    <%- 
-                        partial('partials/votes', { 
+                    <%-
+                        partial('votes', {
                             votes: {
                                 value: meals.items[m].votes,
-                                max: meals.max 
+                                max: meals.max
                             }
-                        }) 
+                        })
                     %>
                 -->
                 </div>
