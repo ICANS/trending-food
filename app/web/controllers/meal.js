@@ -7,7 +7,7 @@ exports.renderMeals = function (respond, page, limit) {
     .then(function (next) {
 
         module.requirements.request({
-            uri     : module.config.api.uri + '/mealtime/list',
+            uri     : module.config.api.uri + '/mealtimes/',
             method  : 'GET'
         }, function (error, response, body) {
 
@@ -23,7 +23,7 @@ exports.renderMeals = function (respond, page, limit) {
     .then(function (next, mealtimes) {
 
         module.requirements.request({
-            uri     : module.config.api.uri + '/meal/count',
+            uri     : module.config.api.uri + '/meals/count',
             method  : 'GET'
         }, function (error, response, body) {
 
@@ -39,7 +39,7 @@ exports.renderMeals = function (respond, page, limit) {
     .then(function (next, mealtimes, total) {
 
         module.requirements.request({
-            uri     : module.config.api.uri + '/meal/list',
+            uri     : module.config.api.uri + '/meals/',
             method  : 'GET',
             qs      : {
                 offset: page * limit,
@@ -74,7 +74,7 @@ exports.renderMeal = function (respond, id) {
     .then(function (next) {
 
         module.requirements.request({
-            uri     : module.config.api.uri + '/mealtime/list',
+            uri     : module.config.api.uri + '/mealtimes/',
             method  : 'GET'
         }, function (error, response, body) {
 
@@ -90,7 +90,7 @@ exports.renderMeal = function (respond, id) {
     .then(function (next, mealtimes) {
 
         module.requirements.request({
-            uri     : module.config.api.uri + '/meal/get/' + id,
+            uri     : module.config.api.uri + '/meals/' + id,
             method  : 'GET',
             qs      : {}
         }, function (error, response, body) {

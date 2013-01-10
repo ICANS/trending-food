@@ -34,7 +34,7 @@ exports.getListByUser = function (req, res) {
 
     var offset    = req.param('offset');
     var limit     = req.param('limit');
-    var user      = req.param('username');
+    var username  = req.param('username');
     var sort      = req.param('sort');
     var order     = req.param('order');
 
@@ -44,7 +44,7 @@ exports.getListByUser = function (req, res) {
             .json(response);
     };
 
-    module.controller.getListByUser(callback, user, offset, limit, sort, order);
+    module.controller.getListByUser(callback, username, offset, limit, sort, order);
 };
 
 exports.count = function (req, res) {

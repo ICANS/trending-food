@@ -128,7 +128,7 @@ $(function() {
         var meal_amount = parent.data('meal-amount');
 
         $.ajax({
-            type: 'PUT',
+            type: 'POST',
             url: api_url + '/meals/' + meal_id + '/amountup',
             success: function(data) {
                 console.log(meal_amount);
@@ -147,8 +147,8 @@ $(function() {
         var meal_amount = parent.data('meal-amount');
 
         $.ajax({
-            type: 'PUT',
-            url: api_url + '/meals/' + meal_id + 'amountdown',
+            type: 'POST',
+            url: api_url + '/meals/' + meal_id + '/amountdown',
             success: function(data) {
                 console.log(meal_amount);
                 meal_amount--;

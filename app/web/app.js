@@ -72,7 +72,6 @@ app.configure('development', function () {
 // ----------------------------------------------------------------------
 
 app.post('/login', routes.user.login);
-
 app.get('/login', routes.user.renderLogin);
 app.get('/logout', routes.user.logout);
 
@@ -107,10 +106,9 @@ app.get('/', routes.user.checkLogin, function (req, res, next) {
     .then(function (next) {
 
         request({
-            uri     : config.api.uri + '/order/list_by_user',
+            uri     : config.api.uri + '/users/' + req.session.user_id + '/orders/',
             method  : 'GET',
             qs      : {
-                user: req.session.user_id,
                 limit: 5
             }
         }, function (error, response, body) {
@@ -127,7 +125,7 @@ app.get('/', routes.user.checkLogin, function (req, res, next) {
     .then(function (next, meals_last) {
 
         request({
-            uri     : config.api.uri + '/meal/list',
+            uri     : config.api.uri + '/meals/',
             method  : 'GET',
             qs      : {
                 sort: 'votes',
@@ -148,7 +146,7 @@ app.get('/', routes.user.checkLogin, function (req, res, next) {
     .then(function (next, meals_last, meals_trending) {
 
         request({
-            uri     : config.api.uri + '/order/list',
+            uri     : config.api.uri + '/orders/',
             method  : 'GET',
             qs      : {
                 limit: 5

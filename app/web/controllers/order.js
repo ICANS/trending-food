@@ -7,7 +7,7 @@ exports.renderOrders = function (respond, next, page, limit) {
     .then(function (nextSeq) {
 
         module.requirements.request({
-            uri     : module.config.api.uri + '/mealtime/list',
+            uri     : module.config.api.uri + '/mealtimes/',
             method  : 'GET'
         }, function (error, response, body) {
 
@@ -22,7 +22,7 @@ exports.renderOrders = function (respond, next, page, limit) {
     .then(function (nextSeq, mealtimes) {
 
         module.requirements.request({
-            uri     : module.config.api.uri + '/order/count',
+            uri     : module.config.api.uri + '/orders/count',
             method  : 'GET',
             qs      : {
                 offset: page * limit,
@@ -41,7 +41,7 @@ exports.renderOrders = function (respond, next, page, limit) {
     .then(function (nextSeq, mealtimes, total) {
 
         module.requirements.request({
-            uri     : module.config.api.uri + '/order/list',
+            uri     : module.config.api.uri + '/orders/',
             method  : 'GET',
             qs      : {
                 offset: page * limit,
@@ -85,7 +85,7 @@ exports.renderOrdersByUser = function (respond, next, session, page, limit, sort
     .then(function (nextSeq) {
 
         module.requirements.request({
-            uri     : module.config.api.uri + '/mealtime/list',
+            uri     : module.config.api.uri + '/mealtimes/',
             method  : 'GET'
         }, function (error, response, body) {
 
@@ -100,10 +100,9 @@ exports.renderOrdersByUser = function (respond, next, session, page, limit, sort
     .then(function (nextSeq, mealtimes) {
 
         module.requirements.request({
-            uri     : module.config.api.uri + '/order/list_by_user',
+            uri     : module.config.api.uri + '/users/' + session.user_id + '/orders/',
             method  : 'GET',
             qs      : {
-                user  : session.user_id,
                 offset: page * limit,
                 limit : limit,
                 sort  : sort

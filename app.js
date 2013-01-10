@@ -70,14 +70,14 @@ app.delete('/orders/:id', routes.order.delete);
 // routes - meal
 
 app.post('/meals/', routes.meal.add);
+app.post('/meals/:id/voteup', routes.meal.voteUp);
+app.post('/meals/:id/votedown', routes.meal.voteDown);
+app.post('/meals/:id/amountup', routes.meal.amountUp);
+app.post('/meals/:id/amountdown', routes.meal.amountDown);
 app.get('/meals/count', routes.meal.count);
 app.get('/meals/:id', routes.meal.getById);
 app.get('/meals/:id/image', routes.meal.getImageById);
 app.get('/meals/', routes.meal.getList);
-app.put('/meals/:id/voteup', routes.meal.voteUp);
-app.put('/meals/:id/votedown', routes.meal.voteDown);
-app.put('/meals/:id/amountup', routes.meal.amountUp);
-app.put('/meals/:id/amountdown', routes.meal.amountDown);
 app.delete('/meals/:id', routes.meal.delete);
 
 // routes - mealtimes
@@ -91,8 +91,8 @@ app.delete('/mealtimes/:id', routes.mealtime.delete);
 
 app.post('/users/', routes.user.add);
 app.post('/users/:username/login', routes.user.login);
-app.get('/users/:username', routes.user.getByUsername);
 app.get('/users/:username/orders/', routes.order.getListByUser);
+app.get('/users/:username', routes.user.getByUsername);
 app.delete('/users/:id', routes.user.delete);
 
 http.createServer(app).listen(app.get('port'), function() {

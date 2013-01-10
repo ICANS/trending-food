@@ -14,9 +14,11 @@
             <h3><i class="icon-truck"></i> Your last meals</h3>
             <hr>
             <dl class="dl-horizontal">
-            <% for(var i = 0; i < meals_last.length; i++) { %>
-                <dt><%= meals_last[i].meal.title %></dt>
-                <dd><%= utilities.nicetime(new Date(meals_last[i].created)) %></dd>
+            <% if(meals_last.length > 0) { %>
+                <% for(var i = 0; i < meals_last.length; i++) { %>
+                    <dt><%= meals_last[i].meal.title %></dt>
+                    <dd><%= utilities.nicetime(new Date(meals_last[i].created)) %></dd>
+                <% } %>
             <% } %>
             </dl>
         </div>
@@ -24,18 +26,20 @@
             <h3><i class="icon-bar-chart"></i> Trending</h3>
             <hr>
             <dl class="dl-horizontal">
-            <% for(var i = 0; i < meals_trending.items.length; i++) { %>
-                <dt><%= meals_trending.items[i].title %></dt>
-                <dd>
-                    <%- 
-                        partial('partials/votes', { 
-                            votes: {
-                                value: meals_trending.items[i].votes,
-                                max: meals_trending.max 
-                            }
-                        }) 
-                    %>         
-                </dd>
+            <% if(meals_trending.items.length > 0) { %>
+                <% for(var i = 0; i < meals_trending.items.length; i++) { %>
+                    <dt><%= meals_trending.items[i].title %></dt>
+                    <dd>
+                        <%- 
+                            partial('partials/votes', { 
+                                votes: {
+                                    value: meals_trending.items[i].votes,
+                                    max: meals_trending.max 
+                                }
+                            }) 
+                        %>         
+                    </dd>
+                <% } %>
             <% } %>
             </dl>
        </div>
@@ -43,9 +47,11 @@
             <h3><i class="icon-bullhorn"></i> Last orders</h3>
             <hr>
             <dl class="dl-horizontal">
-            <% for(var i = 0; i < orders_last.length; i++) { %>
-                <dt><%= orders_last[i].meal.title %></dt>
-                <dd>by <%= orders_last[i].user.username %></dd>
+            <% if(orders_last.length > 0) { %>
+                <% for(var i = 0; i < orders_last.length; i++) { %>
+                    <dt><%= orders_last[i].meal.title %></dt>
+                    <dd>by <%= orders_last[i].user.username %></dd>
+                <% } %>
             <% } %>
             </dl>
         </div>
