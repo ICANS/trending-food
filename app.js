@@ -62,37 +62,38 @@ app.all('*', function(req, res, next) {
 
 // routes - order
 
-app.post('/order', routes.order.add);
-app.get('/order/list', routes.order.getList);
-app.get('/order/list_by_user', routes.order.getListByUser);
-app.get('/order/count', routes.order.count);
-app.delete('/order/item/:id', routes.order.delete);
+app.post('/orders/', routes.order.add);
+app.get('/orders/', routes.order.getList);
+app.get('/orders/count', routes.order.count);
+app.delete('/orders/:id', routes.order.delete);
 
 // routes - meal
 
-app.post('/meal', routes.meal.add);
-app.get('/meal/item/:id', routes.meal.getById);
-app.get('/meal/image/:id', routes.meal.getImageById);
-app.get('/meal/list', routes.meal.getList);
-app.get('/meal/count', routes.meal.count);
-app.put('/meal/vote/up/:id', routes.meal.voteUp);
-app.put('/meal/vote/down/:id', routes.meal.voteDown);
-app.put('/meal/amount/up/:id', routes.meal.amountUp);
-app.put('/meal/amount/down/:id', routes.meal.amountDown);
-app.delete('/meal/item/:id', routes.meal.delete);
+app.post('/meals/', routes.meal.add);
+app.get('/meals/:id', routes.meal.getById);
+app.get('/meals/:id/image', routes.meal.getImageById);
+app.get('/meals/', routes.meal.getList);
+app.get('/meals/count', routes.meal.count);
+app.put('/meals/:id/voteup', routes.meal.voteUp);
+app.put('/meals/:id/votedown', routes.meal.voteDown);
+app.put('/meals/:id/amountup', routes.meal.amountUp);
+app.put('/meals/:id/amountdown', routes.meal.amountDown);
+app.delete('/meals/:id', routes.meal.delete);
 
 // routes - mealtimes
 
-app.post('/mealtime', routes.mealtime.add);
-app.get('/mealtime/list', routes.mealtime.getList);
-app.get('/mealtime/count', routes.mealtime.count);
-app.delete('/mealtime/item/:id', routes.mealtime.delete);
+app.post('/mealtimes/', routes.mealtime.add);
+app.get('/mealtimes/', routes.mealtime.getList);
+app.get('/mealtimes/count', routes.mealtime.count);
+app.delete('/mealtimes/:id', routes.mealtime.delete);
 
 // routes - user
 
-app.post('/user', routes.user.add);
-app.get('/user/get_by_username', routes.user.getByUsername);
-app.delete('/user/item/:id', routes.user.delete);
+app.post('/users/', routes.user.add);
+app.post('/users/:username/login', routes.user.login);
+app.get('/users/:username', routes.user.getByUsername);
+app.get('/users/:username/orders/', routes.order.getListByUser);
+app.delete('/users/:id', routes.user.delete);
 
 http.createServer(app).listen(app.get('port'), function() {
     console.log("HTTP: " + app.get('port'));

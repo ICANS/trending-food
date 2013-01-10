@@ -34,7 +34,7 @@ exports.getListByUser = function (req, res) {
 
     var offset    = req.param('offset');
     var limit     = req.param('limit');
-    var user      = req.param('user');
+    var user      = req.param('username');
     var sort      = req.param('sort');
     var order     = req.param('order');
 

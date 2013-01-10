@@ -40,7 +40,7 @@ exports.add = function (respond, title, amount, image, category) {
     if(image && image.size > 0) {
         imageData = fs.readFileSync(image.path);
         imageType = image.type;
-        
+
         fs.unlink(image.path, function(err) {
             if(err) throw err;
             console.log('deleted: ' + image.path)
@@ -89,10 +89,10 @@ exports.count = function (respond, title, amount) {
 };
 
 exports.getById = function (respond, id) {
-    
+
     var ObjectId     = module.mongoose.Types.ObjectId;
     var userObjectID = new ObjectId(id);
-    
+
     module.model.findOne({
         _id: userObjectID,
         deleted: false
@@ -117,6 +117,7 @@ exports.getList = function (respond, offset, limit, sort, order) {
         module.model.find({
             deleted: false
         })
+        .select('title category deleted votes amount')
         .limit(limit)
         .skip(offset)
         .sort(order + sort)
