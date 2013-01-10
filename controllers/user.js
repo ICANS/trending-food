@@ -24,6 +24,19 @@ exports.add = function (respond, username, password) {
     });
 };
 
+exports.login = function (respond, username, password) {
+
+    var password_hash = cryptPassword(password);
+
+    module.model.findOne({
+        username: username,
+        password: password_hash
+    }, function (err, result) {
+        if (err || !result) return respond(400, err);
+        return respond(200, result);
+    });
+};
+
 exports.getByUsername = function (respond, username) {
 
     module.model.findOne({

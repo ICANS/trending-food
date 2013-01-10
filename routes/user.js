@@ -12,6 +12,20 @@ exports.add = function (req, res) {
     module.controller.add(callback, username, password);
 };
 
+exports.login= function (req, res) {
+
+    var username = req.param('username');
+    var password = req.param('password');
+
+    var callback = function (statusCode, response) {
+        res
+            .status(statusCode)
+            .json(response);
+    };
+
+    module.controller.login(callback, username, password);
+};
+
 exports.getByUsername = function (req, res) {
 
     var username = req.param('username') || null;
