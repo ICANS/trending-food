@@ -70,10 +70,10 @@ app.delete('/orders/:id', routes.order.delete);
 // routes - meal
 
 app.post('/meals/', routes.meal.add);
+app.get('/meals/count', routes.meal.count);
 app.get('/meals/:id', routes.meal.getById);
 app.get('/meals/:id/image', routes.meal.getImageById);
 app.get('/meals/', routes.meal.getList);
-app.get('/meals/count', routes.meal.count);
 app.put('/meals/:id/voteup', routes.meal.voteUp);
 app.put('/meals/:id/votedown', routes.meal.voteDown);
 app.put('/meals/:id/amountup', routes.meal.amountUp);

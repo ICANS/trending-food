@@ -35,11 +35,11 @@ var suite = vows.describe('API');
 suite.addBatch({
 
     "meal controller => ": {
-        "GET request to /meal/count": {
+        "GET request to /meals/count": {
 
             topic: function () {
                 request({
-                    uri     : testDomain + '/meal/count',
+                    uri     : testDomain + '/meals/count',
                     method  : 'GET'
                 }, this.callback);
             },
@@ -58,11 +58,11 @@ suite.addBatch({
     },
 
     "order controller => ": {
-        "GET request to /order/count": {
+        "GET request to /orders/count": {
 
             topic: function () {
                 request({
-                    uri     : testDomain + '/order/count',
+                    uri     : testDomain + '/orders/count',
                     method  : 'GET'
                 }, this.callback);
             },
@@ -82,11 +82,11 @@ suite.addBatch({
     },
 
     "mealtime controller => ": {
-        "GET request to /mealtime/count": {
+        "GET request to /mealtimes/count": {
 
             topic: function () {
                 request({
-                    uri     : testDomain + '/mealtime/count',
+                    uri     : testDomain + '/mealtimes/count',
                     method  : 'GET'
                 }, this.callback);
             },
@@ -108,11 +108,11 @@ suite.addBatch({
 }).addBatch({
 
     "mealtime controller => ": {
-        "POST request to /mealtime": {
+        "POST request to /mealtimes/": {
 
             topic: function () {
                 request({
-                    uri     : testDomain + '/mealtime',
+                    uri     : testDomain + '/mealtimes/',
                     method  : 'POST',
                     body    : {
                         id   : testMealtimeIdString,
@@ -139,11 +139,11 @@ suite.addBatch({
 
 
     "user controller => ": {
-        "POST request to /user": {
+        "POST request to /users/": {
 
             topic: function () {
                 request({
-                    uri     : testDomain + '/user',
+                    uri     : testDomain + '/users/',
                     method  : 'POST',
                     body    : {
                         username: testUsername,
@@ -172,11 +172,11 @@ suite.addBatch({
     },
 
     "meal controller => ": {
-        "POST request to /meal": {
+        "POST request to /meals/": {
 
             topic: function () {
                 request({
-                    uri     : testDomain + '/meal',
+                    uri     : testDomain + '/meals/',
                     method  : 'POST',
                     body    : {
                         title: 'test meal',
@@ -205,11 +205,11 @@ suite.addBatch({
 }).addBatch({
 
     "mealtime controller => ": {
-        "GET request to /mealtime/list": {
+        "GET request to /mealtimes/": {
 
             topic: function () {
                 request({
-                    uri     : testDomain + '/mealtime/list',
+                    uri     : testDomain + '/mealtimes/',
                     method  : 'GET'
                 }, this.callback);
             },
@@ -222,7 +222,7 @@ suite.addBatch({
                 var out = JSON.parse(body);
                 assert.isArray(out);
             },
-    
+
             "should respond with more than zero objects": function (err, res, body) {
                 var out = JSON.parse(body);
                 assert.greater(out.length, 0);
@@ -231,11 +231,11 @@ suite.addBatch({
     },
 
     "order controller => ": {
-        "POST request to /order": {
+        "POST request to /orders/": {
 
             topic: function () {
                 request({
-                    uri     : testDomain + '/order',
+                    uri     : testDomain + '/orders/',
                     method  : 'POST',
                     body    : {
                         meal     : testMealID,
@@ -265,11 +265,11 @@ suite.addBatch({
 }).addBatch({
 
     "meal controller => ": {
-        "GET request to /meal/vote/up/#id": {
+        "GET request to /meals/#id/voteup": {
 
             topic: function () {
                 request({
-                    uri     : testDomain + '/meal/vote/up/' + testMealID,
+                    uri     : testDomain + '/meals/' + testMealID + '/voteup' ,
                     method  : 'PUT'
                 }, this.callback);
             },
@@ -288,11 +288,11 @@ suite.addBatch({
 }).addBatch({
 
     "meal controller => ": {
-        "GET request to /meal/list": {
+        "GET request to /meals/": {
 
             topic: function () {
                 request({
-                    uri     : testDomain + '/meal/list',
+                    uri     : testDomain + '/meals/',
                     method  : 'GET'
                 }, this.callback);
             },
@@ -311,11 +311,11 @@ suite.addBatch({
 
     "order controller => ": {
 
-        "GET request to /order/list": {
+        "GET request to /orders/": {
 
             topic: function () {
                 request({
-                    uri     : testDomain + '/order/list',
+                    uri     : testDomain + '/orders/',
                     method  : 'GET'
                 }, this.callback);
             },
@@ -331,14 +331,13 @@ suite.addBatch({
 
         },
 
-        "GET request to /order/list_by_user": {
+        "GET request to /users/#id/orders/": {
 
             topic: function () {
                 request({
-                    uri     : testDomain + '/order/list_by_user',
+                    uri     : testDomain + '/users/' + testUserID + '/orders/',
                     method  : 'GET',
                     qs      : {
-                        user      : testUserID,
                         dateStart : testNow,
                         dateEnd   : testTomorrow
                     }
@@ -363,14 +362,13 @@ suite.addBatch({
 
     "user controller => ": {
 
-        "GET request to /user/get_by_username": {
+        "GET request to /users/#username": {
 
             topic: function () {
                 request({
-                    uri     : testDomain + '/user/get_by_username',
+                    uri     : testDomain + '/users/' + testUsername,
                     method  : 'GET',
                     qs      : {
-                        username: testUsername
                     }
                 }, this.callback);
             },
@@ -390,11 +388,11 @@ suite.addBatch({
 }).addBatch({
 
     "meal controller => ": {
-        "GET request to /meal/vote/down/#id": {
+        "GET request to /meals/#id/votedown": {
 
             topic: function () {
                 request({
-                    uri     : testDomain + '/meal/vote/down/' + testMealID,
+                    uri     : testDomain + '/meals/' + testMealID +'/votedown',
                     method  : 'PUT'
                 }, this.callback);
             },
@@ -413,11 +411,11 @@ suite.addBatch({
 }).addBatch({ // teardown
 
     "order controller => ": {
-        "DELETE request to /order/#id": {
+        "DELETE request to /orders/#id": {
 
             topic: function () {
                 request({
-                    uri     : testDomain + '/order/item/' + testOrderID,
+                    uri     : testDomain + '/orders/' + testOrderID,
                     method  : 'DELETE'
                 }, this.callback);
             },
@@ -436,11 +434,11 @@ suite.addBatch({
 }).addBatch({
 
     "meal controller => ": {
-        "DELETE request to /meal/#id": {
+        "DELETE request to /meals/#id": {
 
             topic: function () {
                 request({
-                    uri     : testDomain + '/meal/item/' + testMealID,
+                    uri     : testDomain + '/meals/' + testMealID,
                     method  : 'DELETE'
                 }, this.callback);
             },
@@ -457,11 +455,11 @@ suite.addBatch({
     },
 
     "user controller => ": {
-        "DELETE request to /user/#id": {
+        "DELETE request to /users/#id": {
 
             topic: function () {
                 request({
-                    uri     : testDomain + '/user/item/' + testUserID,
+                    uri     : testDomain + '/users/' + testUserID,
                     method  : 'DELETE'
                 }, this.callback);
             },
@@ -479,11 +477,11 @@ suite.addBatch({
     },
 
     "mealtime controller => ": {
-        "DELETE request to /mealtime/#id": {
+        "DELETE request to /mealtimes/#id": {
 
             topic: function () {
                 request({
-                    uri     : testDomain + '/mealtime/item/' + testMealtimeID,
+                    uri     : testDomain + '/mealtimes/' + testMealtimeID,
                     method  : 'DELETE'
                 }, this.callback);
             },
@@ -503,11 +501,11 @@ suite.addBatch({
 }).addBatch({
 
     "meal controller => ": {
-        "GET request to /meal/count": {
+        "GET request to /meals/count": {
 
             topic: function () {
                 request({
-                    uri     : testDomain + '/meal/count',
+                    uri     : testDomain + '/meals/count',
                     method  : 'GET'
                 }, this.callback);
             },
@@ -524,11 +522,11 @@ suite.addBatch({
     },
 
     "order controller => ": {
-        "GET request to /order/count": {
+        "GET request to /orders/count": {
 
             topic: function () {
                 request({
-                    uri     : testDomain + '/order/count',
+                    uri     : testDomain + '/orders/count',
                     method  : 'GET'
                 }, this.callback);
             },
@@ -546,11 +544,11 @@ suite.addBatch({
     },
 
     "mealtime controller => ": {
-        "GET request to /mealtime/count": {
+        "GET request to /mealtimes/count": {
 
             topic: function () {
                 request({
-                    uri     : testDomain + '/mealtime/count',
+                    uri     : testDomain + '/mealtimes/count',
                     method  : 'GET'
                 }, this.callback);
             },
