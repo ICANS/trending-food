@@ -14,10 +14,12 @@
             <h3><i class="icon-truck"></i> Your last meals</h3>
             <hr>
             <dl class="dl-horizontal">
-            <% if(meals_last.length > 0) { %>
-                <% for(var i = 0; i < meals_last.length; i++) { %>
-                    <dt><%= meals_last[i].meal.title %></dt>
-                    <dd><%= utilities.nicetime(new Date(meals_last[i].created)) %></dd>
+            <% if(user_orders.length > 0) { %>
+                <% for(var i = 0; i < user_orders.length; i++) { %>
+                    <% if(user_orders[i].meal) { %>
+                        <dt><%= user_orders[i].meal.title %></dt>
+                        <dd><%= utilities.nicetime(new Date(user_orders[i].created)) %></dd>
+                    <% } %>
                 <% } %>
             <% } %>
             </dl>
@@ -49,8 +51,10 @@
             <dl class="dl-horizontal">
             <% if(orders_last.length > 0) { %>
                 <% for(var i = 0; i < orders_last.length; i++) { %>
-                    <dt><%= orders_last[i].meal.title %></dt>
-                    <dd>by <%= orders_last[i].user.username %></dd>
+                    <% if(orders_last[i].meal) { %>
+                        <dt><%= orders_last[i].meal.title %></dt>
+                        <dd>by <%= orders_last[i].user.username %></dd>
+                    <% } %>
                 <% } %>
             <% } %>
             </dl>

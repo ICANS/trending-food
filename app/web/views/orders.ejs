@@ -20,6 +20,7 @@
         </thead>
         <tbody>
             <% for(var i = 0; i < orders.length; i++) { %>
+                <% if(orders[i].meal) { %>
                 <% if(orders[i].mealtime.id === mealtimes[mt].id) { %>
                 <tr data-order-id="<%= orders[i]._id %>">
                     <td class="meal-title"><%= orders[i].meal.title %></td>
@@ -35,6 +36,7 @@
                     <% } %>
                     </td>
                 </tr>
+                <% } %>
                 <% } %>
             <% } %>
         </tbody>
