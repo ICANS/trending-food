@@ -115,14 +115,14 @@ app.get('/', routes.user.checkLogin, function (req, res, next) {
 
             if(error) utilities.handleError(error);
 
-            var meals_last = JSON.parse(body) || [];
+            var user_orders = JSON.parse(body) || [];
 
-            next(meals_last);
+            next(user_orders);
 
         });
     })
 
-    .then(function (next, meals_last) {
+    .then(function (next, user_orders) {
 
         request({
             uri     : config.api.uri + '/meals/',
@@ -138,12 +138,12 @@ app.get('/', routes.user.checkLogin, function (req, res, next) {
 
             var meals_trending = JSON.parse(body) || [];
 
-            next(meals_last, meals_trending);
+            next(user_orders, meals_trending);
 
         });
     })
 
-    .then(function (next, meals_last, meals_trending) {
+    .then(function (next, user_orders, meals_trending) {
 
         request({
             uri     : config.api.uri + '/orders/',
@@ -157,18 +157,18 @@ app.get('/', routes.user.checkLogin, function (req, res, next) {
 
             var orders_last = JSON.parse(body) || [];
 
-            next(meals_last, meals_trending, orders_last);
+            next(user_orders, meals_trending, orders_last);
         });
     })
 
-    .then(function (next, meals_last, meals_trending, orders_last, meals_trending_maxvotes) {
+    .then(function (next, user_orders, meals_trending, orders_last, meals_trending_maxvotes) {
 
         res.render('index', {
             config    : config,
             session   : req.session,
             utilities : utilities,
 
-            meals_last      : meals_last,
+            user_orders     : user_orders,
             meals_trending  : meals_trending,
             orders_last     : orders_last,
         });
