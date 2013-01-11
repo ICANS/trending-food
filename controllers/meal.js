@@ -117,7 +117,7 @@ exports.getList = function (respond, offset, limit, sort, order) {
         module.model.find({
             deleted: false
         })
-        .select('title category deleted votes amount')
+        .select('_id title category deleted votes amount')
         .limit(limit)
         .skip(offset)
         .sort(order + sort)

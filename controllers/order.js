@@ -20,7 +20,7 @@ exports.add = function (respond, mealID, mealtimeID, userID) {
 
         module.model.find({
             'created' : {
-                $gte : today, 
+                $gte : today,
                 $lte : tomorrow
             },
             'user': userObjectID
@@ -124,8 +124,8 @@ exports.getList = function (respond, offset, limit, sort, order, dateStart, date
         }
     })
     .populate('mealtime')
-    .populate('user')
-    .populate('meal')
+    .populate('user', '_id username')
+    .populate('meal', '_id title amount votes')
     .sort(order + sort)
     .limit(limit)
     .skip(offset)
@@ -153,12 +153,12 @@ exports.getListByUser = function (respond, userID, offset, limit, sort, order) {
     }
 
     module.model
-        .find({ 
+        .find({
             user: userObjectID
         })
         .populate('mealtime')
-        .populate('user')
-        .populate('meal')
+        .populate('user', '_id username')
+        .populate('meal', '_id title amount votes')
         .sort(order + sort)
         .limit(limit)
         .skip(offset)
