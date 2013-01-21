@@ -20,6 +20,7 @@ fs.exists(config.uploadDir, function (exists) {
 var assetsSeq = new fut();
 
 fs.readdir(assetDir, function (err, files) {
+    if(err) throw err;
 
     files.forEach(function (file) {
 

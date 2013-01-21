@@ -6,6 +6,6 @@ assets/
 uploads/
 npm-*
 .c9revisions/
-migration/assets
+migration/assets/images/
 config.js
 debug/
