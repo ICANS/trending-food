@@ -1,7 +1,7 @@
-exports.login = function (respond, session, username, password) {
+exports.login = function (respond, session, username, password, host) {
 
     // never seen the user before
-    if (typeof session.auth === 'undefined') { 
+    if (typeof session.auth === 'undefined') {
         session.auth = false;
     }
 
@@ -15,8 +15,7 @@ exports.login = function (respond, session, username, password) {
         return respond();
     }
 
-    var host = module.config.xmpp.hosts[0],
-        seq  = module.requirements.futures.sequence();
+    var seq  = module.requirements.futures.sequence();
 
     var onSuccess = function() {
 
@@ -79,20 +78,31 @@ exports.login = function (respond, session, username, password) {
     var onError = function (err) {
         if(err) console.log(err);
         session.failed = true;
-        logout(respond, session);
+        return logout(respond, session);
     };
 
     module.xmpp.on('online', onSuccess);
     module.xmpp.on('error', onError);
 
-    var opts = {
-        jid         : username + '@' + host,  
-        password    : password,
-        host        : host,
-        port        : module.config.xmpp.port,
+    console.log(module.config.xmpp.hosts, host);
+
+    for (var i = module.config.xmpp.hosts.length - 1; i >= 0; i--) {
+        if(module.config.xmpp.hosts[i].domain === host) {
+            var user = username + (module.config.xmpp.hosts[i].inUsername ? '@' + host : '');
+            var host = module.config.xmpp.hosts[i].domain;
+
+            var opts = {
+                jid         : user,
+                password    : password,
+                host        : host,
+                port        : module.config.xmpp.port,
+            };
+
+            return module.xmpp.connect(opts);
+        }
     };
 
-    module.xmpp.connect(opts);
+    return onError();
 };
 
 exports.logout = logout = function (respond, session) {

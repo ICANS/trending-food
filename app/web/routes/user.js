@@ -1,13 +1,14 @@
 exports.login = function (req, res, next) {
 
     var username = req.param('username') || null,
-        password = req.param('password') || null;
+        password = req.param('password') || null,
+        host = req.param('host') || null;
 
     var callback = function () {
         return renderLogin(req, res, next);
     };
 
-    module.controller.login(callback, req.session, username, password);
+    module.controller.login(callback, req.session, username, password, host);
 };
 
 exports.checkLogin = function (req, res, next) {

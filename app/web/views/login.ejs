@@ -19,10 +19,10 @@
             <div class="control-group">
                 <label class="control-label" for="selectHost">Host</label>
                 <div class="controls">
-                    <select id="host" class="span12">
+                    <select name="host" id="host" class="span12">
                     <% for(var i = 0; i < config.xmpp.hosts.length; i++) { %>
-                        <option <% if(config.xmpp.hosts[i] == config.xmpp.hosts[config.xmpp.default]) { %>selected="selected"<% } %> value="<%= config.xmpp.hosts[i] %>">
-                            <%= config.xmpp.hosts[i] %>
+                        <option value="<%= config.xmpp.hosts[i].domain %>" <% if(config.xmpp.hosts[i] == config.xmpp.hosts[config.xmpp.default]) { %>selected="selected"<% } %> value="<%= config.xmpp.hosts[i] %>">
+                            <%= config.xmpp.hosts[i].domain %>
                         </option>
                     <% } %>
                     </select>

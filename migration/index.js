@@ -5,13 +5,21 @@ var fs   = require('fs');
 var path = require('path');
 var fut  = require('futures').sequence;
 
+var assetDir = path.join(__dirname, '/assets/images/');
+
+// 'node index.js demo'
+// should use demo mode ?
+if(process.argv.length === 3 && process.argv[2] === 'demo') {
+    assetDir = path.join(__dirname, '/assets/images_demo/');
+}
+
 fs.exists(config.uploadDir, function (exists) {
     if(!exists) fs.mkdir(config.uploadDir);
 });
 
 var seq = new fut();
 
-fs.readdir(path.join(__dirname, '/assets/images/'), function (err, files) {
+fs.readdir(assetDir, function (err, files) {
 
     files.forEach(function (file) {
 
@@ -22,7 +30,7 @@ fs.readdir(path.join(__dirname, '/assets/images/'), function (err, files) {
 
             form.append('title', path.basename(file, '.jpg'));
             form.append('amount', 1);
-            form.append('image', fs.createReadStream(path.join(__dirname, '/assets/images/' + path.basename(file))));
+            form.append('image', fs.createReadStream(assetDir + path.basename(file)));
 
             req.on('response', function (response) {
                 console.log(file + ' added.');
