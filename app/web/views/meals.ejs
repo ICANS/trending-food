@@ -6,43 +6,40 @@
 
 <div class="row-fluid">
 
-    <div class="span2">
+    <div class="span12">
 
         <% if(isAdmin(session)) {  %>
         <h4>Administration</h4>
 
-        <p class="row-fluid">
+        <div class="row-fluid">
+            <div class="span4">
             <a href="#modal-meal-add" id="meal-modal-open" class="btn btn-success span12" data-toggle="modal">Add Meal</a>
-        </p>
+            </div>
+        </div>
 
         <hr>
 
         <% } %>
 
-        <ul class="nav nav-list well" id="sort-by">
-            <li class="nav-header">sort</li>
-            <li class="active">
-                <a href="#sort" data-option-value="votes" data-option-asce="false"><i class="icon-bar-chart icon-white"></i> Votes</a>
-            </li>
-            <li><a href="#sort" data-option-value="title" data-option-asce="true"><i class="icon-filter"></i> Title</a></li>
-            <li><a href="#sort" data-option-value="amount" data-option-asce="false"><i class="icon-tasks"></i> Amount</a></li>
-            <li><a href="#sort" data-option-value="created" data-option-asce="false"><i class="icon-time"></i> Created</a></li>
+        <div class="navbar">
+            <div class="navbar-inner">
+                <ul id="sort-by" class="nav">
+                    <li class="active"><a href="#sort" data-option-value="votes" data-option-asce="false">
+                        <i class="icon-bar-chart icon-white"></i> Votes</a>
+                    </li>
+                    <li><a href="#sort" data-option-value="title" data-option-asce="true"><i class="icon-filter"></i> Title</a></li>
+                    <li><a href="#sort" data-option-value="amount" data-option-asce="false"><i class="icon-tasks"></i> Amount</a></li>
+                    <li><a href="#sort" data-option-value="created" data-option-asce="false"><i class="icon-time"></i> Created</a></li>
+                </ul>
+            </div>
+        </div>
 
-            <li class="nav-header">Filter</li>
-            <li>
-                <span class="muted">Coming soon!</span>
-            </li>
-            <!--
-            <li class="active">
-                <a href="#filter" data-option-value="votes">Votes</a>
-            </li>
-            <li><a href="#filter" data-option-value="title">Title</a></li>
-            <li><a href="#filter" data-option-value="amount">Amount</a></li>
-            -->
-        </ul>
     </div>
+</div>
 
-    <div class="span10">
+<div class="row-fluid">
+
+    <div class="span12">
         <%- partial('partials/meals', meals) %>
         <hr>
         <%- partial('partials/pagination') %>
