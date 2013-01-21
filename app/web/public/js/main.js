@@ -95,8 +95,8 @@ $(function() {
         if (!confirm("Are you sure you want to delete this meal?")) return;
 
         $.ajax({
-            type: 'DELETE',
-            url: api_url + '/meals/' + meal_id,
+            type: 'POST',
+            url: api_url + '/meals/' + meal_id + '/delete',
             success: function(data) {
                 container.isotope('remove', parent, function() {});
             }
@@ -112,8 +112,8 @@ $(function() {
         var order_id = parent.data('order-id');
 
         $.ajax({
-            type: 'DELETE',
-            url: api_url + '/orders/' + order_id,
+            type: 'POST',
+            url: api_url + '/orders/' + order_id + '/delete',
             success: function(data) {
                 window.location.reload();
             }
@@ -200,19 +200,19 @@ $(function() {
         });
     });
 
-    $('#filter-by a').click(function(e) {
+    // $('#filter-by a').click(function(e) {
 
-        e.preventDefault();
+    //     e.preventDefault();
 
-        var parent = $(this).parents('ul');
-        parent.find('li').removeClass('active');
+    //     var parent = $(this).parents('ul');
+    //     parent.find('li').removeClass('active');
 
-        $(this).parents('li').addClass('active');
+    //     $(this).parents('li').addClass('active');
 
-        var filterName = $(this).data('option-value');
-        container.isotope({
-            filter: 'votes'
-        });
-    });
+    //     var filterName = $(this).data('option-value');
+    //     container.isotope({
+    //         filter: 'votes'
+    //     });
+    // });
 
 });

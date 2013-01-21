@@ -411,12 +411,12 @@ suite.addBatch({
 }).addBatch({ // teardown
 
     "order controller => ": {
-        "DELETE request to /orders/#id": {
+        "POST request to /orders/#id/delete": {
 
             topic: function () {
                 request({
-                    uri     : testDomain + '/orders/' + testOrderID,
-                    method  : 'DELETE'
+                    uri     : testDomain + '/orders/' + testOrderID + '/delete',
+                    method  : 'POST'
                 }, this.callback);
             },
 
@@ -434,12 +434,12 @@ suite.addBatch({
 }).addBatch({
 
     "meal controller => ": {
-        "DELETE request to /meals/#id": {
+        "POST request to /meals/#id/delete": {
 
             topic: function () {
                 request({
-                    uri     : testDomain + '/meals/' + testMealID,
-                    method  : 'DELETE'
+                    uri     : testDomain + '/meals/' + testMealID + '/delete',
+                    method  : 'POST'
                 }, this.callback);
             },
 
@@ -455,12 +455,12 @@ suite.addBatch({
     },
 
     "user controller => ": {
-        "DELETE request to /users/#id": {
+        "POST request to /users/#id/delete": {
 
             topic: function () {
                 request({
-                    uri     : testDomain + '/users/' + testUserID,
-                    method  : 'DELETE'
+                    uri     : testDomain + '/users/' + testUserID + '/delete',
+                    method  : 'POST'
                 }, this.callback);
             },
 
@@ -477,12 +477,12 @@ suite.addBatch({
     },
 
     "mealtime controller => ": {
-        "DELETE request to /mealtimes/#id": {
+        "POST request to /mealtimes/#id/delete": {
 
             topic: function () {
                 request({
-                    uri     : testDomain + '/mealtimes/' + testMealtimeID,
-                    method  : 'DELETE'
+                    uri     : testDomain + '/mealtimes/' + testMealtimeID + '/delete',
+                    method  : 'POST'
                 }, this.callback);
             },
 

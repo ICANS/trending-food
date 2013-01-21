@@ -65,7 +65,7 @@ app.all('*', function(req, res, next) {
 app.post('/orders/', routes.order.add);
 app.get('/orders/', routes.order.getList);
 app.get('/orders/count', routes.order.count);
-app.delete('/orders/:id', routes.order.delete);
+app.post('/orders/:id/delete', routes.order.delete);
 
 // routes - meal
 
@@ -78,14 +78,14 @@ app.get('/meals/count', routes.meal.count);
 app.get('/meals/:id', routes.meal.getById);
 app.get('/meals/:id/image', routes.meal.getImageById);
 app.get('/meals/', routes.meal.getList);
-app.delete('/meals/:id', routes.meal.delete);
+app.post('/meals/:id/delete', routes.meal.delete);
 
 // routes - mealtimes
 
 app.post('/mealtimes/', routes.mealtime.add);
 app.get('/mealtimes/', routes.mealtime.getList);
 app.get('/mealtimes/count', routes.mealtime.count);
-app.delete('/mealtimes/:id', routes.mealtime.delete);
+app.post('/mealtimes/:id/delete', routes.mealtime.delete);
 
 // routes - user
 
@@ -93,7 +93,7 @@ app.post('/users/', routes.user.add);
 app.post('/users/:username/login', routes.user.login);
 app.get('/users/:username/orders/', routes.order.getListByUser);
 app.get('/users/:username', routes.user.getByUsername);
-app.delete('/users/:id', routes.user.delete);
+app.post('/users/:id/delete', routes.user.delete);
 
 http.createServer(app).listen(app.get('port'), function() {
     console.log("HTTP: " + app.get('port'));
