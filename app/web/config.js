@@ -3,7 +3,10 @@ exports.port = 4000;
 exports.admins = ['']; // list of usernames
 
 exports.xmpp = {
-	hosts: ['talk.google.com'],
+	hosts: [{
+        domain: 'talk.google.com',
+        inUsername: false
+    }],
 	port: 5222,
 	default: 0 // index of hosts array
 };
