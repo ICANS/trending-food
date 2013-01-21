@@ -174,8 +174,8 @@ $(function() {
         },
         layoutMode: 'cellsByRow',
         cellsByRow: {
-            columnWidth: $('.meal-item').outerWidth() + 10,
-            rowHeight: 350
+            columnWidth: 270,
+            rowHeight: 374
         },
         sortBy: 'votes',
         sortAscending: false
