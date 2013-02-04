@@ -2,8 +2,10 @@
     "name": "trending-food",
     "version": "0.0.1",
     "private": true,
+    "description": "s simple web interface and backend to do food orders",
     "scripts": {
-        "start": "node app"
+        "start": "node app",
+        "test": "vows --spec"
     },
     "dependencies": {
         "express": ">=3.0.0rc1",
@@ -13,8 +15,13 @@
         "mongoose": ">=3.1.2",
         "mongoose-file": ">=0.0.2",
         "mongoose-subpopulate": ">=0.0.7",
-        "request": ">=2.11.4",
-        "underscore": ">=1.4.2",
-        "vows": ">=0.6.4"
+        "underscore": ">=1.4.2"
+    },
+    "devDependencies": {
+        "vows": ">=0.6.4",
+        "request": ">=2.11.4"
+    },
+    "engines": {
+        "node": ">=0.6"
     }
 }
