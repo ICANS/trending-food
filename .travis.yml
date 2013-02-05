@@ -4,7 +4,7 @@ node_js:
   - 0.6
   - 0.9
 before_script:
-  - node app
+  - node app &
   - sleep 3
 notifications:
   email: false
