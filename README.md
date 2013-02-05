@@ -1,4 +1,4 @@
-
+[![Build Status](https://travis-ci.org/ICANS/trending-food.png?branch=master)](https://travis-ci.org/ICANS/trending-food)
 
 ### Supported Methods
 ______________
