@@ -270,7 +270,7 @@ suite.addBatch({
             topic: function () {
                 request({
                     uri     : testDomain + '/meals/' + testMealID + '/voteup' ,
-                    method  : 'PUT'
+                    method  : 'POST'
                 }, this.callback);
             },
 
@@ -393,7 +393,7 @@ suite.addBatch({
             topic: function () {
                 request({
                     uri     : testDomain + '/meals/' + testMealID +'/votedown',
-                    method  : 'PUT'
+                    method  : 'POST'
                 }, this.callback);
             },
 
