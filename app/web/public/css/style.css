@@ -1,12 +1,13 @@
 body {
-        padding-top: 80px;
-        padding-bottom: 40px;
-        font: 14px "Helvetica Neue", Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    padding-top: 80px;
+    padding-bottom: 40px;
+    font: 14px "Helvetica Neue", Arial, sans-serif;
 }
 
 footer a,
 footer {
-        color: #999;
+    color: #999;
 }
 
 .thumbnails {

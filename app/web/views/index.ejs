@@ -28,7 +28,7 @@
             <h3><i class="icon-bar-chart"></i> Trending</h3>
             <hr>
             <dl class="dl-horizontal">
-            <% if(meals_trending.items.length > 0) { %>
+            <% if(meals_trending.items && meals_trending.items.length > 0) { %>
                 <% for(var i = 0; i < meals_trending.items.length; i++) { %>
                     <dt><%= meals_trending.items[i].title %></dt>
                     <dd>
