@@ -68,18 +68,15 @@ $(function() {
 
     $('#modal-meal-add-action').click(function() {
 
-        var meal_title = $('#modal-meal-add-title').val();
-        var meal_amount = $('#modal-meal-add-amount').val();
-
-        var data = {
-            title: meal_title,
-            amount: meal_amount,
-        };
+        var data = new FormData($('#modal-meal-add-form')[0]);
 
         $.ajax({
             type: 'POST',
             url: api_url + '/meals/',
             data: data,
+            cache: false,
+            contentType: false,
+            processData: false,
             success: function(data) {
                 window.location.reload();
             }

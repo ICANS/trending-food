@@ -57,17 +57,23 @@
 
     <div class="modal-body">
 
-        <form class="form-horizontal">
+        <form id="modal-meal-add-form" class="form-horizontal" method="post" enctype="multipart/form-data">
+            <div class="control-group">
+                <label class="control-label"></label>
+                <div class="controls">
+                    <input type="file" id="modal-meal-add-image" name="image">
+                </div>
+            </div>
             <div class="control-group">
                 <label class="control-label" for="modal-meal-add-title">Meal Title</label>
                 <div class="controls">
-                    <input type="text" id="modal-meal-add-title" class="span3">
+                    <input type="text" name="title" id="modal-meal-add-title" class="span3">
                 </div>
             </div>
             <div class="control-group">
                 <label class="control-label" for="modal-meal-add-amount">Meal Amount</label>
                 <div class="controls">
-                    <input type="number" id="modal-meal-add-amount" class="span3">
+                    <input type="number" name="amount" id="modal-meal-add-amount" class="span3">
                 </div>
             </div>
         </form>
