@@ -12,6 +12,8 @@ exports.xmpp = {
 };
 
 exports.pagination = {
+	sort: 'votes',
+	order: 'desc',
 	perPage: 30
 };
 

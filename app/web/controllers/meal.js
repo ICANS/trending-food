@@ -1,4 +1,4 @@
-exports.renderMeals = function (respond, page, limit) {
+exports.renderMeals = function (respond, page, sort, order, limit) {
 
     var seq = new module.requirements.futures.sequence();
 
@@ -44,8 +44,8 @@ exports.renderMeals = function (respond, page, limit) {
             qs      : {
                 offset: page * limit,
                 limit : limit,
-                sort  : 'votes',
-                order : 'desc'
+                sort  : sort,
+                order : order
             }
         }, function (error, response, body) {
 
