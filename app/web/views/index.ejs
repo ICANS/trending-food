@@ -53,7 +53,7 @@
                 <% for(var i = 0; i < orders_last.length; i++) { %>
                     <% if(orders_last[i].meal) { %>
                         <dt><%= orders_last[i].meal.title %></dt>
-                        <dd>by <%= orders_last[i].user.username %></dd>
+                        <dd>by <%= orders_last[i].user ? orders_last[i].user.username : 'Anonymous' %></dd>
                     <% } %>
                 <% } %>
             <% } %>

@@ -5,12 +5,14 @@ var fs   = require('fs');
 var path = require('path');
 var fut  = require('futures').sequence;
 
+
+var demoMode = false;
 var assetDir = path.join(__dirname, '/assets/images/');
 
 // 'node index.js demo'
 // should use demo mode ?
 if(process.argv.length === 3 && process.argv[2] === 'demo') {
-    assetDir = path.join(__dirname, '/assets/images_demo/');
+    demoMode = true;
 }
 
 fs.exists(config.uploadDir, function (exists) {
@@ -22,12 +24,14 @@ var assetsSeq = new fut();
 fs.readdir(assetDir, function (err, files) {
     if(err) throw err;
 
-    files.forEach(function (file) {
+    files.forEach(function (file, index) {
+
+        if(demoMode && index === 4) return;
 
         assetsSeq.then(function (next) {
 
             var req  = request.post(config.url + '/meals/');
-            var form = req.form()
+            var form = req.form();
 
             form.append('title', path.basename(file, '.jpg'));
             form.append('amount', 1);
@@ -45,7 +49,7 @@ fs.readdir(assetDir, function (err, files) {
 var mealtimesMigration = [
     { id: 'mealtime_1', title: 'A - 12:30'},
     { id: 'mealtime_2', title: 'B - 13:15'},
-    { id: 'mealtime_3', title: 'C - 14:00'},
+    { id: 'mealtime_3', title: 'C - 14:00'}
 ];
 
 var mealtimeSeq = new fut();
@@ -83,6 +87,6 @@ mealtimeSeq
                 console.log('Added mealtime: ' + item.id + ' ' + item.title);
             });
         });
-    })
+    });
 
 

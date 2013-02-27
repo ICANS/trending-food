@@ -61,6 +61,7 @@ exports.renderOrders = function (respond, next, page, limit) {
     .then(function (nextSeq, mealtimes, orders) {
 
         mealtimes.forEach(function (mealtime) {
+
             if(typeof mealtime.orderCount === 'undefined') {
                 mealtime.orderCount = 0;
             }

@@ -1,9 +1,49 @@
 <% layout('layout') -%>
+	<div class="row-fluid">
 
-<div class="row-fluid">
+		<% if(meal) { %>
 
-	<div class="span12 center">
-		<img src="<%= config.api.uri %>/meals/<%= meal._id %>/image" alt="" class="meal-image">
+		<div 
+		    id="meal-<%= meal._id %>"
+		    class="meal-item"
+		    data-meal-id="<%= meal._id %>"
+		    data-meal-title="<%= meal.title %>"
+		    data-meal-votes="<%= meal.votes %>"
+		    data-meal-created="<%= new Date(meal.created).getTime() %>"
+		    data-meal-amount="<%= meal.amount %>"
+		>
+
+			<div class="span4">
+				<img src="<%= config.api.uri %>/meals/<%= meal._id %>/image" alt="" class="meal-image">
+			</div>
+
+			<div class="span8">
+				<div class="page-header">
+					<h2><%= meal.title %> <small><%= meal.votes %> Votes</small></h2>
+				</div>
+
+				<p>
+					<% if(isAdmin(session)) { %>
+		                <a class="btn meal-delete-action">
+		                    <i class="icon-trash"></i> Löschen
+		                </a>
+					<% } %>
+		            <a href="#modal-order-add-container" class="btn btn-primary order-modal-open" data-toggle="modal">
+		                <i class="icon-bullhorn"></i> Order
+		            </a>
+				</p>
+			</div>
+		</div>
+
+		<% } else { %>
+
+		<div class="span12">
+			<div class="page-header">
+				<h2>Not found <small>Meal</small></h2>
+			</div>
+			<p>Sorry there was no meal found.</p>
+		</div>
+		<% } %>
 	</div>
 
-</div>
+<%- partial('partials/modals/meal_order') %>

@@ -2,7 +2,7 @@ body {
     -webkit-font-smoothing: antialiased;
     padding-top: 80px;
     padding-bottom: 40px;
-    font: 14px "Helvetica Neue", Arial, sans-serif;
+    font: 14px "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 footer a,
@@ -62,64 +62,53 @@ footer {
     padding-top: 10px;
 }
 
-.meal-item {
-    background: white;
+.meals-container .meal-item {
+    margin-bottom: 20px;
 }
 
-.meal-item-inner {
+.meals-container .meal-item-inner {
     position: relative;
-    background: white;
-    padding: 20px 0;
-    margin: 0 10px;
-    border-bottom: 1px solid #CCC;
-    border-top: 1px solid #CCC;
 }
 
-.meal-item-title h4 {
+.meals-container .meal-item-title h4 {
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
   color: #333;
 }
 
-.meal-item .row-fluid {
+.meals-container .meal-item .row-fluid {
     margin-top: 5px;
 }
 
-.meal-item .row-fluid [class*="span"] {
+.meals-container .meal-item .row-fluid [class*="span"] {
     min-height: 27px;
 }
 
-.meal-item .meal-image-container {
+.meals-container .meal-item .meal-image-container {
     height: 250px;
     overflow: hidden;
 }
 
-.meal-item .meal-image {
-    -webkit-filter: grayscale(1);
-    -webkit-transition: all 0.2s linear;
+.meals-container .meal-item .meal-image {
+    width: 100%;
 }
 
-.meal-item:hover .meal-image {
-    -webkit-filter: grayscale(0);
+.meals-container .meal-item:hover .meal-image {
 }
 
-.meal-item .meal-votes {
+.meals-container .meal-item .meal-votes {
     font-size: 12px;
     line-height: 16px;
 }
 
-.meal-item:first-child {
-    /*margin-left: 2.564102564102564% !important;*/
-}
-
-.meal-item .progress {
+.meals-container .meal-item .progress {
     height: 15px;
     margin-bottom: 10px;
     border-radius: 100px;
 }
 
-.meal-item .label {
+.meals-container .meal-item .label {
     margin-top: 7px;
     margin-right: 10px;
     padding: 5px 8px 7px 8px;
@@ -127,20 +116,20 @@ footer {
     line-height: 15px;
 }
 
-.meal-item .btn-small > i {
+.meals-container .meal-item .btn-small > i {
     font-size: 18px;
 }
 
-.meal-item .btn-small {
+.meals-container .meal-item .btn-small {
     font-size: 16px;
     line-height: 24px;
 }
 
-.meal-item-inner:hover .meal-item-controls {
+.meals-container .meal-item-inner:hover .meal-item-controls {
     opacity: 1;
 }
 
-.meal-item-controls {
+.meals-container .meal-item-controls {
     opacity: 0;
     position: absolute;
     bottom: 20px;
@@ -152,40 +141,4 @@ footer {
     transition: all .25s ease-in-out;
     background: rgba(0, 0, 0, 0.5);
     padding: 10px 0;
-}
-
-/**** Isotope ****/
-
-.isotope-item {
-    z-index: 2;
-}
-
-.isotope-hidden.isotope-item {
-    pointer-events: none;
-    z-index: 1;
-}
-
-.isotope,
-.isotope .isotope-item {
-    -webkit-transition-duration: 0.8s;
-       -moz-transition-duration: 0.8s;
-        -ms-transition-duration: 0.8s;
-         -o-transition-duration: 0.8s;
-            transition-duration: 0.8s;
-}
-
-.isotope {
-    -webkit-transition-property: height, width;
-       -moz-transition-property: height, width;
-        -ms-transition-property: height, width;
-         -o-transition-property: height, width;
-            transition-property: height, width;
-}
-
-.isotope .isotope-item {
-    -webkit-transition-property: -webkit-transform, opacity;
-       -moz-transition-property:    -moz-transform, opacity;
-        -ms-transition-property:     -ms-transform, opacity;
-         -o-transition-property:         top, left, opacity;
-            transition-property:         transform, opacity;
 }

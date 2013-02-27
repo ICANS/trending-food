@@ -30,7 +30,7 @@ var _updateById = function(respond, id, options) {
             });
         });
     });
-}
+};
 
 exports.add = function (respond, title, amount, image, category) {
 
@@ -43,7 +43,7 @@ exports.add = function (respond, title, amount, image, category) {
 
         fs.unlink(image.path, function(err) {
             if(err) throw err;
-            console.log('deleted: ' + image.path)
+            console.log('deleted: ' + image.path);
         });
     }
 
@@ -90,15 +90,23 @@ exports.count = function (respond, title, amount) {
 
 exports.getById = function (respond, id) {
 
-    var ObjectId     = module.mongoose.Types.ObjectId;
+    var ObjectId = module.mongoose.Types.ObjectId;
+
+    if(id.toString().length !== 24) {
+        return respond(400, {
+            error: true,
+            message: 'submitted a invalid ID'
+        });
+    }
+
     var userObjectID = new ObjectId(id);
 
     module.model.findOne({
         _id: userObjectID,
         deleted: false
-    }).exec(function(err, results) {
-        if (err) return respond(400, err);
-        respond(200, results);
+    }).exec(function(err, result) {
+        if (!result || err) return respond(400, err);
+        respond(200, result);
     });
 };
 

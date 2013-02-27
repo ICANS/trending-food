@@ -2,7 +2,9 @@ exports.renderMeals = function (req, res, next) {
 
     var page      = (parseInt(req.param('page')) - 1) || 0,
         limit     = module.config.pagination.perPage,
-        subdomain = 'meals'; // for pagination
+        sort      = req.param('sort') || module.config.pagination.sort,
+        order     = req.param('order') || module.config.pagination.order,
+        subdomain = 'meals'; // for pagination 
 
     var callback = function (mealtimes, pages, meals) {
 
@@ -18,7 +20,7 @@ exports.renderMeals = function (req, res, next) {
         });
     };
 
-    module.controller.renderMeals(callback, page, limit);
+    module.controller.renderMeals(callback, page, sort, order, limit);
 };
 
 exports.renderMeal = function (req, res, next) {

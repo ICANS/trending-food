@@ -12,31 +12,31 @@ exports.add = function (respond, mealID, mealtimeID, userID) {
     seq
 
     // already ordered ?
-    .then(function (next) {
+    // .then(function (next) {
 
-        var date     = new Date();
-        var today    = new Date(date.getFullYear(), date.getMonth(), date.getDate());
-        var tomorrow = new Date(today.getTime() + (24 * 60 * 60 * 1000));
+    //     var date     = new Date();
+    //     var today    = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+    //     var tomorrow = new Date(today.getTime() + (24 * 60 * 60 * 1000));
 
-        module.model.find({
-            'created' : {
-                $gte : today,
-                $lte : tomorrow
-            },
-            'user': userObjectID
-        }, function (err, results) {
+    //     module.model.find({
+    //         'created' : {
+    //             $gte : today,
+    //             $lte : tomorrow
+    //         },
+    //         'user': userObjectID
+    //     }, function (err, results) {
 
-            if(results.length < 1) {
-                next();
-            } else {
-                respond(400, {
-                    statusInternal: 1,
-                    statusText: 'already ordered today: ' + today
-                })
-            }
-        });
+    //         if(results.length < 1) {
+    //             next();
+    //         } else {
+    //             respond(400, {
+    //                 statusInternal: 1,
+    //                 statusText: 'already ordered today: ' + today
+    //             })
+    //         }
+    //     });
 
-    })
+    // })
 
     // amount of meals < 0
     .then(function (next) {

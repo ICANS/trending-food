@@ -25,9 +25,13 @@ var testMealID      = '';
 var testMealtimeID  = '';
 var testOrderID     = '';
 
+var testMealAddedCount    = 12;
+var testMealAddedTitle    = 'Test Meal';
+var testMealAddedCategory = 'Hunde';
+var testMealAddedVotes    = 0;
+
 var testMealCount = null;
 var testOrderCount = null;
-var testMealCount = null;
 var testMealtimeCount = null;
 
 var suite = vows.describe('API');
@@ -53,8 +57,8 @@ suite.addBatch({
                 assert.isNumber(out.count);
 
                 testMealCount = out.count;
-            },
-        },
+            }
+        }
     },
 
     "order controller => ": {
@@ -76,9 +80,8 @@ suite.addBatch({
                 assert.isNumber(out.count);
 
                 testOrderCount = out.count;
-            },
-
-        },
+            }
+        }
     },
 
     "mealtime controller => ": {
@@ -100,10 +103,9 @@ suite.addBatch({
                 assert.isNumber(out.count);
 
                 testMealtimeCount = out.count;
-            },
-
-        },
-    },
+            }
+        }
+    }
 
 }).addBatch({
 
@@ -132,9 +134,8 @@ suite.addBatch({
                 assert.isObject(body);
                 assert.isString(body.id);
                 assert.isString(body.title);
-            },
-
-        },
+            }
+        }
     },
 
 
@@ -179,9 +180,9 @@ suite.addBatch({
                     uri     : testDomain + '/meals/',
                     method  : 'POST',
                     body    : {
-                        title: 'test meal',
-                        amount: 12,
-                        category: 'test category'
+                        title   : testMealAddedTitle,
+                        amount  : testMealAddedCount,
+                        category: testMealAddedCategory
                     },
                     json: true
                 }, this.callback);
@@ -195,12 +196,12 @@ suite.addBatch({
 
                 testMealID = body._id;
 
-                assert.equal(body.amount, 12);
-                assert.equal(body.title, 'test meal');
-                assert.equal(body.category, 'test category');
+                assert.equal(body.amount, testMealAddedCount);
+                assert.equal(body.title, testMealAddedTitle);
+                assert.equal(body.category, testMealAddedCategory);
             }
-        },
-    },
+        }
+    }
 
 }).addBatch({
 
@@ -240,26 +241,42 @@ suite.addBatch({
                     body    : {
                         meal     : testMealID,
                         mealtime : testMealtimeID,
-                        user     : testUserID,
+                        user     : testUserID
                     },
                     json: true
                 }, this.callback);
             },
 
-            "should respond with 201": function (err, res) {
+            "should respond valid orderID": function (err, res, body) {
+                assert.lengthOf(body.order._id, 24);
+                testOrderID = body.order._id;
+            },
+
+            "should respond with 201": function (err, res, body) {
                 assert.equal(res.statusCode, 201);
             },
 
-             "should respond valid userID, mealtimeID and mealID": function (err, res, body) {
-
-                testOrderID = body.order._id;
-
-                assert.equal(body.meal._id, testMealID);
+             "should respond valid userID": function (err, res, body) {
                 assert.equal(body.order.user, testUserID);
+            },
+
+            "should respond valid mealID": function (err, res, body) {
+                assert.equal(body.meal._id, testMealID);
+            },
+
+            "should respond valid mealtimeID": function (err, res, body) {
                 assert.equal(body.order.mealtime, testMealtimeID);
+            },
+
+             "should respond with decreased meal count": function (err, res, body) {
+                assert.equal(body.meal.amount, testMealAddedCount - 1);
+            },
+
+             "should respond with one more vote": function (err, res, body) {
+                assert.equal(body.meal.votes, testMealAddedVotes + 1);
             }
         }
-    },
+    }
 
 
 }).addBatch({
@@ -282,8 +299,8 @@ suite.addBatch({
                 var out = JSON.parse(body);
                 assert.equal(out.votes, 2);
             }
-        },
-    },
+        }
+    }
 
 }).addBatch({
 
@@ -305,8 +322,8 @@ suite.addBatch({
                 var out = JSON.parse(body);
                 assert.isArray(out.items);
                 assert.isNumber(out.max);
-            },
-        },
+            }
+        }
     },
 
     "order controller => ": {
@@ -495,7 +512,7 @@ suite.addBatch({
                 assert.equal(res._id, testMealtimeID);
             }
         }
-    },
+    }
 
 
 }).addBatch({

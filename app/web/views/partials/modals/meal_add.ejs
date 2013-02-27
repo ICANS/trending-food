@@ -1,0 +1,40 @@
+<!-- meal - modal -->
+
+<div class="modal hide fade" id="modal-meal-add" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h3><i class="icon-truck"></i> Add Meal</h3>
+    </div>
+
+    <div class="modal-body">
+
+        <form id="modal-meal-add-form" class="form-horizontal" method="post" enctype="multipart/form-data">
+            <div class="control-group">
+                <label class="control-label"></label>
+                <div class="controls">
+                    <input type="file" id="modal-meal-add-image" name="image">
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="modal-meal-add-title">Meal Title</label>
+                <div class="controls">
+                    <input type="text" name="title" id="modal-meal-add-title" class="span3">
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="modal-meal-add-amount">Meal Amount</label>
+                <div class="controls">
+                    <input type="number" name="amount" id="modal-meal-add-amount" class="span3">
+                </div>
+            </div>
+        </form>
+
+    </div>
+
+    <div class="modal-footer">
+        <a href="javascript:;" data-dismiss="modal" class="btn">Close</a>
+        <a href="#" class="btn btn-primary" id="modal-meal-add-action">Add Meal &rarr;</a>
+    </div>
+
+</div>

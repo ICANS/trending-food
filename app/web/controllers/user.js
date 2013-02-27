@@ -33,7 +33,7 @@ exports.login = function (respond, session, username, password, host) {
             }, function (err, response, body) {
 
                 if(err) {
-                    console.error(err)
+                    console.error(err);
                     return respond();
                 }
 
@@ -84,23 +84,23 @@ exports.login = function (respond, session, username, password, host) {
     module.xmpp.on('online', onSuccess);
     module.xmpp.on('error', onError);
 
-    console.log(module.config.xmpp.hosts, host);
+    console.log(username, 'connected to:', host);
 
     for (var i = module.config.xmpp.hosts.length - 1; i >= 0; i--) {
         if(module.config.xmpp.hosts[i].domain === host) {
             var user = username + (module.config.xmpp.hosts[i].inUsername ? '@' + host : '');
-            var host = module.config.xmpp.hosts[i].domain;
+            var domain = module.config.xmpp.hosts[i].domain;
 
             var opts = {
                 jid         : user,
                 password    : password,
-                host        : host,
-                port        : module.config.xmpp.port,
+                host        : domain,
+                port        : module.config.xmpp.port
             };
 
             return module.xmpp.connect(opts);
         }
-    };
+    }
 
     return onError();
 };
@@ -120,8 +120,8 @@ exports.checkLogin = function (respond, session) {
         return respond(true);
     }
 
-    return respond(false); 
-}
+    return respond(false);
+};
 
 module.exports = function(app) {
 

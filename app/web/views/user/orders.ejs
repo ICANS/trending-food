@@ -1,0 +1,40 @@
+<% layout('../layout') -%>
+
+<div class="page-header">
+    <h1><i class="icon-bullhorn"></i> <%= title %> <small>the last thirty ones</small></h1>
+</div>
+
+<table class="table table-striped table-bordered table-condensed">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Ordertime</th>
+            <th>Mealtime</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% for(var i = 0; i < orders.length; i++) { %>
+            <% if(orders[i].meal) { %>
+            <tr data-order-id="<%= orders[i]._id %>">
+                <td class="meal-title"><%= orders[i].meal.title %></td>
+                <td class="meal-date">
+                    <% var d = new Date(orders[i].created); %>
+                    <%= utilities.getWeekday(d) %>
+                    <%= (d.getHours() < 10 ? '0' : '') + d.getHours() %>:<%= d.getMinutes() %> -
+                    <%= (d.getDate() < 10 ? '0' : '') + d.getDate() %>.<%= d.getMonth() < 9 ? '0' : '' + (d.getMonth() + 1) %>.<%= d.getFullYear() %>
+                    <span class="muted">(<%= utilities.nicetime(d) %>)</span>
+                </td>
+                <td class="meal-time">
+                    <span class="badge"><%= (orders[i].mealtime.title).split(' - ')[0] %></span> -
+                    <%= (orders[i].mealtime.title).split(' - ')[1] %>
+                </td>
+                <td>
+                <% if(orders[i].user._id === session.user_id) { %>
+                    <a href="#" class="btn btn-small order-delete" data-order-id="<%= orders[i]._id %>"><i class="icon-trash"></i> Delete</a>
+                <% } %>
+                </td>
+            </tr>
+            <% } %>
+        <% } %>
+    </tbody>
+</table>

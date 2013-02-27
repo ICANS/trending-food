@@ -1,0 +1,38 @@
+<!-- order - modal -->
+
+<div class="modal hide fade" id="modal-order-add-container" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h3><i class="icon-bullhorn"></i> Order</h3>
+    </div>
+
+    <div class="modal-body">
+
+        <form class="form-horizontal">
+            <div class="control-group">
+                <label class="control-label" for="modal-order-add-title">Meal</label>
+                <div class="controls">
+                    <input type="text" id="modal-order-add-title" class="span3" disabled="disabled" value="">
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="modal-order-add-time">Time</label>
+                <div class="controls">
+                    <select id="modal-order-add-time" class="span3">
+                    <% for(var mt = 0; mt < mealtimes.length; mt++) { %>
+                        <option <% if(mealtimes[mt].id == config.mealtime.default) { %>selected="selected"<% } %> value="<%= mealtimes[mt]._id %>"><%= mealtimes[mt].title %></option>
+                    <% } %>
+                    </select>
+                </div>
+            </div>
+        </form>
+
+    </div>
+
+    <div class="modal-footer">
+        <a href="javascript:;" data-dismiss="modal" class="btn">Close</a>
+        <a href="#" class="btn btn-primary modal-order-add-action">Send Order &rarr;</a>
+    </div>
+
+</div>

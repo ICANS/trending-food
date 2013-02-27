@@ -16,7 +16,6 @@ exports.renderMeals = function (respond, page, sort, order, limit) {
             var mealtimes = module.utilities.parseJSON(body);
 
             next(mealtimes);
-
         });
     })
 
@@ -32,7 +31,6 @@ exports.renderMeals = function (respond, page, sort, order, limit) {
             var total = module.utilities.parseJSON(body).count || 0;
 
             next(mealtimes, total);
-
         });
     })
 
@@ -55,7 +53,6 @@ exports.renderMeals = function (respond, page, sort, order, limit) {
             var pages = Math.ceil(total / limit);
 
             next(mealtimes, pages, meals);
-
         });
     })
 
@@ -108,6 +105,21 @@ exports.renderMeal = function (respond, id) {
         respond(mealtimes, meal);
     });
 
+};
+
+exports.getMeals = function (respond) {
+
+    module.requirements.request({
+        uri     : module.config.api.uri + '/meals/',
+        method  : 'GET'
+    }, function (error, response, body) {
+
+        if(error) module.utilities.handleError(error);
+
+        var meals = module.utilities.parseJSON(body);
+
+        respond(meals);
+    });
 };
 
 module.exports = function(app) {

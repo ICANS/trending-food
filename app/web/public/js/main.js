@@ -8,7 +8,6 @@ $(function() {
     var api_url = $('#api').data('url');
 
     var meal_id = '',
-        meal_time = '',
         user = '';
 
     $('.order-modal-open').click(function(e) {
@@ -19,17 +18,16 @@ $(function() {
         var meal_title = parent.data('meal-title');
 
         meal_id = parent.data('meal-id');
-        meal_time = $('#modal-order-add-time').val();
         user = $('[data-user-id]').data('user-id');
 
         $('#modal-order-add-title').val(meal_title);
     });
 
-    $('#modal-order-add-action').click(function() {
+    $('.modal-order-add-action').click(function() {
 
         var data = {
             meal: meal_id,
-            mealtime: meal_time,
+            mealtime: $('#modal-order-add-time').val(),
             user: user
         };
 
@@ -47,7 +45,7 @@ $(function() {
 
                 switch ($.parseJSON(jqXHR.responseText).statusInternal) {
                 case 1:
-                    msg = 'You already ordered some meal today! (<a href="/account/orders" title="My Orders">Here you can see it</a>). First delete your meal for today to order a new one.';
+                    msg = 'Meep, Something goes wrong oÔ';
                     break;
                 case 2:
                     msg = 'This meals are empty, sorry :/';
@@ -95,7 +93,7 @@ $(function() {
             type: 'POST',
             url: api_url + '/meals/' + meal_id + '/delete',
             success: function(data) {
-                container.isotope('remove', parent, function() {});
+                window.location.reload();
             }
         });
     });
@@ -116,6 +114,34 @@ $(function() {
             }
         });
 
+    });
+
+    var meals = [];
+
+    $('.meal-item').each(function (i, ele) {
+        meals.push({
+            id   : $(ele).data('meal-id'),
+            title: $(ele).data('meal-title')
+        });
+    });
+
+    $('#meal-search').typeahead({
+        property: 'title',
+        onselect: function (selectedItem) {
+            window.location.href = '/meal/' + selectedItem.id;
+        },
+        source: function (q) {
+
+            var foundMeals = [];
+
+            $(source).each(function (i, item) {
+                if(item.title.indexOf(q) === -1) {
+                    foundMeals.push(item);
+                }
+            });
+
+            return foundMeals;
+        }
     });
 
     $('.meal-amount-up-action').click(function() {
@@ -156,46 +182,46 @@ $(function() {
         });
     });
 
-    container.isotope({
-        itemSelector: '.meal-item',
-        getSortData: {
-            amount: function($elem) {
-                return $elem.data('meal-amount');
-            },
-            title: function($elem) {
-                return $elem.data('meal-title');
-            },
-            votes: function($elem) {
-                return $elem.data('meal-votes');
-            }
-        },
-        layoutMode: 'cellsByRow',
-        cellsByRow: {
-            columnWidth: 270,
-            rowHeight: 374
-        },
-        sortBy: 'votes',
-        sortAscending: false
-    });
+    // container.isotope({
+    //     itemSelector: '.meal-item',
+    //     getSortData: {
+    //         amount: function($elem) {
+    //             return $elem.data('meal-amount');
+    //         },
+    //         title: function($elem) {
+    //             return $elem.data('meal-title');
+    //         },
+    //         votes: function($elem) {
+    //             return $elem.data('meal-votes');
+    //         }
+    //     },
+    //     layoutMode: 'cellsByRow',
+    //     cellsByRow: {
+    //         columnWidth: 290,
+    //         rowHeight: 374
+    //     },
+    //     sortBy: 'votes',
+    //     sortAscending: false
+    // });
 
 
-    $('#sort-by a').click(function(e) {
+    // $('#sort-by a').click(function(e) {
 
-        e.preventDefault();
+    //     e.preventDefault();
 
-        var parent = $(this).parents('ul');
-        parent.find('li').removeClass('active');
+    //     var parent = $(this).parents('ul');
+    //     parent.find('li').removeClass('active');
 
-        $(this).parents('li').addClass('active');
+    //     $(this).parents('li').addClass('active');
 
-        var sortName = $(this).data('option-value');
-        var sortAsce = $(this).data('option-asce');
+    //     var sortName = $(this).data('option-value');
+    //     var sortAsce = $(this).data('option-asce');
 
-        container.isotope({
-            sortBy: sortName,
-            sortAscending: Boolean(sortAsce)
-        });
-    });
+    //     container.isotope({
+    //         sortBy: sortName,
+    //         sortAscending: Boolean(sortAsce)
+    //     });
+    // });
 
     // $('#filter-by a').click(function(e) {
 

@@ -1,27 +1,27 @@
-var express   = require('express')
-  , http      = require('http')
-  , engine    = require('ejs-locals')
-  , request   = require('request')
-  , futures   = require('futures')
-  , http      = require('http')
-  , fs        = require('fs')
-  , config    = require('./config')
-  , utilities = require('./utilities');
+var express   = require('express'),
+    http      = require('http'),
+    engine    = require('ejs-locals'),
+    request   = require('request'),
+    futures   = require('futures'),
+    http      = require('http'),
+    fs        = require('fs'),
+    config    = require('./config'),
+    utilities = require('./utilities');
 
 var app = express();
 
 var requirements = {
     futures: futures,
-    request: request,
+    request: request
 };
-
-process.on('uncaughtException', function (err) {
-    console.log(err);
-});
 
 app.set('config', config);
 app.set('utilities', utilities);
 app.set('requirements', requirements);
+
+process.on('uncaughtException', function (error) {
+    utilities.handleError(error);
+});
 
 // controllers - setup
 // ----------------------------------------------------------------------
@@ -29,7 +29,7 @@ app.set('requirements', requirements);
 var controllers = {
     user    : require('./controllers/user.js')(app),
     order   : require('./controllers/order.js')(app),
-    meal    : require('./controllers/meal.js')(app),
+    meal    : require('./controllers/meal.js')(app)
 };
 
 app.set('controllers', controllers);
@@ -40,7 +40,7 @@ app.set('controllers', controllers);
 var routes  = {
     user    : require('./routes/user.js')(app),
     order   : require('./routes/order.js')(app),
-    meal    : require('./routes/meal.js')(app),
+    meal    : require('./routes/meal.js')(app)
 };
 
 // express - config
@@ -68,6 +68,19 @@ app.configure('development', function () {
     app.use(express.errorHandler());
 });
 
+// app locals
+// ----------------------------------------------------------------------
+
+app.locals.config      = config;
+app.locals.utilities   = utilities;
+
+setInterval(function () {
+    controllers.meal.getMeals(function (meals) {
+        app.locals.globalMeals = meals;
+        console.log('updated meal index');
+    });
+}, 5000);
+
 // routes - user
 // ----------------------------------------------------------------------
 
@@ -92,7 +105,6 @@ app.get('/meals/?:page?', routes.user.checkLogin, routes.meal.renderMeals);
 
 app.get('/faq', function (req, res) {
     res.render('faq', {
-        config  : config,
         session : req.session
     });
 });
@@ -164,13 +176,11 @@ app.get('/', routes.user.checkLogin, function (req, res, next) {
     .then(function (next, user_orders, meals_trending, orders_last, meals_trending_maxvotes) {
 
         res.render('index', {
-            config    : config,
             session   : req.session,
-            utilities : utilities,
 
             user_orders     : user_orders,
             meals_trending  : meals_trending,
-            orders_last     : orders_last,
+            orders_last     : orders_last
         });
     });
 });
@@ -181,7 +191,6 @@ app.use(function (req, res) {
 
     if (req.accepts('html')) {
         res.render('404', {
-            config  : config,
             session : req.session
         });
         return;
