@@ -1,6 +1,6 @@
 {
     "name": "tending-food-webapp",
-    "version": "0.3",
+    "version": "0.0.3",
     "private": true,
     "scripts": {
         "start": "node app"
