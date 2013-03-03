@@ -15,6 +15,17 @@ var requirements = {
     request: request
 };
 
+var urlHelper = {
+    meal: function (id) {
+        return '/meal/' + id;
+    }
+}
+
+utilities.moment = require('moment');
+utilities.moment.lang('de');
+
+utilities.url = urlHelper;
+
 app.set('config', config);
 app.set('utilities', utilities);
 app.set('requirements', requirements);
@@ -74,12 +85,24 @@ app.configure('development', function () {
 app.locals.config      = config;
 app.locals.utilities   = utilities;
 
-setInterval(function () {
+app.locals.global = {};
+
+var updateInterval = function () {
+
     controllers.meal.getMeals(function (meals) {
-        app.locals.globalMeals = meals;
-        console.log('updated meal index');
+        app.locals.global.meals = meals;
     });
-}, 5000);
+
+    controllers.meal.getVotes(function (votes) {
+        app.locals.global.votes = votes;
+    });
+
+    console.log(utilities.moment().format('HH:ss') + ' – Updated: max votes, meal search index');
+};
+
+updateInterval();
+
+setInterval(updateInterval, 20000);
 
 // routes - user
 // ----------------------------------------------------------------------
@@ -115,25 +138,6 @@ app.get('/', routes.user.checkLogin, function (req, res, next) {
 
     seq
 
-    .then(function (next) {
-
-        request({
-            uri     : config.api.uri + '/users/' + req.session.user_id + '/orders/',
-            method  : 'GET',
-            qs      : {
-                limit: 5
-            }
-        }, function (error, response, body) {
-
-            if(error) utilities.handleError(error);
-
-            var user_orders = JSON.parse(body) || [];
-
-            next(user_orders);
-
-        });
-    })
-
     .then(function (next, user_orders) {
 
         request({
@@ -142,13 +146,15 @@ app.get('/', routes.user.checkLogin, function (req, res, next) {
             qs      : {
                 sort: 'votes',
                 order: 'desc',
-                limit: 3
+                limit: 5
             }
         }, function (error, response, body) {
 
             if(error) utilities.handleError(error);
 
             var meals_trending = JSON.parse(body) || [];
+
+            console.log(meals_trending);
 
             next(user_orders, meals_trending);
 

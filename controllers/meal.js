@@ -134,19 +134,7 @@ exports.getList = function (respond, offset, limit, sort, order) {
         .sort(order + sort)
         .exec(function (err, results) {
             if (err) return respond(400, err);
-            next(results);
-        });
-    })
-
-    .then(function (next, results) {
-        module.model.findOne().sort('-votes').exec(function (err, doc) {
-            if(err) return respond(400, err);
-            if(!doc) return respond(400, []);
-
-            respond(200, {
-                max: doc.votes,
-                items: results
-            });
+            respond(200, results);
         });
     });
 };
@@ -164,6 +152,43 @@ exports.getImageById = function (respond, id) {
         }
 
         return respond(200, result.image);
+    });
+};
+
+exports.getVotes = function (respond) {
+
+    sequence()
+
+    .then(function (next) {
+
+        module.model.findOne().sort('-votes').exec(function (err, doc) {
+            if(err) return respond(400, err);
+            if(!doc) return respond(400, []);
+
+            var votesMax = doc.votes;
+
+            next(votesMax);
+        });
+    })
+
+    .then(function (next, votesMax) {
+
+        module.model.find().exec(function (err, docs) {
+            if(err) return respond(400, err);
+            if(!docs) return respond(400, []);
+
+            var votesSum = 0;
+
+            docs.forEach(function (doc, index) {
+                votesSum += doc.votes;
+            });
+
+            respond(200, {
+                max: votesMax,
+                sum: votesSum
+            });
+        });
+
     });
 };
 

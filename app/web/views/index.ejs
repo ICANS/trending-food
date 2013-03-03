@@ -10,50 +10,43 @@
     </div>
 
     <div class="row-fluid">
-        <div class="span4">
-            <h3><i class="icon-truck"></i> Your last meals</h3>
-            <hr>
-            <dl class="dl-horizontal">
-            <% if(user_orders.length > 0) { %>
-                <% for(var i = 0; i < user_orders.length; i++) { %>
-                    <% if(user_orders[i].meal) { %>
-                        <dt><%= user_orders[i].meal.title %></dt>
-                        <dd><%= utilities.nicetime(new Date(user_orders[i].created)) %></dd>
-                    <% } %>
-                <% } %>
-            <% } %>
-            </dl>
-        </div>
-        <div class="span4">
+        <div class="span6">
             <h3><i class="icon-bar-chart"></i> Trending</h3>
             <hr>
-            <dl class="dl-horizontal">
-            <% if(meals_trending.items && meals_trending.items.length > 0) { %>
-                <% for(var i = 0; i < meals_trending.items.length; i++) { %>
-                    <dt><%= meals_trending.items[i].title %></dt>
-                    <dd>
-                        <%- 
-                            partial('partials/votes', { 
-                                votes: {
-                                    value: meals_trending.items[i].votes,
-                                    max: meals_trending.max 
-                                }
-                            }) 
-                        %>         
-                    </dd>
+            <table class="table table-striped">
+            <% if(meals_trending && meals_trending.length > 0) { %>
+                <% for(var i = 0; i < meals_trending.length; i++) { %>
+                    <tr>
+                        <td>
+                            <a href="<%= utilities.url.meal(meals_trending[i]._id) %>" title="<%= meals_trending[i].title %>">
+                                <div class="thumbnail" style="height: 50px; width: 55px; overflow:hidden;">
+                                    <img src="<%= config.api.uri %>/meals/<%= meals_trending[i]._id %>/image" width="80" alt="" class="meal-image">
+                                </div>
+                            </a>
+                        </td>
+                        <td class="lead">
+                            <a href="<%= utilities.url.meal(meals_trending[i]._id) %>" title="<%= meals_trending[i].title %>">
+                                <%= meals_trending[i].title %>
+                            </a>
+                        </td>
+                    </tr>
                 <% } %>
             <% } %>
-            </dl>
+            </table>
        </div>
-        <div class="span4">
+        <div class="span6">
             <h3><i class="icon-bullhorn"></i> Last orders</h3>
             <hr>
             <dl class="dl-horizontal">
             <% if(orders_last.length > 0) { %>
                 <% for(var i = 0; i < orders_last.length; i++) { %>
                     <% if(orders_last[i].meal) { %>
-                        <dt><%= orders_last[i].meal.title %></dt>
-                        <dd>by <%= orders_last[i].user ? orders_last[i].user.username : 'Anonymous' %></dd>
+                        <dt><%= orders_last[i].user ? orders_last[i].user.username : 'Anonymous' %></dt>
+                        <dd>
+                            <a href="<%= utilities.url.meal(orders_last[i].meal._id) %>" title="<%= orders_last[i].meal.title %>">
+                                <%= orders_last[i].meal.title %>
+                            </a>
+                        </dd>
                     <% } %>
                 <% } %>
             <% } %>

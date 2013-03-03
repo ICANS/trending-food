@@ -106,6 +106,15 @@ exports.amountDown = function (req, res) {
     module.controller.amountDown(callback, id);
 };
 
+exports.getVotes = function (req, res) {
+
+    var callback = function(statusCode, response) {
+        res.status(statusCode).json(response);
+    };
+
+    module.controller.getVotes(callback);
+};
+
 exports.getImageById = function (req, res) {
 
     var id = req.param('id');

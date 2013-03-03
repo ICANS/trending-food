@@ -319,9 +319,8 @@ suite.addBatch({
             },
 
             "should respond a valid array": function (err, res, body) {
-                var out = JSON.parse(body);
-                assert.isArray(out.items);
-                assert.isNumber(out.max);
+                var res = JSON.parse(body);
+                assert.isArray(res);
             }
         }
     },
@@ -577,6 +576,33 @@ suite.addBatch({
             "should respond origin count": function (err, res, body) {
                 var res = JSON.parse(body);
                 assert.equal(res.count, testMealtimeCount);
+            }
+
+        },
+    },
+
+    "meal controller => ": {
+        "GET request to /meals/votes/": {
+
+            topic: function () {
+                request({
+                    uri     : testDomain + '/meals/votes/',
+                    method  : 'GET'
+                }, this.callback);
+            },
+
+            "should respond with 200": function (err, res) {
+                assert.equal(res.statusCode, 200);
+            },
+
+            "should respond with the 'max' integer": function (err, res, body) {
+                var res = JSON.parse(body);
+                assert.isNumber(res.max);
+            },
+
+            "should respond with the 'sum' integer": function (err, res, body) {
+                var res = JSON.parse(body);
+                assert.isNumber(res.sum);
             }
 
         },

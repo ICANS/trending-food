@@ -58,31 +58,19 @@ footer {
     font-style: italic;
 }
 
-#meal-container {
-    padding-top: 10px;
-}
-
 .meals-container .meal-item {
     margin-bottom: 20px;
 }
 
-.meals-container .meal-item-inner {
-    position: relative;
-}
-
 .meals-container .meal-item-title h4 {
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
-  color: #333;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    color: #333;
 }
 
 .meals-container .meal-item .row-fluid {
     margin-top: 5px;
-}
-
-.meals-container .meal-item .row-fluid [class*="span"] {
-    min-height: 27px;
 }
 
 .meals-container .meal-item .meal-image-container {
@@ -94,18 +82,8 @@ footer {
     width: 100%;
 }
 
-.meals-container .meal-item:hover .meal-image {
-}
-
-.meals-container .meal-item .meal-votes {
-    font-size: 12px;
-    line-height: 16px;
-}
-
 .meals-container .meal-item .progress {
-    height: 15px;
     margin-bottom: 10px;
-    border-radius: 100px;
 }
 
 .meals-container .meal-item .label {
@@ -116,13 +94,15 @@ footer {
     line-height: 15px;
 }
 
-.meals-container .meal-item .btn-small > i {
-    font-size: 18px;
+.progress {
+    height: auto;
+    margin-bottom: auto;
 }
 
-.meals-container .meal-item .btn-small {
-    font-size: 16px;
-    line-height: 24px;
+.process-muted .bar {
+    background: #EEE;
+    color: #333;
+    text-shadow: 0 1px 0 #FFF;
 }
 
 .meals-container .meal-item-inner:hover .meal-item-controls {

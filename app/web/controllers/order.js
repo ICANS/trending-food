@@ -67,12 +67,12 @@ exports.renderOrders = function (respond, next, page, limit) {
             }
 
             orders.forEach(function (order) {
-                if(mealtime._id === order.mealtime._id) {
+                if(order.mealtime && mealtime._id === order.mealtime._id && order.meal) {
                     mealtime.orderCount++;
                 }
             });
         });
-        
+
         respond(mealtimes, orders);
     });
 };
@@ -126,13 +126,11 @@ exports.renderOrdersByUser = function (respond, next, session, page, limit, sort
             }
 
             orders.forEach(function (order) {
-                if(mealtime._id === order.mealtime._id) {
+                if(order.mealtime && mealtime._id === order.mealtime._id && order.meal) {
                     mealtime.orderCount++;
                 }
             });
         });
-
-        console.log(mealtimes);
 
         respond(mealtimes, orders);
     });

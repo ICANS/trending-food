@@ -158,7 +158,7 @@ $(function() {
                 meal_amount++;
                 console.log(meal_amount);
                 console.log(parent);
-                parent.data('meal-amount', meal_amount).find('.meal-amount').text(meal_amount + 'x');
+                parent.data('meal-amount', meal_amount).find('.meal-amount').text(meal_amount);
             }
         });
     });
@@ -177,7 +177,7 @@ $(function() {
                 meal_amount--;
                 console.log(meal_amount);
                 console.log(parent);
-                parent.data('meal-amount', meal_amount).find('.meal-amount').text(meal_amount + 'x');
+                parent.data('meal-amount', meal_amount).find('.meal-amount').text(meal_amount);
             }
         });
     });

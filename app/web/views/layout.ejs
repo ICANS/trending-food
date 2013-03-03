@@ -27,13 +27,10 @@
 
             <%-body -%>
 
-            <hr>
-            
             <footer>
-                <p>&copy; 2012 <%= config.name %> - <a href="/faq">FAQ</a></p>
+                <hr>
+                <p>&copy; 2012 <%= config.name %> - <a href="/faq">FAQ</a> – Found a bug ? <a href="https://github.com/ICANS/trending-food/issues" target="_blank">Report it here</a>!</p>
             </footer>
-            
-            
         </div> <!-- /container -->
 
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
@@ -42,11 +39,11 @@
         <% if(session.auth) { %>
         <script>
             var source = [
-            <% if(globalMeals.items) { %>
-                <% for(var m = 0; m < globalMeals.items.length; m++) { %>
+            <% if(global.meals) { %>
+                <% for(var m = 0; m < global.meals.length; m++) { %>
                     {
-                        "id"   : "<%= globalMeals.items[m]._id %>",
-                        "title": "<%= globalMeals.items[m].title %>",
+                        "id"   : "<%= global.meals[m]._id %>",
+                        "title": "<%= global.meals[m].title %>",
                     },
                 <% } %>
             <% } %>];

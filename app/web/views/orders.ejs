@@ -5,7 +5,7 @@
 </div>
 
 <% for(var mt = 0; mt < mealtimes.length; mt++) { %>
-    
+
     <h3><%= mealtimes[mt].title %></h3>
 
     <% if(mealtimes[mt].orderCount > 0) { %>
@@ -23,12 +23,16 @@
                 <% if(orders[i].meal) { %>
                 <% if(orders[i].mealtime.id === mealtimes[mt].id) { %>
                 <tr data-order-id="<%= orders[i]._id %>">
-                    <td class="meal-title"><%= orders[i].meal.title %></td>
+                    <td class="meal-title">
+                        <a href="<%= utilities.url.meal(orders[i].meal._id) %>" title="<%= orders[i].meal.title %>">
+                            <%= orders[i].meal.title %>
+                        </a>
+                    </td>
                     <td class="meal-user"><%= orders[i].user.username %></td>
                     <td class="meal-date">
                         <% var d = new Date(orders[i].created) %>
-                        <%= utilities.getFormattedDate(d) %>
-                        <span class="muted">(<%= utilities.nicetime(d) %>)</span>
+                        <%= utilities.moment(d).format('DD. MMMM – HH:mm') %>
+                        <span class="muted">(<%= utilities.moment(d).fromNow() %>)</span>
                     </td>
                     <td class="meal-action">
                     <% if(orders[i].user._id === session.user_id) { %>

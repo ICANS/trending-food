@@ -4,7 +4,7 @@ exports.renderMeals = function (req, res, next) {
         limit     = module.config.pagination.perPage,
         sort      = req.param('sort') || module.config.pagination.sort,
         order     = req.param('order') || module.config.pagination.order,
-        subdomain = 'meals'; // for pagination 
+        subdomain = 'meals'; // for pagination
 
     var callback = function (mealtimes, pages, meals) {
 
@@ -29,7 +29,7 @@ exports.renderMeal = function (req, res, next) {
 
     var callback = function (mealtimes, meal) {
 
-        res.render('meal', { 
+        res.render('meal', {
             config      : module.config,
             session     : req.session,
             meal        : meal,

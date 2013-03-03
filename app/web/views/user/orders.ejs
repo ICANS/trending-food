@@ -16,13 +16,15 @@
         <% for(var i = 0; i < orders.length; i++) { %>
             <% if(orders[i].meal) { %>
             <tr data-order-id="<%= orders[i]._id %>">
-                <td class="meal-title"><%= orders[i].meal.title %></td>
+                <td class="meal-title">
+                    <a href="<%= utilities.url.meal(orders[i].meal._id) %>" title="<%= orders[i].meal.title %>">
+                        <%= orders[i].meal.title %>
+                    </a>
+                </td>
                 <td class="meal-date">
                     <% var d = new Date(orders[i].created); %>
-                    <%= utilities.getWeekday(d) %>
-                    <%= (d.getHours() < 10 ? '0' : '') + d.getHours() %>:<%= d.getMinutes() %> -
-                    <%= (d.getDate() < 10 ? '0' : '') + d.getDate() %>.<%= d.getMonth() < 9 ? '0' : '' + (d.getMonth() + 1) %>.<%= d.getFullYear() %>
-                    <span class="muted">(<%= utilities.nicetime(d) %>)</span>
+                    <%= utilities.moment(d).format('DD. MMMM – HH:mm') %>
+                    <span class="muted">(<%= utilities.moment(d).fromNow() %>)</span>
                 </td>
                 <td class="meal-time">
                     <span class="badge"><%= (orders[i].mealtime.title).split(' - ')[0] %></span> -

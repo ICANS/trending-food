@@ -60,6 +60,12 @@ app.all('*', function(req, res, next) {
     next();
 });
 
+app.get('/alife', function(req, res) {
+    res
+        .status(418)
+        .send('yep');
+});
+
 // routes - order
 
 app.post('/orders/', routes.order.add);
@@ -75,6 +81,7 @@ app.post('/meals/:id/votedown', routes.meal.voteDown);
 app.post('/meals/:id/amountup', routes.meal.amountUp);
 app.post('/meals/:id/amountdown', routes.meal.amountDown);
 app.get('/meals/count', routes.meal.count);
+app.get('/meals/votes/', routes.meal.getVotes);
 app.get('/meals/:id', routes.meal.getById);
 app.get('/meals/:id/image', routes.meal.getImageById);
 app.get('/meals/', routes.meal.getList);

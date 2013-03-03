@@ -1,0 +1,16 @@
+{
+    "name": "trending-food-oven",
+    "version": "0.0.1",
+    "private": true,
+    "description": "Oven is a simple CLI for administrating trending food",
+    "scripts": {
+        "start": "node bake"
+    },
+    "dependencies": {
+        "colors": ">=0.6.0",
+        "futures": ">=2.3.1"
+    },
+    "engines": {
+        "node": ">=0.6"
+    }
+}

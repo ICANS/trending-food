@@ -89,7 +89,6 @@ exports.renderMeal = function (respond, id) {
         module.requirements.request({
             uri     : module.config.api.uri + '/meals/' + id,
             method  : 'GET',
-            qs      : {}
         }, function (error, response, body) {
 
             if(error) module.utilities.handleError(error);
@@ -104,14 +103,16 @@ exports.renderMeal = function (respond, id) {
     .then(function (next, mealtimes, meal) {
         respond(mealtimes, meal);
     });
-
 };
 
 exports.getMeals = function (respond) {
 
     module.requirements.request({
         uri     : module.config.api.uri + '/meals/',
-        method  : 'GET'
+        method  : 'GET',
+        qs      : {
+            minAmount: -1
+        }
     }, function (error, response, body) {
 
         if(error) module.utilities.handleError(error);
@@ -119,6 +120,21 @@ exports.getMeals = function (respond) {
         var meals = module.utilities.parseJSON(body);
 
         respond(meals);
+    });
+};
+
+exports.getVotes = function (respond) {
+
+    module.requirements.request({
+        uri     : module.config.api.uri + '/meals/votes/',
+        method  : 'GET'
+    }, function (error, response, body) {
+
+        if(error) module.utilities.handleError(error);
+
+        var votes = module.utilities.parseJSON(body);
+
+        respond(votes);
     });
 };
 
