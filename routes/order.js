@@ -48,6 +48,9 @@ exports.getListByUser = function (req, res) {
 };
 
 exports.count = function (req, res) {
+
+    var deleted = !!(req.param('deleted')) || 1;
+
     var callback = function (statusCode, response) {
         res
             .status(statusCode)
@@ -56,7 +59,7 @@ exports.count = function (req, res) {
             });
     };
 
-    module.controller.count(callback);
+    module.controller.count(callback, deleted);
 };
 
 exports.delete = function (req, res) {

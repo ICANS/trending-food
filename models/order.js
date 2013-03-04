@@ -31,9 +31,14 @@ module.exports = function (app, model) {
             default : Date.now
         },
 
-        updated: { 
-            type    : Date, 
-            default : Date.now 
+        updated: {
+            type    : Date,
+            default : Date.now
+        },
+
+        deleted: {
+            type    : Boolean,
+            default : false
         }
     });
 

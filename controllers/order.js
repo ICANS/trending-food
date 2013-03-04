@@ -142,9 +142,11 @@ exports.getListByUser = function (respond, userID, offset, limit, sort, order) {
         });
 }
 
-exports.count = function (respond) {
+exports.count = function (respond, deleted) {
 
-    module.model.count({}, function (err, count) {
+    module.model.count({
+        deleted: deleted
+    }, function (err, count) {
         if (err) {
             respond(400, err);
         } else {
@@ -181,15 +183,12 @@ exports.delete = function (respond, id) {
 
     .then(function (next) {
 
-        module.model.remove({
-            _id: id
-        }, function (err, results) {
-            if(results === 0) return respond(404, 'id not found');
+        module.model.findByIdAndUpdate(id, {
+            deleted: true
+        }, function (err, order) {
             if(err) return respond(400, err);
 
-            return respond(200, {
-                _id: id
-            });
+            return respond(200, order);
         });
 
     });

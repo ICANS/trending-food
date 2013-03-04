@@ -13,7 +13,7 @@ shasum.update('test');
 var testNow      = (new Date()).getTime();
 var testTomorrow = testNow + (24 * 60 * 60 * 1000);
 
-var testMealtimeIdString = 'B1';
+var testMealtimeIdString = 'B';
 var testMealtimeTitle    = '12:30';
 
 var testUserID   = '';
@@ -30,8 +30,8 @@ var testMealAddedTitle    = 'Test Meal';
 var testMealAddedCategory = 'Hunde';
 var testMealAddedVotes    = 0;
 
-var testMealCount = null;
-var testOrderCount = null;
+var testMealCount     = null;
+var testOrderCount    = null;
 var testMealtimeCount = null;
 
 var suite = vows.describe('API');
@@ -67,7 +67,10 @@ suite.addBatch({
             topic: function () {
                 request({
                     uri     : testDomain + '/orders/count',
-                    method  : 'GET'
+                    method  : 'GET',
+                    qs      : {
+                        deleted: 0
+                    }
                 }, this.callback);
             },
 
@@ -443,6 +446,10 @@ suite.addBatch({
             "should respond the same id": function (err, res, body) {
                 var out = JSON.parse(body);
                 assert.equal(out._id, testOrderID);
+            },
+            "should respond with key 'deleted' => 1": function (err, res, body) {
+                var out = JSON.parse(body);
+                assert.equal(out.deleted, 1);
             }
         }
     },
@@ -543,7 +550,10 @@ suite.addBatch({
             topic: function () {
                 request({
                     uri     : testDomain + '/orders/count',
-                    method  : 'GET'
+                    method  : 'GET',
+                    qs      : {
+                        deleted: 0
+                    }
                 }, this.callback);
             },
 
@@ -553,7 +563,7 @@ suite.addBatch({
 
             "should respond origin count": function (err, res, body) {
                 var res = JSON.parse(body);
-                assert.equal(res.count, testOrderCount);
+                assert.equal(res.count, testOrderCount + 1);
             }
 
         },
