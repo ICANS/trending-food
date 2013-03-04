@@ -5,6 +5,7 @@ var express   = require('express'),
     futures   = require('futures'),
     http      = require('http'),
     fs        = require('fs'),
+    colors    = require('colors'),
     config    = require('./config'),
     utilities = require('./utilities');
 
@@ -32,6 +33,24 @@ app.set('requirements', requirements);
 
 process.on('uncaughtException', function (error) {
     utilities.handleError(error);
+});
+
+/**
+ * Request alife status
+ *
+ * Lets check if the app is already running
+ */
+
+request({
+    uri     :  config.api.uri + '/alife',
+    method  : 'GET'
+}, function (error, response) {
+    if(typeof response === 'undefined' || response.statusCode !== 418) {
+        console.log();
+        console.error('Please start the API app. "cd ../../ && node app"'.red);
+        console.log();
+        process.exit();
+    }
 });
 
 // controllers - setup
