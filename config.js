@@ -10,13 +10,22 @@ exports.url = domain + ':' + port;
 exports.uploadDir = path.join(__dirname, 'uploads');
 exports.backupDir = path.join(__dirname, 'backups');
 
-exports.db = db = {
-    host: '127.0.0.1',
-    port: '27017',
-    name: 'trending-food'
+exports.databases = databases = {
+    test: {
+        host: '127.0.0.1',
+        port: '27017',
+        name: 'trending-food-test'
+    },
+    prod: {
+        host: '127.0.0.1',
+        port: '27017',
+        name: 'trending-food'
+    }
 };
 
-exports.db.domain = 'mongodb://' + db.host + ':' + db.port + '/' + db.name;
+for(var name in databases) {
+    exports.databases[name].domain = 'mongodb://' + databases[name].host + ':' + databases[name].port + '/' + databases[name].name;
+}
 
 exports.meal = {
     amount: {
