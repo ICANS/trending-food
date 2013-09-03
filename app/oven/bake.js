@@ -286,7 +286,7 @@ var backupHandler = {
 
     _getBackupDir: function () {
         return config.backupDir;
-    }
+    },
 
     restore: function (respond) {
         var host = this._getDatabaseHost();

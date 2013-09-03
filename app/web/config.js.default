@@ -19,10 +19,10 @@ exports.pagination = {
 
 exports.api = {
 	uri: 'http://127.0.0.1:3000'
-}
+};
 
 exports.mealtime = {
 	default: 'mealtime_2'
-}
+};
 
 exports.hungry = ['hungrig', 'nälkäinen', 'flămând', 'svangur', 'aç', 'sulten', 'hungry', 'näljane', 'malsata'];
