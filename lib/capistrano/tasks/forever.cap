@@ -1,0 +1,22 @@
+namespace :deploy do
+  desc "START the servers"
+  task :start do
+    on roles :app do
+      execute "forever start -m 20 #{current_path}/app.js"
+    end
+  end
+
+  desc "STOP the servers"
+  task :stop do
+    on roles :app do
+      execute "forever stop #{current_path}/app.js"
+    end
+  end
+
+  desc "RESTART the servers"
+  task :restart do
+    on roles :app do
+      execute "forever restart #{current_path}/app.js"
+    end
+  end
+end
