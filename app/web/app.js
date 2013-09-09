@@ -20,7 +20,7 @@ var urlHelper = {
     meal: function (id) {
         return '/meal/' + id;
     }
-}
+};
 
 utilities.moment = require('moment');
 utilities.moment.lang('de');
@@ -186,7 +186,8 @@ app.get('/', routes.user.checkLogin, function (req, res, next) {
             uri     : config.api.uri + '/orders/',
             method  : 'GET',
             qs      : {
-                limit: 5
+                limit: 5,
+                order: 'desc'
             }
         }, function (error, response, body) {
 
