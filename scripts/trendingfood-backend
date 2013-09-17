@@ -1,12 +1,12 @@
 #! /bin/bash
 ### BEGIN INIT INFO
-# Provides:          trendingfood
-# Required-Start:    $networking $syslog trendingfoodbackend
-# Required-Stop:    
+# Provides:          trendingfoodbackend
+# Required-Start:    $networking $syslog mongodb
+# Required-Stop:     trendingfood
 # Default-Start:     2 3 4 5
 # Default-Stop:      0 1 6
-# Short-Description: trending-food application initscript for frontend
-# Description:       Starts the ICANS lunch ordering application
+# Short-Description: trending-food application initscript for backend
+# Description:       Starts the ICANS lunch ordering application backend
 #   
 ### END INIT INFO
 
@@ -20,10 +20,10 @@
 # PATH should only include /usr/* if it runs after the mountnfs.sh script
 WORKING_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 PATH=/sbin:/usr/sbin:/bin:/usr/bin
-DESC="Frontend for company wide food order webservice"
-NAME=trendingfood
+DESC="Backend for company wide food order webservice"
+NAME=trendingfood-backend
 DAEMON=/usr/local/bin/node
-DAEMON_ARGS=/var/www/trending-food/app/web/app.js
+DAEMON_ARGS=/var/www/trending-food/app.js
 PIDFILE=/var/run/$NAME.pid
 SCRIPTNAME=/etc/init.d/$NAME
 
