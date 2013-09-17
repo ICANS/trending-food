@@ -134,7 +134,7 @@ app.get('/logout', routes.user.logout);
 // ----------------------------------------------------------------------
 
 app.get('/account/orders/?:page?', routes.user.checkLogin, routes.order.renderOrdersByUser);
-app.get('/orders/?:page?', routes.user.checkLogin, routes.order.renderOrders);
+app.get('/orders/?:date?/', routes.user.checkLogin, routes.order.renderOrders);
 
 // routes - meal
 // ----------------------------------------------------------------------
