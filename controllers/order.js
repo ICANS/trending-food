@@ -73,21 +73,20 @@ exports.add = function (respond, mealID, mealtimeID, userID) {
 exports.getList = function (respond, offset, limit, sort, order, dateStart, dateEnd) {
 
     var date   = new Date();
-    var limit  = limit || 30;
-    var offset = offset || 0;
-    var sort   = sort || 'created';
-    var order  = order == 'desc' ? '-' : '';
-
-    if(dateStart) {
+    limit  = limit || 30;
+    offset = offset || 0;
+    sort   = sort || 'created';
+    order  = order == 'desc' ? '-' : '';
+    if (dateStart) {
         dateStart = new Date(dateStart);
     } else {
         dateStart = new Date(date.getFullYear(), date.getMonth(), date.getDate());
     }
 
-    if(dateEnd) {
+    if (dateEnd) {
         dateEnd = new Date(dateEnd);
     } else {
-        dateEnd = new Date(date.getTime() + (24 * 60 * 60 * 1000));
+        dateEnd = new Date(dateStart.getTime() + (24 * 60 * 60 * 1000));
     }
 
     module.model.find({
@@ -114,10 +113,10 @@ exports.getListByUser = function (respond, userID, offset, limit, sort, order) {
     var userObjectID = null;
 
     var date   = new Date();
-    var limit  = limit || 30;
-    var offset = offset || 0;
-    var sort   = sort || 'created';
-    var order  = order == 'desc' ? '-' : '';
+    limit  = limit || 30;
+    offset = offset || 0;
+    sort   = sort || 'created';
+    order  = order == 'desc' ? '-' : '';
 
     if(userID.toString().length !== 24) {
         return respond(400, {});
@@ -140,7 +139,7 @@ exports.getListByUser = function (respond, userID, offset, limit, sort, order) {
 
             respond(200, results);
         });
-}
+};
 
 exports.count = function (respond, deleted) {
 
