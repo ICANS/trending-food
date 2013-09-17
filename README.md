@@ -1,5 +1,17 @@
 [![Build Status](https://travis-ci.org/ICANS/trending-food.png?branch=master)](https://travis-ci.org/ICANS/trending-food)
 
+Trending Food is a simple tool to manage the ordering of meals for lunch in your company or so.
+It consist of a REST backend and a frontend component.
+
+### Installation
+______________
+
+#### Ubuntu
+- sudo apt-get install libicu-dev
+- npm install
+- cd app/web
+- npm install
+
 ### Supported Methods
 ______________
 

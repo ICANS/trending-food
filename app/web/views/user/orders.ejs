@@ -15,7 +15,7 @@
     <tbody>
         <% for(var i = 0; i < orders.length; i++) { %>
             <% if(orders[i].meal) { %>
-            <tr data-order-id="<%= orders[i]._id %>">
+            <tr <% if(orders[i].deleted) { %>class="order-deleted"<% } %> data-order-id="<%= orders[i]._id %>">
                 <td class="meal-title">
                     <a href="<%= utilities.url.meal(orders[i].meal._id) %>" title="<%= orders[i].meal.title %>">
                         <%= orders[i].meal.title %>
@@ -31,7 +31,7 @@
                     <%= (orders[i].mealtime.title).split(' - ')[1] %>
                 </td>
                 <td>
-                <% if(orders[i].user._id === session.user_id) { %>
+                <% if(orders[i].user._id === session.user_id && !orders[i].deleted) { %>
                     <a href="#" class="btn btn-small order-delete" data-order-id="<%= orders[i]._id %>"><i class="icon-trash"></i> Delete</a>
                 <% } %>
                 </td>

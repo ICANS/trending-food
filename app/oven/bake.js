@@ -21,24 +21,6 @@ var exec = require('child_process').exec,
     child;
 
 /**
- * Request alife status
- *
- * Lets check if the app is already running
- */
-
-request({
-    uri     :  config.url + '/alife',
-    method  : 'GET'
-}, function (error, response) {
-    if(response && response.statusCode === 418) {
-        say(generalHandler.messages.welcome);
-    } else {
-        say(generalHandler.messages.notAlife);
-        process.exit();
-    }
-});
-
-/**
  * Input Listener
  *
  * Keep tracking of the user input
@@ -142,8 +124,30 @@ var generalHandler = {
             }
             respond();
         });
+    },
+
+    checkALife: function (respond) {
+        request({
+            uri     :  config.url + '/alife',
+            method  : 'GET'
+        }, function (error, response) {
+            if(response && response.statusCode === 418) {
+                respond();
+            } else {
+                say(generalHandler.messages.notAlife);
+                process.exit();
+            }
+        });
     }
 }
+
+/**
+ * Request alife status
+ *
+ * Lets check if the app is already running
+ */
+
+generalHandler.checkALife(validateInput);
 
 /**
  * Meals Hanlder
@@ -272,12 +276,24 @@ var backupHandler = {
         ],
     },
 
-    restore: function (respond) {
-        var host = config.db.host + ':' + config.db.port;
-        var dbName = config.db.name;
-        var path = '../../backups';
+    _getDatabaseHost: function () {
+        return config.databases.prod.host + ':' + config.databases.prod.port;
+    },
 
-        var command = 'mongorestore --host ' + host + ' --db ' + dbName + ' ' + path + '/' + dbName;
+    _getDatabaseName: function () {
+        return config.databases.prod.name;
+    },
+
+    _getBackupDir: function () {
+        return config.backupDir;
+    },
+
+    restore: function (respond) {
+        var host = this._getDatabaseHost();
+        var name = this._getDatabaseName();
+        var dir  = this._getBackupDir();
+
+        var command = 'mongorestore --host ' + host + ' --db ' + name + ' ' + dir + '/' + name;
 
         console.log('Running: ' + command);
 
@@ -297,12 +313,11 @@ var backupHandler = {
     },
 
     dump: function (respond) {
+        var host = this._getDatabaseHost();
+        var name = this._getDatabaseName();
+        var dir  = this._getBackupDir();
 
-        var host = config.db.host + ':' + config.db.port;
-        var dbName = config.db.name;
-        var path = '../../backups';
-
-        var command = 'mongodump --host ' + host + ' --db ' + dbName + ' --out ' + path;
+        var command = 'mongodump --host ' + host + ' --db ' + name + ' --out ' + dir;
 
         console.log('Running: ' + command);
 

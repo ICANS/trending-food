@@ -18,6 +18,7 @@ exports.getList = function (req, res) {
     var offset    = req.param('offset') || 0;
     var limit     = req.param('limit') || 0;
     var sort      = req.param('sort');
+    var order     = req.param('order');
     var dateStart = req.param('dateStart');
     var dateEnd   = req.param('dateEnd');
 
@@ -27,7 +28,7 @@ exports.getList = function (req, res) {
             .json(response);
     };
 
-    module.controller.getList(callback, offset, limit, sort, dateStart, dateEnd);
+    module.controller.getList(callback, offset, limit, sort, order, dateStart, dateEnd);
 };
 
 exports.getListByUser = function (req, res) {
@@ -48,6 +49,9 @@ exports.getListByUser = function (req, res) {
 };
 
 exports.count = function (req, res) {
+
+    var deleted = !!(req.param('deleted')) || 1;
+
     var callback = function (statusCode, response) {
         res
             .status(statusCode)
@@ -56,7 +60,7 @@ exports.count = function (req, res) {
             });
     };
 
-    module.controller.count(callback);
+    module.controller.count(callback, deleted);
 };
 
 exports.delete = function (req, res) {

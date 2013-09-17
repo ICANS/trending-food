@@ -1,11 +1,30 @@
-var express    = require('express')
-    , http     = require('http')
-    , mongoose = require('mongoose')
-    , http     = require('http')
-    , config   = require('./config');
+var express    = require('express'),
+      http     = require('http'),
+      mongoose = require('mongoose'),
+      colors   = require('colors'),
+      http     = require('http'),
+      config   = require('./config');
+
+var environmentDatabase = 'prod';
+
+if(process.argv.length > 1 && process.argv[2]) {
+    environmentDatabase = process.argv[2];
+}
+
+console.log();
+
+if(config.databases[environmentDatabase]) {
+    console.log('Running in ' + environmentDatabase.green + ' mode.');
+    environmentDatabaseObject = config.databases[environmentDatabase];
+} else {
+    console.log('The "'.red + environmentDatabase + '" database object was not found'.red);
+    process.exit();
+}
+
+console.log();
 
 var app = express();
-var db  = mongoose.createConnection(config.db.domain);
+var db  = mongoose.createConnection(environmentDatabaseObject.domain);
 
 app.use(express.bodyParser({
     keepExtensions: true,
