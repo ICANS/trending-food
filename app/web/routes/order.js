@@ -1,8 +1,11 @@
 exports.renderOrders = function (req, res, next) {
 
-    var page      = (parseInt(req.param('page')) - 1) || 0;
+    var page      = (parseInt(req.param('page'), 10) - 1) || 0;
     var limit     = module.config.pagination.perPage;
     var subdomain = 'orders'; // for pagination
+    var dateTemp  = req.param('date');
+    dateTemp      = undefined !== dateTemp ? new Date(dateTemp) : new Date();
+    var selectedDate = new Date(dateTemp.getFullYear(), dateTemp.getMonth(), dateTemp.getDate());
 
     var callback = function (mealtimes, orders) {
         return res.render('orders', {
@@ -12,16 +15,17 @@ exports.renderOrders = function (req, res, next) {
             session     : req.session,
             page_domain : subdomain,
             orders      : orders,
-            mealtimes   : mealtimes
+            mealtimes   : mealtimes,
+            date        : selectedDate
         });
     };
 
-    module.controller.renderOrders(callback, next, page, limit);
+    module.controller.renderOrders(callback, next, page, limit, selectedDate);
 };
 
 exports.renderOrdersByUser = function (req, res, next) {
 
-    var page      = (parseInt(req.param('page')) - 1) || 0;
+    var page      = (parseInt(req.param('page'), 10) - 1) || 0;
     var limit     = module.config.pagination.perPage;
     var sort      = req.param('sort');
     var subdomain = 'account/orders'; // for pagination

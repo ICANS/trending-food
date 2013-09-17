@@ -116,6 +116,12 @@ $(function() {
 
     });
 
+    $('.order-datepicker').datepicker().on('changeDate', function(ev){
+        $(this).data('datepicker').hide();
+        var newDate = new Date(ev.date);
+        window.location.href = '/orders/'+ newDate.getFullYear() +'-'+ (newDate.getMonth()+1) +'-'+ newDate.getDate() +'/';
+    });
+
     var meals = [];
 
     $('.meal-item').each(function (i, ele) {
