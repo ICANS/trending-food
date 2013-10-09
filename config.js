@@ -23,8 +23,8 @@ exports.databases = databases = {
     }
 };
 
-for(var name in databases) {
-    exports.databases[name].domain = 'mongodb://' + databases[name].host + ':' + databases[name].port + '/' + databases[name].name;
+for(var dbname in databases) {
+    exports.databases[dbname].domain = 'mongodb://' + databases[dbname].host + ':' + databases[dbname].port + '/' + databases[dbname].name;
 }
 
 exports.meal = {
@@ -38,3 +38,5 @@ exports.meal = {
         min: 0
     }
 };
+
+exports.mealtimelimit = 24;
