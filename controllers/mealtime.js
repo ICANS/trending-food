@@ -1,20 +1,72 @@
-exports.getList = function (respond, offset, limit, sort, order) {
+var sequence = require('futures').sequence;
 
-    var limit  = limit  || 30;
-    var offset = offset || 0;
-    var sort   = sort   || '_id';
-    var order  = order == 'desc' ? '-' : '';
+exports.getList = function (respond, offset, limit, sort, order, available) {
 
-    module.model.find()
-    .sort(order + sort)
-    .limit(limit)
-    .skip(offset)
-    .exec(function (err, results) {
-        if (err) {
-            respond(400, err);
-        } else {
-            respond(200, results);
+    var seq = sequence();
+
+    limit  = limit  || 30;
+    offset = offset || 0;
+    sort   = sort   || '_id';
+    order  = order == 'desc' ? '-' : '';
+
+    seq
+
+    // find all mealtimes
+    .then(function (next) {
+        module.model.find()
+        .sort(order + sort)
+        .limit(limit)
+        .skip(offset)
+        .exec(function (err, results) {
+            if (err) {
+                respond(400, err);
+            } else {
+                if (available) {
+                    next(results); // only return available times
+                } else {
+                    respond(200, results);
+                }
+            }
+        });
+    })
+    // select only available mealtimes
+    .then(function (next, mealtimes) {
+        count = 0;
+        total = mealtimes.length;
+        mealtimes.forEach(function(mealtime) {
+            mealOrders(mealtime._id, function(ordersCount) {
+                if (ordersCount >= module.config.mealtimelimit) {
+                    mealtimes.splice(mealtimes.indexOf(mealtime), 1);
+                }
+                count++;
+                if (count === total) {
+                    next(mealtimes);
+                }
+            });
+
+        });
+
+    })
+    .then(function (next, mealtimes) {
+        respond(200, mealtimes);
+    });
+};
+
+mealOrders = function (mealtimeId, callback) {
+    var ObjectId     = module.mongoose.Types.ObjectId;
+    var mealtimeObjectId = new ObjectId(mealtimeId.toString());
+    var date = new Date();
+
+    date = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+    console.log(mealtimeId);
+    var query = module.models.order.count({
+        mealtime: mealtimeObjectId,
+        deleted: false,
+        created : {
+            $gte : date
         }
+    }, function (err, count) {
+        callback(count);
     });
 };
 
@@ -71,6 +123,7 @@ module.exports = function(app) {
     module.mongoose = app.get('mongoose');
     module.config   = app.get('config');
 
+    module.models   = app.get('models');
     module.model    = app.get('models').mealtime;
 
     return exports;

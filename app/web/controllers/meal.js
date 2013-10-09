@@ -8,7 +8,10 @@ exports.renderMeals = function (respond, page, sort, order, limit) {
 
         module.requirements.request({
             uri     : module.config.api.uri + '/mealtimes/',
-            method  : 'GET'
+            method  : 'GET',
+            qs      : {
+                available: true
+            }
         }, function (error, response, body) {
 
             if(error) module.utilities.handleError(error);
