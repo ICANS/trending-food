@@ -3,24 +3,44 @@ var crypto = require('crypto');
 var cryptPassword = function(password) {
     var shasum = crypto.createHash('sha1');
     shasum.update(password);
+
     return shasum.digest('hex');
 };
+
+var sequence = require('futures').sequence;
 
 exports.add = function (respond, username, password) {
 
     var password_hash = cryptPassword(password);
-
+    var seq = sequence();
     var user = new module.model({
         username: username,
         password: password_hash
     });
 
-    user.save(function (err, results) {
-        if (err) {
-            respond(400, err);
-        } else {
-            respond(201, results);
-        }
+    seq
+
+    .then(function (next) {
+        module.model.findOne({
+            username: username
+        }, function (err, result) {
+            if (result) {
+                return respond(400); // username is already taken
+            } else {
+                next();
+            }
+        });
+    })
+
+    // save
+    .then(function (next) {
+        user.save(function (err, results) {
+            if (err) {
+                return respond(400, err);
+            } else {
+                return respond(201, results);
+            }
+        });
     });
 };
 
@@ -45,8 +65,7 @@ exports.getByUsername = function (respond, username) {
         if (err) return respond(400, err);
         return respond(200, result);
     });
-
-}
+};
 
 exports.delete = function (respond, id) {
 

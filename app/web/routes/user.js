@@ -15,7 +15,7 @@ exports.checkLogin = function (req, res, next) {
 
     var callback = function (isLoggedIn) {
 
-        if(isLoggedIn) {
+        if (isLoggedIn) {
             return next();
         }
 
@@ -36,7 +36,7 @@ exports.logout = function (req, res, next) {
 
 exports.renderLogin = renderLogin = function (req, res, next) {
 
-    if(req.session.auth) {
+    if (req.session.auth) {
         return res.redirect('/');
     }
 
