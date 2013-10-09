@@ -72,8 +72,8 @@ mealOrders = function (mealtimeId, callback) {
 
 exports.add = function (respond, id, title) {
 
-    var id = id || null;
-    var title = title || null;
+    id = id || null;
+    title = title || null;
 
     var mealtime = new module.model({
         id   : id,
@@ -91,7 +91,7 @@ exports.add = function (respond, id, title) {
 
 exports.delete = function (respond, id) {
 
-    var id = id || null;
+    id = id || null;
 
     module.model.remove({
         _id: id
