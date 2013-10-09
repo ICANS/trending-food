@@ -110,42 +110,6 @@
         }
       }
     },
-    "simple-xmpp": {
-      "version": "0.1.12",
-      "from": "simple-xmpp@>=0.1.12",
-      "resolved": "https://registry.npmjs.org/simple-xmpp/-/simple-xmpp-0.1.12.tgz",
-      "dependencies": {
-        "node-xmpp": {
-          "version": "0.3.2",
-          "from": "node-xmpp@0.3.x",
-          "resolved": "https://registry.npmjs.org/node-xmpp/-/node-xmpp-0.3.2.tgz",
-          "dependencies": {
-            "node-expat": {
-              "version": "2.0.0",
-              "from": "node-expat@>=1.4.1",
-              "resolved": "https://registry.npmjs.org/node-expat/-/node-expat-2.0.0.tgz"
-            },
-            "ltx": {
-              "version": "0.2.4",
-              "from": "ltx@>= 0.1.1",
-              "resolved": "https://registry.npmjs.org/ltx/-/ltx-0.2.4.tgz",
-              "dependencies": {
-                "sax": {
-                  "version": "0.5.5",
-                  "from": "sax@>=0.3.5",
-                  "resolved": "https://registry.npmjs.org/sax/-/sax-0.5.5.tgz"
-                }
-              }
-            }
-          }
-        },
-        "qbox": {
-          "version": "0.1.7",
-          "from": "qbox@0.1.x",
-          "resolved": "https://registry.npmjs.org/qbox/-/qbox-0.1.7.tgz"
-        }
-      }
-    },
     "request": {
       "version": "2.27.0",
       "from": "request@>=2.11.4",
