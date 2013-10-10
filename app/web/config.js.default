@@ -17,6 +17,10 @@ exports.pagination = {
 	perPage: 32
 };
 
+exports.filter = {
+    default: 'available'
+};
+
 exports.api = {
 	uri: 'http://127.0.0.1:3000'
 };
