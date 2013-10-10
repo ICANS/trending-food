@@ -32,6 +32,19 @@ var _updateById = function(respond, id, options) {
     });
 };
 
+var filterOptions = function(filter) {
+    switch (filter) {
+        case 'available':
+            return { $gt: 0 };
+        case 'outofstock':
+            return { $lt: 1};
+        case 'all':
+            return { $gt: -1};
+        default:
+          return { $gt: 0 };
+    }
+};
+
 exports.add = function (respond, title, amount, image, category) {
 
     var imageData = null;
@@ -110,7 +123,7 @@ exports.getById = function (respond, id) {
     });
 };
 
-exports.getList = function (respond, offset, limit, sort, order) {
+exports.getList = function (respond, offset, limit, sort, order, filter) {
 
     limit  = limit  || 30;
     offset = offset || 0;
@@ -124,9 +137,7 @@ exports.getList = function (respond, offset, limit, sort, order) {
     .then(function (next) {
         module.model.find({
             deleted: false,
-            amount : {
-                $gt: 0
-            }
+            amount : filterOptions(filter)
         })
         .select('_id title category deleted votes amount')
         .limit(limit)

@@ -39,16 +39,16 @@ exports.getById = function (req, res) {
 
 exports.getList = function (req, res) {
 
-    var offset  = req.param('offset');
-    var limit   = req.param('limit');
-    var sort    = req.param('sort');
-    var order   = req.param('order');
-
+    var offset  = req.param('offset'),
+        limit   = req.param('limit'),
+        sort    = req.param('sort'),
+        order   = req.param('order'),
+        filter  = req.param('filter');
     var callback = function(statusCode, response) {
         res.status(statusCode).json(response);
     };
 
-    module.controller.getList(callback, offset, limit, sort, order);
+    module.controller.getList(callback, offset, limit, sort, order, filter);
 };
 
 exports.delete = function (req, res) {
