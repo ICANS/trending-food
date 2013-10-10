@@ -50,10 +50,7 @@
                     </div>
 
                     <div class="row-fluid">
-
-                        <% if(meals[m].amount >= 0) { %>
                         <div class="span12">
-
                             <div class="row-fluid">
 
                                 <% if(isAdmin(session)) { %>
@@ -75,15 +72,15 @@
                                     </span>
                                 </div>
                                 <% } %>
-                                <div class="span5 text-right pull-right">
-                                    <a href="#modal-order-add-container" class="btn btn-primary order-modal-open" data-toggle="modal">
-                                        Order <i class="icon-bullhorn"></i>
-                                    </a>
-                                </div>
-
+                                <% if(meals[m].amount > 0) { %>
+                                    <div class="span5 text-right pull-right">
+                                        <a href="#modal-order-add-container" class="btn btn-primary order-modal-open" data-toggle="modal">
+                                            Order <i class="icon-bullhorn"></i>
+                                        </a>
+                                    </div>
+                                <% } %>
                             </div>
                         </div>
-                        <% } %>
                     </div>
                 </div>
             </div>

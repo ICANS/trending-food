@@ -3,7 +3,7 @@
 
         <% if(meal) { %>
 
-        <div 
+        <div
             id="meal-<%= meal._id %>"
             class="meal-item"
             data-meal-id="<%= meal._id %>"
@@ -23,7 +23,7 @@
 
                 <div class="lead">
                     <% if(meal.amount < 1) { %>
-                    <span class="text-error">This meal not available</span>
+                    <span class="text-error">This meal is not available</span>
                     <% } else { %>
                     <span class="text-success">This meal is available</span>
                     <% } %>
@@ -35,33 +35,35 @@
                 <hr>
 
                 <div class="row-fluid">
-                <div class="span9">
-                    <% if(isAdmin(session)) { %>
+                    <div class="span9">
+                        <% if(isAdmin(session)) { %>
 
-                    <span class="btn-group">
-                        <a class="btn btn-danger meal-delete-action">
-                            <i class="icon-trash"></i> Delete
+                        <span class="btn-group">
+                            <a class="btn btn-danger meal-delete-action">
+                                <i class="icon-trash"></i> Delete
+                            </a>
+                        </span>
+
+                        <span class="btn-group">
+
+                            <a class="btn meal-amount-up-action">
+                                <i class="icon-plus"></i>
+                            </a>
+                            <a class="btn meal-amount-down-action">
+                                <i class="icon-minus"></i>
+                            </a>
+
+                        </span>
+                        <% } %>
+                    </div>
+
+                    <% if (meal.amount > 0) { %>
+                    <div class="span3 text-right">
+                        <a href="#modal-order-add-container" class="btn btn-primary order-modal-open" data-toggle="modal">
+                            Order <i class="icon-bullhorn"></i>
                         </a>
-                    </span>
-
-                    <span class="btn-group">
-
-                        <a class="btn meal-amount-up-action">
-                            <i class="icon-plus"></i>
-                        </a>
-                        <a class="btn meal-amount-down-action">
-                            <i class="icon-minus"></i>
-                        </a>
-
-                    </span>
+                    </div>
                     <% } %>
-                </div>
-
-                <div class="span3 text-right">
-                    <a href="#modal-order-add-container" class="btn btn-primary order-modal-open" data-toggle="modal">
-                        Order <i class="icon-bullhorn"></i>
-                    </a>
-                </div>
                 </div>
             </div>
         </div>
