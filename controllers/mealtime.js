@@ -6,7 +6,7 @@ exports.getList = function (respond, offset, limit, sort, order, available) {
 
     limit  = limit  || 30;
     offset = offset || 0;
-    sort   = sort   || '_id';
+    sort   = sort   || 'title';
     order  = order == 'desc' ? '-' : '';
 
     seq
