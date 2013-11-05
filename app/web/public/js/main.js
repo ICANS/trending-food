@@ -50,6 +50,11 @@ $(function() {
                 case 2:
                     msg = 'This meals are empty, sorry :/';
                     break;
+                case 3:
+                    msg = 'Meal could not be found, sorry :/';
+                    break;
+                case 4:
+                    msg = 'Mealtime is already fully booked. Please choose another one.';
                 }
 
                 var html = '<div class="alert alert-error">';

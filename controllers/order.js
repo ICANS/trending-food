@@ -37,6 +37,29 @@ exports.add = function (respond, mealID, mealtimeID, userID) {
             });
     })
 
+    // check if mealtime is already full
+    .then(function (next) {
+        var date = new Date();
+        module.model.count({
+            mealtime: mealtimeObjectID,
+            deleted: false,
+            created : {
+                $gte : new Date(date.getFullYear(), date.getMonth(), date.getDate())
+            }
+        }).exec(function (err, count) {
+            if (err) return respond(400, err);
+
+            if (count >= module.config.mealtimelimit) {
+                return respond(400, {
+                    statusInternal: 4,
+                    statusText: 'mealtime is full'
+                });
+            }
+
+            next();
+        });
+    })
+
     // save
     .then(function (next) {
 
@@ -103,6 +126,7 @@ exports.getList = function (respond, offset, limit, sort, order, dateStart, date
     .skip(offset)
     .exec(function (err, results) {
         if (err) return respond(400, err);
+
         return respond(200, results);
     });
 };

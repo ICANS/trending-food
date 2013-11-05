@@ -8,3 +8,4 @@ uploads/
 migration/assets/images/
 config.js
 debug/
+bin/
