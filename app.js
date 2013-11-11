@@ -79,7 +79,7 @@ app.all('*', function(req, res, next) {
     next();
 });
 
-app.get('/alife', function(req, res) {
+app.get('/alive', function(req, res) {
     res
         .status(418)
         .send('yep');

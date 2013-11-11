@@ -85,7 +85,7 @@ var generalHandler = {
             '[q]'.green + ' – Quit baking',
             '',
         ],
-        notAlife: [
+        notAlive: [
             '',
             'Please start the API app. "cd ../../ && node app"'.red,
             '',
@@ -126,15 +126,15 @@ var generalHandler = {
         });
     },
 
-    checkALife: function (respond) {
+    checkAlive: function (respond) {
         request({
-            uri     :  config.url + '/alife',
+            uri     :  config.url + '/alive',
             method  : 'GET'
         }, function (error, response) {
             if(response && response.statusCode === 418) {
                 respond();
             } else {
-                say(generalHandler.messages.notAlife);
+                say(generalHandler.messages.notAlive);
                 process.exit();
             }
         });
@@ -142,12 +142,12 @@ var generalHandler = {
 }
 
 /**
- * Request alife status
+ * Request alive status
  *
  * Lets check if the app is already running
  */
 
-generalHandler.checkALife(validateInput);
+generalHandler.checkAlive(validateInput);
 
 /**
  * Meals Hanlder
