@@ -36,13 +36,13 @@ process.on('uncaughtException', function (error) {
 });
 
 /**
- * Request alife status
+ * Request alive status
  *
  * Lets check if the app is already running
  */
 
 request({
-    uri     :  config.api.uri + '/alife',
+    uri     :  config.api.uri + '/alive',
     method  : 'GET'
 }, function (error, response) {
     if(typeof response === 'undefined' || response.statusCode !== 418) {
