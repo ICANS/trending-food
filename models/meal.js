@@ -20,6 +20,11 @@ module.exports = function (app, model) {
             default: config.meal.amount.default
         },
 
+        vegetarian: {
+            type: Boolean,
+            default: false
+        },
+
         votes: {
             type   : Number,
             min    : config.meal.votes.min,

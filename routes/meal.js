@@ -1,15 +1,16 @@
 exports.add = function (req, res) {
 
-    var title    = req.param('title');
-    var amount   = req.param('amount');
-    var category = req.param('category');
-    var image    = req.files && req.files.image ? req.files.image : null;
+    var title       = req.param('title');
+    var amount      = req.param('amount');
+    var category    = req.param('category');
+    var vegetarian  = req.param('vegetarian');
+    var image       = req.files && req.files.image ? req.files.image : null;
 
     var callback = function(statusCode, response) {
         res.status(statusCode).json(response);
     };
 
-    module.controller.add(callback, title, amount, image, category);
+    module.controller.add(callback, title, amount, vegetarian, image, category);
 };
 
 exports.count = function (req, res) {
@@ -104,6 +105,18 @@ exports.amountDown = function (req, res) {
     };
 
     module.controller.amountDown(callback, id);
+};
+
+exports.setVegetarian = function (req, res) {
+
+    var id          = req.param('id'),
+        vegetarian  = req.param('vegetarian');
+
+    var callback = function(statusCode, response) {
+        res.status(statusCode).json(response);
+    };
+
+    module.controller.setVegetarian(callback, id, vegetarian);
 };
 
 exports.getVotes = function (req, res) {
