@@ -37,7 +37,7 @@ exports.logout = function (req, res, next) {
 exports.renderLogin = renderLogin = function (req, res, next) {
 
     if (req.session.auth) {
-        return res.redirect('/meals');
+        return res.redirect('/meals/available/');
     }
 
     return res.render('login', {
