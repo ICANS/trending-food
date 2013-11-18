@@ -193,6 +193,30 @@ $(function() {
         });
     });
 
+    $('.meal-vegetarian-toggle').change(function () {
+        var parent = $(this).parents('.meal-item');
+        var vegetarianIndicator = parent.find('.meal-vegetarian');
+        var meal_id = parent.data('meal-id');
+        var vegetarian = $(this).is(':checked');
+
+        $.ajax({
+            type: 'POST',
+            url: api_url + '/meals/' + meal_id + '/setvegetarian/' + vegetarian,
+            success: function(data) {
+                console.log(vegetarian ? 'yes' : 'no');
+                console.log(parent);
+                parent.data('meal-vegetarian', vegetarian);
+
+                if (vegetarian) {
+                    vegetarianIndicator.show();
+                }
+                else {
+                    vegetarianIndicator.hide();
+                }
+            }
+        });
+    });
+
     // container.isotope({
     //     itemSelector: '.meal-item',
     //     getSortData: {

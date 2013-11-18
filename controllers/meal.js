@@ -14,6 +14,11 @@ var _updateById = function(respond, id, options) {
                         foundDocument[incProp] += options[optionsProp][incProp];
                     }
                 }
+                else if (optionsProp === '$set') {
+                    for(var propertyName in options[optionsProp]) {
+                        foundDocument[propertyName] = options[optionsProp][propertyName];
+                    }
+                }
 
             } else {
                 foundDocument[optionsProp] += options[optionsProp];
@@ -45,8 +50,7 @@ var filterOptions = function(filter) {
     }
 };
 
-exports.add = function (respond, title, amount, image, category) {
-
+exports.add = function (respond, title, amount, vegetarian, image, category) {
     var imageData = null;
     var imageType = null;
 
@@ -63,6 +67,7 @@ exports.add = function (respond, title, amount, image, category) {
     var meal = new module.model({
         title : title,
         amount: amount,
+        vegetarian: vegetarian,
         category: category,
         image: {
             data        : imageData,
@@ -139,7 +144,7 @@ exports.getList = function (respond, offset, limit, sort, order, filter) {
             deleted: false,
             amount : filterOptions(filter)
         })
-        .select('_id title category deleted votes amount')
+        .select('_id title category deleted vegetarian votes amount')
         .limit(limit)
         .skip(offset)
         .sort(order + sort)
@@ -230,6 +235,12 @@ exports.amountUp = function (respond, id) {
 exports.amountDown = function (respond, id) {
     _updateById(respond, id, {
         $inc: { amount: -1 }
+    });
+};
+
+exports.setVegetarian = function (respond, id, vegetarian) {
+    _updateById(respond, id, {
+        $set: { vegetarian: vegetarian }
     });
 };
 
