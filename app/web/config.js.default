@@ -25,6 +25,7 @@ exports.categories = {
     chicken: 'Chicken',
     pork: "Pork",
     beef: "Beef",
+    fish: "Fish",
     vegan: 'Vegetarian',
     schnitzel: 'Schnitzel',
     pasta: "Pasta",
