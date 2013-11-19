@@ -36,9 +36,9 @@ module.exports = function (app, model) {
             default: Date.now
         },
 
-        updated: { 
-            type   : Date, 
-            default: Date.now 
+        updated: {
+            type   : Date,
+            default: Date.now
         },
 
         image: {
@@ -47,8 +47,8 @@ module.exports = function (app, model) {
         },
 
         category: {
-            type: String,
-            default: null
+            type: Array,
+            default: []
         },
 
         deleted: {
@@ -64,4 +64,4 @@ module.exports = function (app, model) {
     }, 'Invalid title');
 
     return MealModel;
-}
+};

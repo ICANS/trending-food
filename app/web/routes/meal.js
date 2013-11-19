@@ -4,8 +4,13 @@ exports.renderMeals = function (req, res, next) {
         limit     = module.config.pagination.perPage,
         sort      = req.param('sort') || module.config.pagination.sort,
         order     = req.param('order') || module.config.pagination.order,
-        filter    = req.filter || req.param('filter') || module.config.filter.default,
+        filter    = req.filter || req.param('filter'),
+        filterVal = req.value || req.param('value'),
         subdomain = 'meals'; // for pagination
+
+    if (!filterVal && filter == 'amount') {
+        filterVal = module.config.filter.default;
+    }
 
     var callback = function (mealtimes, pages, meals) {
 
@@ -14,6 +19,7 @@ exports.renderMeals = function (req, res, next) {
             session     : req.session,
             meals       : meals,
             mealtimes   : mealtimes,
+            categories  : module.config.categories,
             page_domain : subdomain,
             page        : page,
             pages       : pages,
@@ -21,7 +27,7 @@ exports.renderMeals = function (req, res, next) {
         });
     };
 
-    module.controller.renderMeals(callback, page, sort, order, limit, filter);
+    module.controller.renderMeals(callback, page, sort, order, limit, filter, filterVal);
 };
 
 exports.renderMeal = function (req, res, next) {

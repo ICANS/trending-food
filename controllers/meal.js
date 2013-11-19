@@ -5,17 +5,17 @@ var _updateById = function(respond, id, options) {
 
     module.model.findOne({ _id: id }, function (err, foundDocument) {
 
-        for(var optionsProp in options) {
+        for (var optionsProp in options) {
 
-            if(typeof options[optionsProp] === 'object') {
+            if (typeof options[optionsProp] === 'object') {
 
-                if(optionsProp === '$inc') {
-                    for(var incProp in options[optionsProp]) {
+                if (optionsProp === '$inc') {
+                    for (var incProp in options[optionsProp]) {
                         foundDocument[incProp] += options[optionsProp][incProp];
                     }
                 }
                 else if (optionsProp === '$set') {
-                    for(var propertyName in options[optionsProp]) {
+                    for (var propertyName in options[optionsProp]) {
                         foundDocument[propertyName] = options[optionsProp][propertyName];
                     }
                 }
@@ -37,24 +37,28 @@ var _updateById = function(respond, id, options) {
     });
 };
 
-var filterOptions = function(filter) {
-    switch (filter) {
-        case 'available':
-            return { $gt: 0 };
-        case 'outofstock':
-            return { $lt: 1};
-        case 'all':
-            return { $gt: -1};
-        default:
-          return { $gt: 0 };
+var filterOptions = function(filter, filterVal) {
+    if (filter == 'amount') {
+        switch (filterVal) {
+            case 'available':
+                return { $gt: 0 };
+            case 'outofstock':
+                return { $lt: 1};
+            case 'all':
+                return { $gt: -1};
+            default:
+              return { $gt: 0 };
+        }
     }
+
+    return { $in: [filterVal] };
 };
 
 exports.add = function (respond, title, amount, vegetarian, image, category) {
     var imageData = null;
     var imageType = null;
 
-    if(image && image.size > 0) {
+    if (image && image.size > 0) {
         imageData = fs.readFileSync(image.path);
         imageType = image.type;
 
@@ -110,17 +114,17 @@ exports.getById = function (respond, id) {
 
     var ObjectId = module.mongoose.Types.ObjectId;
 
-    if(id.toString().length !== 24) {
+    if (id.toString().length !== 24) {
         return respond(400, {
             error: true,
             message: 'submitted a invalid ID'
         });
     }
 
-    var userObjectID = new ObjectId(id);
+    var mealObjectID = new ObjectId(id);
 
     module.model.findOne({
-        _id: userObjectID,
+        _id: mealObjectID,
         deleted: false
     }).exec(function(err, result) {
         if (!result || err) return respond(400, err);
@@ -128,22 +132,23 @@ exports.getById = function (respond, id) {
     });
 };
 
-exports.getList = function (respond, offset, limit, sort, order, filter) {
+exports.getList = function (respond, offset, limit, sort, order, filter, filterVal) {
 
     limit  = limit  || 30;
     offset = offset || 0;
     sort   = sort   || 'created';
     order  = order == 'desc' ? '-' : '';
+    var query = {
+        deleted: false
+    };
+    query[filter] = filterOptions(filter, filterVal);
 
     var seq = sequence();
 
     seq
 
     .then(function (next) {
-        module.model.find({
-            deleted: false,
-            amount : filterOptions(filter)
-        })
+        module.model.find(query)
         .select('_id title category deleted vegetarian votes amount')
         .limit(limit)
         .skip(offset)

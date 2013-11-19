@@ -44,7 +44,15 @@ exports.getList = function (req, res) {
         limit   = req.param('limit'),
         sort    = req.param('sort'),
         order   = req.param('order'),
-        filter  = req.param('filter');
+        filter  = req.param('filter'),
+        filterVal = req.param('filterVal');
+
+    var callback = function(statusCode, response) {
+        res.status(statusCode).json(response);
+    };
+
+    module.controller.getList(callback, offset, limit, sort, order, filter, filterVal);
+};
     var callback = function(statusCode, response) {
         res.status(statusCode).json(response);
     };

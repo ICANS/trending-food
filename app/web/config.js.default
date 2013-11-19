@@ -21,6 +21,16 @@ exports.filter = {
     default: 'available'
 };
 
+exports.categories = {
+    chicken: 'Chicken',
+    pork: "Pork",
+    beef: "Beef",
+    vegan: 'Vegetarian',
+    schnitzel: 'Schnitzel',
+    pasta: "Pasta",
+    sweets: "Sweets"
+};
+
 exports.api = {
 	uri: 'http://127.0.0.1:3000'
 };

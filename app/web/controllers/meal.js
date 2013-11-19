@@ -1,4 +1,4 @@
-exports.renderMeals = function (respond, page, sort, order, limit, filter) {
+exports.renderMeals = function (respond, page, sort, order, limit, filter, filterVal) {
 
     var seq = new module.requirements.futures.sequence();
 
@@ -47,7 +47,8 @@ exports.renderMeals = function (respond, page, sort, order, limit, filter) {
                 limit : limit,
                 sort  : sort,
                 order : order,
-                filter: filter
+                filter: filter,
+                filterVal : filterVal
             }
         }, function (error, response, body) {
 
@@ -82,7 +83,7 @@ exports.renderMeal = function (respond, id) {
             }
         }, function (error, response, body) {
 
-            if(error) module.utilities.handleError(error);
+            if (error) module.utilities.handleError(error);
 
             var mealtimes = module.utilities.parseJSON(body);
 
@@ -98,8 +99,7 @@ exports.renderMeal = function (respond, id) {
             method  : 'GET',
         }, function (error, response, body) {
 
-            if(error) module.utilities.handleError(error);
-
+            if (error) module.utilities.handleError(error);
             var meal = module.utilities.parseJSON(body);
 
             next(mealtimes, meal);
@@ -122,7 +122,7 @@ exports.getMeals = function (respond) {
         }
     }, function (error, response, body) {
 
-        if(error) module.utilities.handleError(error);
+        if (error) module.utilities.handleError(error);
 
         var meals = module.utilities.parseJSON(body);
 
@@ -137,7 +137,7 @@ exports.getVotes = function (respond) {
         method  : 'GET'
     }, function (error, response, body) {
 
-        if(error) module.utilities.handleError(error);
+        if (error) module.utilities.handleError(error);
 
         var votes = module.utilities.parseJSON(body);
 
