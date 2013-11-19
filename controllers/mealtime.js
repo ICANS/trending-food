@@ -65,7 +65,7 @@ mealOrders = function (mealtimeId, callback) {
     var date = new Date();
 
     date = new Date(date.getFullYear(), date.getMonth(), date.getDate());
-    console.log(mealtimeId);
+
     var query = module.models.order.count({
         mealtime: mealtimeObjectId,
         deleted: false,
