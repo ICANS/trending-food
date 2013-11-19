@@ -79,7 +79,7 @@ app.all('*', function(req, res, next) {
     next();
 });
 
-app.get('/alife', function(req, res) {
+app.get('/alive', function(req, res) {
     res
         .status(418)
         .send('yep');
@@ -99,6 +99,7 @@ app.post('/meals/:id/voteup', routes.meal.voteUp);
 app.post('/meals/:id/votedown', routes.meal.voteDown);
 app.post('/meals/:id/amountup', routes.meal.amountUp);
 app.post('/meals/:id/amountdown', routes.meal.amountDown);
+app.post('/meals/:id/setvegetarian/:vegetarian', routes.meal.setVegetarian);
 app.get('/meals/count', routes.meal.count);
 app.get('/meals/votes/', routes.meal.getVotes);
 app.get('/meals/:id', routes.meal.getById);

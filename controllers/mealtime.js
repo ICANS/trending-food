@@ -33,18 +33,25 @@ exports.getList = function (respond, offset, limit, sort, order, available) {
     .then(function (next, mealtimes) {
         count = 0;
         total = mealtimes.length;
-        mealtimes.forEach(function(mealtime) {
-            mealOrders(mealtime._id, function(ordersCount) {
-                if (ordersCount >= module.config.mealtimelimit) {
-                    mealtimes.splice(mealtimes.indexOf(mealtime), 1);
-                }
-                count++;
-                if (count === total) {
-                    next(mealtimes);
-                }
-            });
 
-        });
+        // Only sort mealtimes if there are any.
+        if (0 < total) {
+            mealtimes.forEach(function(mealtime) {
+                mealOrders(mealtime._id, function(ordersCount) {
+                    if (ordersCount >= module.config.mealtimelimit) {
+                        mealtimes.splice(mealtimes.indexOf(mealtime), 1);
+                    }
+                    count++;
+                    if (count === total) {
+                        next(mealtimes);
+                    }
+                });
+
+            });
+        }
+        else {
+            next(mealtimes);
+        }
 
     })
     .then(function (next, mealtimes) {

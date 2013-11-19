@@ -11,6 +11,7 @@
             data-meal-votes="<%= meal.votes %>"
             data-meal-created="<%= new Date(meal.created).getTime() %>"
             data-meal-amount="<%= meal.amount %>"
+            data-meal-vegetarian="<%= meal.vegetarian %>"
         >
 
             <div class="span4">
@@ -20,6 +21,14 @@
             <div class="span8">
 
                 <h2><%= meal.title %><h2>
+
+                <p class="meal-vegetarian" <% if (!meal.vegetarian) { %>style="display:none;"<% } %>>
+                    <span class="label label-success">
+                        <i class="icon icon-leaf icon-white"></i>
+                        vegetarian
+                    </span>
+                    <small>This meal does not contain any meat.</small>
+                </p>
 
                 <div class="lead">
                     <% if(meal.amount < 1) { %>
@@ -54,6 +63,14 @@
                             </a>
 
                         </span>
+
+                        <span class="btn-group">
+                            <label class="checkbox">
+                                <input class="meal-vegetarian-toggle" type="checkbox" <% if (meal.vegetarian) { %>checked="checked"<% } %>>
+                                This is a vegetarian meal.
+                            </label>
+                        </span>
+
                         <% } %>
                     </div>
 

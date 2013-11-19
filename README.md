@@ -40,7 +40,8 @@ ______________
 		<td>get</td>
 		<td>delete</td>
 		<td>vote up/down</td>
-		<td>amount up/down</td>
+        <td>amount up/down</td>
+        <td>set vegetarian true/false</td>
 	</tr>
 
 </table>
