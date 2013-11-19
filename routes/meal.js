@@ -53,11 +53,19 @@ exports.getList = function (req, res) {
 
     module.controller.getList(callback, offset, limit, sort, order, filter, filterVal);
 };
+
+exports.update = function (req, res) {
+
+    var id       = req.param('id');
+    var title    = req.param('title');
+    var category = req.param('category');
+    var image    = req.files && req.files.image ? req.files.image : null;
+
     var callback = function(statusCode, response) {
         res.status(statusCode).json(response);
     };
 
-    module.controller.getList(callback, offset, limit, sort, order, filter);
+    module.controller.update(callback, id, title, category, image);
 };
 
 exports.delete = function (req, res) {

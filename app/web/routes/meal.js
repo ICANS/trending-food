@@ -41,6 +41,7 @@ exports.renderMeal = function (req, res, next) {
             session     : req.session,
             meal        : meal,
             mealtimes   : mealtimes,
+            categories  : module.config.categories,
             isAdmin     : module.controllers.user.isAdmin
         });
     };

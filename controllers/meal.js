@@ -88,6 +88,52 @@ exports.add = function (respond, title, amount, vegetarian, image, category) {
     });
 };
 
+exports.update = function (respond, id, title, category, image) {
+
+    sequence()
+
+    .then(function (next) {
+        var imageData = null;
+        var imageType = null;
+
+        module.model.findById(id, function (err, meal) {
+            meal.title = title;
+            meal.category = category;
+
+            if (image && image.size > 0) {
+                imageData = fs.readFileSync(image.path);
+                imageType = image.type;
+
+                fs.unlink(image.path, function(err) {
+                    if (err) throw err;
+                    console.log('deleted: ' + image.path);
+                });
+
+                meal.image = {
+                    data        : imageData,
+                    contentType : imageType
+                };
+            }
+
+            next(meal);
+        });
+    })
+
+    .then(function (next, meal) {
+
+        meal.validate(function (err) {
+            if (err) return respond(400, err);
+
+            meal.save(function (err) {
+                if (err) return respond(400, err);
+
+                return respond(200, meal);
+            });
+        });
+    });
+
+};
+
 exports.count = function (respond, title, amount) {
 
     var options = {

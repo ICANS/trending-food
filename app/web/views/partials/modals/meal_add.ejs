@@ -29,16 +29,13 @@
                 </div>
             </div>
             <div class="control-group">
-                <div class="controls">
-                    <label class="checkbox">
-                        <input type="checkbox" name="vegetarian"> Vegetarian meal
-                    </label>
-                </div>
-            </div>
-            <div class="control-group">
                 <label class="control-label" for="modal-meal-add-category">Meal Category</label>
                 <div class="controls">
-                    <input type="text" name="category" id="modal-meal-add-category" class="span3">
+                    <select name="category" id="modal-meal-add-category" class="span3" multiple="multiple" size="7">
+                        <% for (var index in categories) { %>
+                            <option value="<%= index %>"><%= categories[index] %></option>
+                        <% } %>
+                    </select>
                 </div>
             </div>
         </form>

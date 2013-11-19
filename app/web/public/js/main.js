@@ -87,6 +87,29 @@ $(function() {
 
     });
 
+    $('#meal-modal-open').click(function(e) {
+        e.preventDefault();
+
+        var parent = $(this).parents('.meal-item');
+        meal_id = parent.data('meal-id');
+    });
+
+    $('#modal-meal-edit-action').click(function() {
+        var data    = new FormData($('#modal-meal-edit-form')[0]);
+
+        $.ajax({
+            type: 'PUT',
+            url: api_url + '/meals/' + meal_id,
+            data: data,
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function(data) {
+                window.location.reload();
+            }
+        });
+    });
+
     $('.meal-delete-action').click(function() {
 
         var parent = $(this).parents('.meal-item');

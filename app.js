@@ -31,6 +31,19 @@ app.use(express.bodyParser({
     uploadDir: config.uploadDir
 }));
 
+app.use(function(req, res, next) {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
+
+    // intercept OPTIONS method
+    if ('OPTIONS' == req.method) {
+      res.send(200);
+    }
+    else {
+      next();
+    }
+});
+
 app.set('config', config);
 app.set('mongoose', mongoose);
 app.set('db', db);
@@ -95,6 +108,7 @@ app.post('/orders/:id/delete', routes.order.delete);
 // routes - meal
 
 app.post('/meals/', routes.meal.add);
+app.put('/meals/:id', routes.meal.update);
 app.post('/meals/:id/voteup', routes.meal.voteUp);
 app.post('/meals/:id/votedown', routes.meal.voteDown);
 app.post('/meals/:id/amountup', routes.meal.amountUp);

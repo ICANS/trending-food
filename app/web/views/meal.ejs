@@ -19,6 +19,9 @@
             </div>
 
             <div class="span8">
+                <% if(isAdmin(session)) {  %>
+                    <a href="#modal-meal-edit" id="meal-modal-open" class="btn btn-success pull-right" data-toggle="modal">Edit</a>
+                <% } %>
 
                 <h2><%= meal.title %><h2>
 
@@ -113,3 +116,5 @@
     </div>
 
 <%- partial('partials/modals/meal_order') %>
+<%- partial('partials/modals/meal_edit') %>
+
