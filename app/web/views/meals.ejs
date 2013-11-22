@@ -18,18 +18,19 @@
                 </ul>
             </div>
 
-            <div class="btn-group pull-right" style="margin-right: 10px;">
-                <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-                    Category
-                    <span class="caret"></span>
-                </a>
-                <ul class="dropdown-menu">
-                    <% for (var index in categories) { %>
-                    <li><a href="/meals/category/<%= index %>/"><%= categories[index] %></a></li>
-                    <% } %>
-                </ul>
-            </div>
+
         <% } %>
+        <div class="btn-group pull-right" style="margin-right: 10px;">
+            <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+                Category
+                <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu">
+                <% for (var index in categories) { %>
+                <li><a href="/meals/category/<%= index %>/"><%= categories[index] %></a></li>
+                <% } %>
+            </ul>
+        </div>
 
     <h1><i class="icon-truck"></i> All Meals <small>Order now</small></h1>
 </div>
