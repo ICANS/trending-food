@@ -188,6 +188,10 @@ exports.getList = function (respond, offset, limit, sort, order, filter, filterV
         deleted: false
     };
     query[filter] = filterOptions(filter, filterVal);
+    // show only available meals by default
+    if (!query['amount']) {
+        query['amount'] = filterOptions('amount', 'available');
+    }
 
     var seq = sequence();
 
