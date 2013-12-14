@@ -39,7 +39,7 @@
                         <span class="muted">(<%= utilities.moment(d).fromNow() %>)</span>
                     </td>
                     <td class="meal-action">
-                    <% if(orders[i].user._id === session.user_id) { %>
+                    <% if(orders[i].user._id === session.user_id && !orders[i].deleted) { %>
                         <a href="#" class="btn btn-small order-delete" data-order-id="<%= orders[i]._id %>"><i class="icon-trash"></i> Delete</a>
                     <% } %>
                     </td>
