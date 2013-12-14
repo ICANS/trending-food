@@ -165,6 +165,57 @@ exports.getListByUser = function (respond, userID, offset, limit, sort, order) {
         });
 };
 
+exports.getFavoriteMealtimeIdByUser = function (respond, userID) {
+    var ObjectId            = module.mongoose.Types.ObjectId,
+        userObjectID        = null;
+
+    if(userID.toString().length !== 24) {
+        return respond(400, {});
+    } else {
+        userObjectID = new ObjectId(userID);
+    }
+
+    module.model
+        .find({
+            user: userObjectID,
+            deleted : false
+        })
+        .populate('mealtime')
+        .exec(function (err, results) {
+            var ordersByMealtime        = {},
+                mealtimeId,
+                favoriteMealtimeId      = '',
+                numberOfOrders,
+                maximumNumberOfOrders   = 0;
+
+            if (err) return respond(400, err);
+
+            results.forEach(function (order) {
+                mealtimeId = order.mealtime.id;
+
+                if ('undefined' === typeof ordersByMealtime[mealtimeId]) {
+                    ordersByMealtime[mealtimeId] = 0;
+                }
+
+                ordersByMealtime[mealtimeId]++;
+            });
+
+            for (mealtimeId in ordersByMealtime) {
+                if (ordersByMealtime.hasOwnProperty(mealtimeId)) {
+                    numberOfOrders = ordersByMealtime[mealtimeId];
+
+                    if (maximumNumberOfOrders < numberOfOrders) {
+                        maximumNumberOfOrders = numberOfOrders;
+
+                        favoriteMealtimeId = mealtimeId;
+                    }
+                }
+            }
+
+            respond(200, favoriteMealtimeId);
+        });
+};
+
 exports.count = function (respond, deleted) {
 
     module.model.count({

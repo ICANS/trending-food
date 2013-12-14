@@ -1,5 +1,19 @@
 var sequence = require('futures').sequence;
 
+/**
+ * @details Determines wether the mealtime provided can be selected for ordering right now.
+ * @param mealtime The mealtime to check.
+ */
+var isMealtimeLocked = function (mealtime) {
+    var date            = mealtime.date,
+        mealtimeMinutes = date.getHours() * 60 + date.getMinutes(),
+        today           = new Date(),
+        todayMinutes    = today.getHours() * 60 + today.getMinutes(),
+        lockMinutes     = mealtimeMinutes - mealtime.minutesBeforeLock;
+
+    return todayMinutes > lockMinutes;
+};
+
 exports.getList = function (respond, offset, limit, sort, order, available) {
 
     var seq = sequence();
@@ -31,22 +45,35 @@ exports.getList = function (respond, offset, limit, sort, order, available) {
     })
     // select only available mealtimes
     .then(function (next, mealtimes) {
+        var availableMealtimes = [];
+
         count = 0;
         total = mealtimes.length;
 
         // Only sort mealtimes if there are any.
         if (0 < total) {
             mealtimes.forEach(function(mealtime) {
-                mealOrders(mealtime._id, function(ordersCount) {
-                    if (ordersCount >= module.config.mealtimelimit) {
-                        mealtimes.splice(mealtimes.indexOf(mealtime), 1);
-                    }
+                if (!isMealtimeLocked(mealtime)) {
+                    mealOrders(mealtime._id, function(ordersCount) {
+                        if (ordersCount >= module.config.mealtimelimit) {
+                            // mealtimes.splice(mealtimes.indexOf(mealtime), 1);
+                        }
+                        else {
+                            availableMealtimes.push(mealtime);
+                        }
+
+                        count++;
+                        if (count === total) {
+                            next(availableMealtimes);
+                        }
+                    });
+                }
+                else {
                     count++;
                     if (count === total) {
-                        next(mealtimes);
+                        next(availableMealtimes);
                     }
-                });
-
+                }
             });
         }
         else {
@@ -77,14 +104,16 @@ mealOrders = function (mealtimeId, callback) {
     });
 };
 
-exports.add = function (respond, id, title) {
+exports.add = function (respond, id, title, date) {
 
-    id = id || null;
-    title = title || null;
+    id      = id || null;
+    title   = title || null;
+    date    = date || null;
 
     var mealtime = new module.model({
-        id   : id,
-        title: title,
+        id      : id,
+        title   : title,
+        date    : date
     });
 
     mealtime.save(function (err, doc) {

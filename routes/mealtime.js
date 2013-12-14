@@ -19,6 +19,7 @@ exports.add = function (req, res) {
 
     var id      = req.param('id') || null;
     var title   = req.param('title') || null;
+    var date    = req.param('date') || null;
 
     var callback = function (statusCode, response) {
         res
@@ -26,7 +27,7 @@ exports.add = function (req, res) {
             .json(response);
     };
 
-    module.controller.add(callback, id, title);
+    module.controller.add(callback, id, title, date);
 };
 
 exports.count = function (req, res) {

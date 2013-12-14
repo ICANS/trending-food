@@ -212,9 +212,9 @@ var mealsHandler = {
 var mealtimesHandler = {
 
     data: [
-        { id: 'mealtime_1', title: 'A - 12:30'},
-        { id: 'mealtime_2', title: 'B - 13:15'},
-        { id: 'mealtime_3', title: 'C - 14:00'}
+        { id: 'mealtime_1', title: 'A - 12:30', date: new Date(1970, 1, 1, 12, 30)},
+        { id: 'mealtime_2', title: 'B - 13:15', date: new Date(1970, 1, 1, 13, 15)},
+        { id: 'mealtime_3', title: 'C - 14:00', date: new Date(1970, 1, 1, 14, 00)}
     ],
 
     messages: {
@@ -254,7 +254,8 @@ var mealtimesHandler = {
                     method  : 'POST',
                     body    : {
                         id   : item.id,
-                        title: item.title
+                        title: item.title,
+                        date : item.date
                     },
                     json: true
                 }, function () {
@@ -264,7 +265,7 @@ var mealtimesHandler = {
 
             console.log(data.length + ' mealtimes added'.green);
             respond();
-        });
+        }, respond);
     }
 }
 

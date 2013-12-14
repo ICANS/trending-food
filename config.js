@@ -39,4 +39,10 @@ exports.meal = {
     }
 };
 
+exports.mealtime = {
+    minutesBeforeLock : {
+        default: 60
+    }
+};
+
 exports.mealtimelimit = 24;

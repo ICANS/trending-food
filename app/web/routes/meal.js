@@ -19,11 +19,13 @@ exports.renderMeals = function (req, res, next) {
         subdomain += '/amount/' + req.param('value');
     }
 
-    var callback = function (mealtimes, pages, meals) {
+    var callback = function (mealtimes, pages, meals, favoriteMealtimeId) {
         var keyValueCategories  = module.config.categories,
             categories          = [],
             key,
-            category;
+            category,
+            defaultMealtime     = module.config.mealtime.default,
+            selectedMealtimeId  = 0 === favoriteMealtimeId.length ? defaultMealtime : favoriteMealtimeId;
 
         for (key in keyValueCategories) {
             if (keyValueCategories.hasOwnProperty(key)) {
@@ -46,19 +48,20 @@ exports.renderMeals = function (req, res, next) {
         });
 
         res.render('meals', {
-            config      : module.config,
-            session     : req.session,
-            meals       : meals,
-            mealtimes   : mealtimes,
-            categories  : categories,
-            page_domain : subdomain,
-            page        : page,
-            pages       : pages,
-            isAdmin     : module.controllers.user.isAdmin
+            config              : module.config,
+            session             : req.session,
+            meals               : meals,
+            mealtimes           : mealtimes,
+            categories          : categories,
+            page_domain         : subdomain,
+            page                : page,
+            pages               : pages,
+            selectedMealtimeId  : selectedMealtimeId,
+            isAdmin             : module.controllers.user.isAdmin
         });
     };
 
-    module.controller.renderMeals(callback, page, sort, order, limit, filter, filterVal);
+    module.controller.renderMeals(callback, page, sort, order, limit, filter, filterVal, req.session);
 };
 
 exports.renderMeal = function (req, res, next) {
