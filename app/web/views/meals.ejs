@@ -26,9 +26,9 @@
                 <span class="caret"></span>
             </a>
             <ul class="dropdown-menu">
-                <% for (var index in categories) { %>
-                <li><a href="/meals/category/<%= index %>/"><%= categories[index] %></a></li>
-                <% } %>
+                <% categories.map(function (category) { %>
+                <li><a href="/meals/category/<%= category.key %>/"><%= category.title %></a></li>
+                <% }); %>
             </ul>
         </div>
 

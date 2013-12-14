@@ -32,9 +32,9 @@
                 <label class="control-label" for="modal-meal-add-category">Meal Category</label>
                 <div class="controls">
                     <select name="category" id="modal-meal-add-category" class="span3" multiple="multiple" size="8">
-                        <% for (var index in categories) { %>
-                            <option value="<%= index %>"><%= categories[index] %></option>
-                        <% } %>
+                        <% categories.map(function (category) { %>
+                            <option value="<%= category.key %>"><%= category.title %></option>
+                        <% }); %>
                     </select>
                 </div>
             </div>

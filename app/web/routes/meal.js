@@ -13,13 +13,37 @@ exports.renderMeals = function (req, res, next) {
     }
 
     var callback = function (mealtimes, pages, meals) {
+        var keyValueCategories  = module.config.categories,
+            categories          = [],
+            key,
+            category;
+
+        for (key in keyValueCategories) {
+            if (keyValueCategories.hasOwnProperty(key)) {
+                // Create object from key/value pair.
+                category = {
+                    'key'   : key,
+                    'title' : keyValueCategories[key]
+                };
+
+                categories.push(category);
+            }
+        }
+
+        // Sort categories alphabetically.
+        categories = categories.sort(function (firstCategory, secondCategory) {
+            var firstTitle  = firstCategory.title,
+                secondTitle = secondCategory.title;
+
+            return firstTitle.localeCompare(secondTitle);
+        });
 
         res.render('meals', {
             config      : module.config,
             session     : req.session,
             meals       : meals,
             mealtimes   : mealtimes,
-            categories  : module.config.categories,
+            categories  : categories,
             page_domain : subdomain,
             page        : page,
             pages       : pages,
