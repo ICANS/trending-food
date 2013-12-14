@@ -15,8 +15,10 @@ exports.add = function (req, res) {
 
 exports.count = function (req, res) {
 
-    var title  = req.param('title');
-    var amount = req.param('amount');
+    var title       = req.param('title');
+    var amount      = req.param('amount');
+    var filter      = req.param('filter');
+    var filterVal   = req.param('filterVal');
 
     var callback = function(statusCode, response) {
         res.status(statusCode).json({
@@ -24,7 +26,7 @@ exports.count = function (req, res) {
         });
     };
 
-    module.controller.count(callback, title, amount);
+    module.controller.count(callback, title, amount, filter, filterVal);
 };
 
 exports.getById = function (req, res) {

@@ -146,7 +146,7 @@ app.get('/meals/?:page?', routes.user.checkLogin, function (req, res, next) {
     }
     next();
 }, routes.meal.renderMeals);
-app.get('/meals/:filter/:value/', routes.user.checkLogin, routes.meal.renderMeals);
+app.get('/meals/:filter/:value/:page?', routes.user.checkLogin, routes.meal.renderMeals);
 
 // routes - general
 // ----------------------------------------------------------------------

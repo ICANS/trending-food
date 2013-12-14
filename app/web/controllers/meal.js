@@ -26,7 +26,11 @@ exports.renderMeals = function (respond, page, sort, order, limit, filter, filte
 
         module.requirements.request({
             uri     : module.config.api.uri + '/meals/count',
-            method  : 'GET'
+            method  : 'GET',
+            qs      : {
+                filter      : filter,
+                filterVal   : filterVal
+            }
         }, function (error, response, body) {
 
             if(error) module.utilities.handleError(error);

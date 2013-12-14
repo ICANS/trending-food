@@ -134,8 +134,7 @@ exports.update = function (respond, id, title, category, image) {
 
 };
 
-exports.count = function (respond, title, amount) {
-
+exports.count = function (respond, title, amount, filter, filterVal) {
     var options = {
         title   : title  || null,
         amount  : amount || null,
@@ -144,6 +143,10 @@ exports.count = function (respond, title, amount) {
 
     for (var option in options) {
         if(options[option] === null) delete options[option];
+    }
+
+    if ('undefined' != typeof filter && 'undefined' != typeof filterVal) {
+        options[filter] = filterOptions(filter, filterVal);
     }
 
     module.model.count(options, function (err, count) {
