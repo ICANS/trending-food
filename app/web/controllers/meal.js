@@ -1,4 +1,4 @@
-exports.renderMeals = function (respond, page, sort, order, limit, filter, filterVal) {
+exports.renderMeals = function (respond, page, sort, order, limit, filter, filterVal, session) {
 
     var seq = new module.requirements.futures.sequence();
 
@@ -20,7 +20,7 @@ exports.renderMeals = function (respond, page, sort, order, limit, filter, filte
 
             next(mealtimes);
         });
-    })
+    })  
 
     .then(function (next, mealtimes) {
 
@@ -65,8 +65,23 @@ exports.renderMeals = function (respond, page, sort, order, limit, filter, filte
         });
     })
 
+    // Get the id of the mealtime the user has used the most when placing an order.
     .then(function (next, mealtimes, pages, meals) {
-        respond(mealtimes, pages, meals);
+        module.requirements.request({
+            uri     : module.config.api.uri + '/users/' + session.user_id + '/favoritemealtime',
+            method  : 'GET'
+        }, function (error, response, body) {
+
+            if(error) module.utilities.handleError();
+
+            var favoriteMealtimeId = module.utilities.parseJSON(body);
+
+            next(mealtimes, pages, meals, favoriteMealtimeId);
+        });
+    })
+
+    .then(function (next, mealtimes, pages, meals, favoriteMealtimeId) {
+        respond(mealtimes, pages, meals, favoriteMealtimeId);
     });
 
 };
@@ -95,7 +110,7 @@ exports.renderMeal = function (respond, id) {
 
         });
     })
-
+    
     .then(function (next, mealtimes) {
 
         module.requirements.request({

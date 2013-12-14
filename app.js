@@ -133,6 +133,7 @@ app.post('/mealtimes/:id/delete', routes.mealtime.delete);
 app.post('/users/', routes.user.add);
 app.post('/users/:username/login', routes.user.login);
 app.get('/users/:username/orders/', routes.order.getListByUser);
+app.get('/users/:username/favoritemealtime', routes.order.getFavoriteMealtimeIdByUser);
 app.get('/users/:username', routes.user.getByUsername);
 app.post('/users/:id/delete', routes.user.delete);
 
