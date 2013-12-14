@@ -12,6 +12,13 @@ exports.renderMeals = function (req, res, next) {
         filterVal = module.config.filter.default;
     }
 
+    if ('category' == req.param('filter') && filterVal) {
+        subdomain += '/category/' + filterVal;
+    }
+    else if ('amount' == req.param('filter')) {
+        subdomain += '/amount/' + req.param('value');
+    }
+
     var callback = function (mealtimes, pages, meals) {
         var keyValueCategories  = module.config.categories,
             categories          = [],
