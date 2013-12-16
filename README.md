@@ -11,6 +11,7 @@ ______________
 - npm install
 - cd app/web
 - npm install
+- Copy both config.js.default to config.js and adjust if needed
 
 ### Supported Methods
 ______________
