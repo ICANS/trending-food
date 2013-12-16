@@ -17,12 +17,12 @@ namespace :npm do
         on roles :all, in: :parallel do |host|
             if host.roles.include? :app
                 within current_path do
-                    execute :npm, "install"
+                    execute fetch(:npm_cmd, "npm"), "install"
                 end
             end
             if host.roles.include? :web
                 within "#{current_path}/app/web" do
-                    execute :npm, "install"
+                    execute fetch(:npm_cmd, "npm"), "install"
                 end
             end
         end

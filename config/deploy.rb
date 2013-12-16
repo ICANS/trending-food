@@ -5,6 +5,7 @@ set :branch, 'master'
 
 set :scm, :git
 set :deploy_via, :remote_cache
+set :npm_cmd, "npm"
 
 # set :format, :pretty
 set :log_level, :debug
