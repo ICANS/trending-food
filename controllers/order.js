@@ -37,6 +37,29 @@ exports.add = function (respond, mealID, mealtimeID, userID) {
             });
     })
 
+    // check if mealtime is already full
+    .then(function (next) {
+        var date = new Date();
+        module.model.count({
+            mealtime: mealtimeObjectID,
+            deleted: false,
+            created : {
+                $gte : new Date(date.getFullYear(), date.getMonth(), date.getDate())
+            }
+        }).exec(function (err, count) {
+            if (err) return respond(400, err);
+
+            if (count >= module.config.mealtimelimit) {
+                return respond(400, {
+                    statusInternal: 4,
+                    statusText: 'mealtime is full'
+                });
+            }
+
+            next();
+        });
+    })
+
     // save
     .then(function (next) {
 
@@ -73,21 +96,20 @@ exports.add = function (respond, mealID, mealtimeID, userID) {
 exports.getList = function (respond, offset, limit, sort, order, dateStart, dateEnd) {
 
     var date   = new Date();
-    var limit  = limit || 30;
-    var offset = offset || 0;
-    var sort   = sort || 'created';
-    var order  = order == 'desc' ? '-' : '';
-
-    if(dateStart) {
+    limit  = limit || 30;
+    offset = offset || 0;
+    sort   = sort || 'created';
+    order  = order == 'desc' ? '-' : '';
+    if (dateStart) {
         dateStart = new Date(dateStart);
     } else {
         dateStart = new Date(date.getFullYear(), date.getMonth(), date.getDate());
     }
 
-    if(dateEnd) {
+    if (dateEnd) {
         dateEnd = new Date(dateEnd);
     } else {
-        dateEnd = new Date(date.getTime() + (24 * 60 * 60 * 1000));
+        dateEnd = new Date(dateStart.getTime() + (24 * 60 * 60 * 1000));
     }
 
     module.model.find({
@@ -104,6 +126,7 @@ exports.getList = function (respond, offset, limit, sort, order, dateStart, date
     .skip(offset)
     .exec(function (err, results) {
         if (err) return respond(400, err);
+
         return respond(200, results);
     });
 };
@@ -114,10 +137,10 @@ exports.getListByUser = function (respond, userID, offset, limit, sort, order) {
     var userObjectID = null;
 
     var date   = new Date();
-    var limit  = limit || 30;
-    var offset = offset || 0;
-    var sort   = sort || 'created';
-    var order  = order == 'desc' ? '-' : '';
+    limit  = limit || 30;
+    offset = offset || 0;
+    sort   = sort || 'created';
+    order  = order == 'desc' ? '-' : '';
 
     if(userID.toString().length !== 24) {
         return respond(400, {});
@@ -140,7 +163,58 @@ exports.getListByUser = function (respond, userID, offset, limit, sort, order) {
 
             respond(200, results);
         });
-}
+};
+
+exports.getFavoriteMealtimeIdByUser = function (respond, userID) {
+    var ObjectId            = module.mongoose.Types.ObjectId,
+        userObjectID        = null;
+
+    if(userID.toString().length !== 24) {
+        return respond(400, {});
+    } else {
+        userObjectID = new ObjectId(userID);
+    }
+
+    module.model
+        .find({
+            user: userObjectID,
+            deleted : false
+        })
+        .populate('mealtime')
+        .exec(function (err, results) {
+            var ordersByMealtime        = {},
+                mealtimeId,
+                favoriteMealtimeId      = '',
+                numberOfOrders,
+                maximumNumberOfOrders   = 0;
+
+            if (err) return respond(400, err);
+
+            results.forEach(function (order) {
+                mealtimeId = order.mealtime.id;
+
+                if ('undefined' === typeof ordersByMealtime[mealtimeId]) {
+                    ordersByMealtime[mealtimeId] = 0;
+                }
+
+                ordersByMealtime[mealtimeId]++;
+            });
+
+            for (mealtimeId in ordersByMealtime) {
+                if (ordersByMealtime.hasOwnProperty(mealtimeId)) {
+                    numberOfOrders = ordersByMealtime[mealtimeId];
+
+                    if (maximumNumberOfOrders < numberOfOrders) {
+                        maximumNumberOfOrders = numberOfOrders;
+
+                        favoriteMealtimeId = mealtimeId;
+                    }
+                }
+            }
+
+            respond(200, favoriteMealtimeId);
+        });
+};
 
 exports.count = function (respond, deleted) {
 

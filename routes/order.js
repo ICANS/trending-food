@@ -48,6 +48,18 @@ exports.getListByUser = function (req, res) {
     module.controller.getListByUser(callback, username, offset, limit, sort, order);
 };
 
+exports.getFavoriteMealtimeIdByUser = function (req, res) {
+    var userID  = req.param('username');
+
+    var callback = function (statusCode, response) {
+        res
+            .status(statusCode)
+            .json(response);
+    };
+
+    module.controller.getFavoriteMealtimeIdByUser(callback, userID);
+};
+
 exports.count = function (req, res) {
 
     var deleted = !!(req.param('deleted')) || 1;

@@ -8,7 +8,7 @@
 
     <% for(var m = 0; m < meals.length; m++) { %>
 
-        <% if(m % 4 === 0) { %>
+        <% if(m % 4 === 0 && m > 0) { %>
         </div>
         <div class="row-fluid">
         <% } %>
@@ -22,6 +22,7 @@
             data-meal-amount="<%= meals[m].amount %>"
             data-meal-title="<%= meals[m].title %>"
             data-meal-index="<%= m %>"
+            data-meal-vegetarian="<%= meals[m].vegetarian %>"
         >
         <div class="thumbnail">
             <div class="meal-item-inner">
@@ -36,10 +37,13 @@
 
                     <div class="row-fluid">
                         <div class="span12 meal-item-title">
-                            <span class="label label-inverse meal-amount pull-left"><%= meals[m].amount %></span>
+                            <span class="label label-inverse pull-left meal-vegetarian" <% if (!meals[m].vegetarian) { %>style="display:none;"<% } %>>
+                                <i class="icon-leaf"></i>
+                            </span>
                             <a href="<%= utilities.url.meal(meals[m]._id) %>" title="<%= meals[m].title %>">
                                 <h4><%= meals[m].title %></h4>
                             </a>
+                            <span class="meal-amount"><%= meals[m].amount %></span> items in stock.
                         </div>
                     </div>
 
@@ -50,10 +54,7 @@
                     </div>
 
                     <div class="row-fluid">
-
-                        <% if(meals[m].amount >= 0) { %>
                         <div class="span12">
-
                             <div class="row-fluid">
 
                                 <% if(isAdmin(session)) { %>
@@ -75,15 +76,24 @@
                                     </span>
                                 </div>
                                 <% } %>
-                                <div class="span5 text-right pull-right">
-                                    <a href="#modal-order-add-container" class="btn btn-primary order-modal-open" data-toggle="modal">
-                                        Order <i class="icon-bullhorn"></i>
-                                    </a>
-                                </div>
-
+                                <% if(meals[m].amount > 0) { %>
+                                    <div class="span5 text-right pull-right">
+                                        <a href="#modal-order-add-container" class="btn btn-primary order-modal-open" data-toggle="modal">
+                                            Order <i class="icon-bullhorn"></i>
+                                        </a>
+                                    </div>
+                                <% } %>
                             </div>
+                            <% if (isAdmin(session)) { %>
+                            <div class="row-fluid">
+                                <div class="span12">
+                                <label class="checkbox">
+                                    <input class="meal-vegetarian-toggle" type="checkbox" <% if (meals[m].vegetarian) { %>checked="checked"<% } %>>
+                                    This is a vegetarian meal.
+                                </label>
+                            </div>
+                            <% } %>
                         </div>
-                        <% } %>
                     </div>
                 </div>
             </div>

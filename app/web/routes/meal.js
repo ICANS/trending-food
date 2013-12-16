@@ -1,26 +1,67 @@
 exports.renderMeals = function (req, res, next) {
 
-    var page      = (parseInt(req.param('page')) - 1) || 0,
+    var page      = (parseInt(req.param('page'), 10) - 1) || 0,
         limit     = module.config.pagination.perPage,
         sort      = req.param('sort') || module.config.pagination.sort,
         order     = req.param('order') || module.config.pagination.order,
+        filter    = req.filter || req.param('filter'),
+        filterVal = req.value || req.param('value'),
         subdomain = 'meals'; // for pagination
 
-    var callback = function (mealtimes, pages, meals) {
+    if (!filterVal && filter == 'amount') {
+        filterVal = module.config.filter.default;
+    }
+
+    if ('category' == req.param('filter') && filterVal) {
+        subdomain += '/category/' + filterVal;
+    }
+    else if ('amount' == req.param('filter')) {
+        subdomain += '/amount/' + req.param('value');
+    }
+
+    var callback = function (mealtimes, pages, meals, favoriteMealtimeId) {
+        var keyValueCategories  = module.config.categories,
+            categories          = [],
+            key,
+            category,
+            defaultMealtime     = module.config.mealtime.default,
+            selectedMealtimeId  = 0 === favoriteMealtimeId.length ? defaultMealtime : favoriteMealtimeId;
+
+        for (key in keyValueCategories) {
+            if (keyValueCategories.hasOwnProperty(key)) {
+                // Create object from key/value pair.
+                category = {
+                    'key'   : key,
+                    'title' : keyValueCategories[key]
+                };
+
+                categories.push(category);
+            }
+        }
+
+        // Sort categories alphabetically.
+        categories = categories.sort(function (firstCategory, secondCategory) {
+            var firstTitle  = firstCategory.title,
+                secondTitle = secondCategory.title;
+
+            return firstTitle.localeCompare(secondTitle);
+        });
 
         res.render('meals', {
-            config      : module.config,
-            session     : req.session,
-            meals       : meals,
-            mealtimes   : mealtimes,
-            page_domain : subdomain,
-            page        : page,
-            pages       : pages,
-            isAdmin     : module.controllers.user.isAdmin
+            config              : module.config,
+            session             : req.session,
+            meals               : meals,
+            mealtimes           : mealtimes,
+            categories          : categories,
+            page_domain         : subdomain,
+            page                : page,
+            pages               : pages,
+            selectedMealtimeId  : selectedMealtimeId,
+            isAdmin             : module.controllers.user.isAdmin
         });
     };
 
-    module.controller.renderMeals(callback, page, sort, order, limit);
+    module.controller.renderMeals(callback, page, sort, order, limit, filter, filterVal, req.session);
 };
 
 exports.renderMeal = function (req, res, next) {
@@ -34,6 +75,7 @@ exports.renderMeal = function (req, res, next) {
             session     : req.session,
             meal        : meal,
             mealtimes   : mealtimes,
+            categories  : module.config.categories,
             isAdmin     : module.controllers.user.isAdmin
         });
     };

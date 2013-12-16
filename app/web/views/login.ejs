@@ -17,23 +17,11 @@
 
         <form class="form-horizontal" action="/login" method="POST">
             <div class="control-group">
-                <label class="control-label" for="selectHost">Host</label>
-                <div class="controls">
-                    <select name="host" id="host" class="span12">
-                    <% for(var i = 0; i < config.xmpp.hosts.length; i++) { %>
-                        <option value="<%= config.xmpp.hosts[i].domain %>" <% if(config.xmpp.hosts[i] == config.xmpp.hosts[config.xmpp.default]) { %>selected="selected"<% } %> value="<%= config.xmpp.hosts[i] %>">
-                            <%= config.xmpp.hosts[i].domain %>
-                        </option>
-                    <% } %>
-                    </select>
-                </div>
-            </div>
-            <div class="control-group">
                 <label class="control-label" for="inputUsername">Username</label>
                 <div class="controls">
                     <div class="input-prepend span11">
                         <span class="add-on"><i class="icon-user"></i></span>
-                        <input type="text" id="inputUsername" name="username" placeholder="Username" class="span12">
+                        <input type="text" id="inputUsername" name="username" placeholder="Username" class="span12" autofocus="autofocus">
                     </div>
                 </div>
             </div>

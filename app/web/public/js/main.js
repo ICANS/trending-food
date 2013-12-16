@@ -50,6 +50,11 @@ $(function() {
                 case 2:
                     msg = 'This meals are empty, sorry :/';
                     break;
+                case 3:
+                    msg = 'Meal could not be found, sorry :/';
+                    break;
+                case 4:
+                    msg = 'Mealtime is already fully booked. Please choose another one.';
                 }
 
                 var html = '<div class="alert alert-error">';
@@ -80,6 +85,29 @@ $(function() {
             }
         });
 
+    });
+
+    $('#meal-modal-open').click(function(e) {
+        e.preventDefault();
+
+        var parent = $(this).parents('.meal-item');
+        meal_id = parent.data('meal-id');
+    });
+
+    $('#modal-meal-edit-action').click(function() {
+        var data    = new FormData($('#modal-meal-edit-form')[0]);
+
+        $.ajax({
+            type: 'PUT',
+            url: api_url + '/meals/' + meal_id,
+            data: data,
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function(data) {
+                window.location.reload();
+            }
+        });
     });
 
     $('.meal-delete-action').click(function() {
@@ -114,6 +142,12 @@ $(function() {
             }
         });
 
+    });
+
+    $('.order-datepicker').datepicker().on('changeDate', function(ev){
+        $(this).data('datepicker').hide();
+        var newDate = new Date(ev.date);
+        window.location.href = '/orders/'+ newDate.getFullYear() +'-'+ (newDate.getMonth()+1) +'-'+ newDate.getDate() +'/';
     });
 
     var meals = [];
@@ -178,6 +212,30 @@ $(function() {
                 console.log(meal_amount);
                 console.log(parent);
                 parent.data('meal-amount', meal_amount).find('.meal-amount').text(meal_amount);
+            }
+        });
+    });
+
+    $('.meal-vegetarian-toggle').change(function () {
+        var parent = $(this).parents('.meal-item');
+        var vegetarianIndicator = parent.find('.meal-vegetarian');
+        var meal_id = parent.data('meal-id');
+        var vegetarian = $(this).is(':checked');
+
+        $.ajax({
+            type: 'POST',
+            url: api_url + '/meals/' + meal_id + '/setvegetarian/' + vegetarian,
+            success: function(data) {
+                console.log(vegetarian ? 'yes' : 'no');
+                console.log(parent);
+                parent.data('meal-vegetarian', vegetarian);
+
+                if (vegetarian) {
+                    vegetarianIndicator.show();
+                }
+                else {
+                    vegetarianIndicator.hide();
+                }
             }
         });
     });

@@ -36,13 +36,13 @@ process.on('uncaughtException', function (error) {
 });
 
 /**
- * Request alife status
+ * Request alive status
  *
  * Lets check if the app is already running
  */
 
 request({
-    uri     :  config.api.uri + '/alife',
+    uri     :  config.api.uri + '/alive',
     method  : 'GET'
 }, function (error, response) {
     if(typeof response === 'undefined' || response.statusCode !== 418) {
@@ -134,13 +134,19 @@ app.get('/logout', routes.user.logout);
 // ----------------------------------------------------------------------
 
 app.get('/account/orders/?:page?', routes.user.checkLogin, routes.order.renderOrdersByUser);
-app.get('/orders/?:page?', routes.user.checkLogin, routes.order.renderOrders);
+app.get('/orders/?:date?/', routes.user.checkLogin, routes.order.renderOrders);
 
 // routes - meal
 // ----------------------------------------------------------------------
 
 app.get('/meal/:id', routes.user.checkLogin, routes.meal.renderMeal);
-app.get('/meals/?:page?', routes.user.checkLogin, routes.meal.renderMeals);
+app.get('/meals/?:page?', routes.user.checkLogin, function (req, res, next) {
+    if (typeof req.param('page') == 'string') {
+        req.filter = req.param('page');
+    }
+    next();
+}, routes.meal.renderMeals);
+app.get('/meals/:filter/:value/:page?', routes.user.checkLogin, routes.meal.renderMeals);
 
 // routes - general
 // ----------------------------------------------------------------------

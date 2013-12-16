@@ -5,13 +5,18 @@ var _updateById = function(respond, id, options) {
 
     module.model.findOne({ _id: id }, function (err, foundDocument) {
 
-        for(var optionsProp in options) {
+        for (var optionsProp in options) {
 
-            if(typeof options[optionsProp] === 'object') {
+            if (typeof options[optionsProp] === 'object') {
 
-                if(optionsProp === '$inc') {
-                    for(var incProp in options[optionsProp]) {
+                if (optionsProp === '$inc') {
+                    for (var incProp in options[optionsProp]) {
                         foundDocument[incProp] += options[optionsProp][incProp];
+                    }
+                }
+                else if (optionsProp === '$set') {
+                    for (var propertyName in options[optionsProp]) {
+                        foundDocument[propertyName] = options[optionsProp][propertyName];
                     }
                 }
 
@@ -32,12 +37,28 @@ var _updateById = function(respond, id, options) {
     });
 };
 
-exports.add = function (respond, title, amount, image, category) {
+var filterOptions = function(filter, filterVal) {
+    if (filter == 'amount') {
+        switch (filterVal) {
+            case 'available':
+                return { $gt: 0 };
+            case 'outofstock':
+                return { $lt: 1};
+            case 'all':
+                return { $gt: -1};
+            default:
+              return { $gt: 0 };
+        }
+    }
 
+    return { $in: [filterVal] };
+};
+
+exports.add = function (respond, title, amount, vegetarian, image, category) {
     var imageData = null;
     var imageType = null;
 
-    if(image && image.size > 0) {
+    if (image && image.size > 0) {
         imageData = fs.readFileSync(image.path);
         imageType = image.type;
 
@@ -50,6 +71,7 @@ exports.add = function (respond, title, amount, image, category) {
     var meal = new module.model({
         title : title,
         amount: amount,
+        vegetarian: vegetarian,
         category: category,
         image: {
             data        : imageData,
@@ -66,8 +88,53 @@ exports.add = function (respond, title, amount, image, category) {
     });
 };
 
-exports.count = function (respond, title, amount) {
+exports.update = function (respond, id, title, category, image) {
 
+    sequence()
+
+    .then(function (next) {
+        var imageData = null;
+        var imageType = null;
+
+        module.model.findById(id, function (err, meal) {
+            meal.title = title;
+            meal.category = category;
+
+            if (image && image.size > 0) {
+                imageData = fs.readFileSync(image.path);
+                imageType = image.type;
+
+                fs.unlink(image.path, function(err) {
+                    if (err) throw err;
+                    console.log('deleted: ' + image.path);
+                });
+
+                meal.image = {
+                    data        : imageData,
+                    contentType : imageType
+                };
+            }
+
+            next(meal);
+        });
+    })
+
+    .then(function (next, meal) {
+
+        meal.validate(function (err) {
+            if (err) return respond(400, err);
+
+            meal.save(function (err) {
+                if (err) return respond(400, err);
+
+                return respond(200, meal);
+            });
+        });
+    });
+
+};
+
+exports.count = function (respond, title, amount, filter, filterVal) {
     var options = {
         title   : title  || null,
         amount  : amount || null,
@@ -76,6 +143,10 @@ exports.count = function (respond, title, amount) {
 
     for (var option in options) {
         if(options[option] === null) delete options[option];
+    }
+
+    if ('undefined' != typeof filter && 'undefined' != typeof filterVal) {
+        options[filter] = filterOptions(filter, filterVal);
     }
 
     module.model.count(options, function (err, count) {
@@ -92,17 +163,17 @@ exports.getById = function (respond, id) {
 
     var ObjectId = module.mongoose.Types.ObjectId;
 
-    if(id.toString().length !== 24) {
+    if (id.toString().length !== 24) {
         return respond(400, {
             error: true,
             message: 'submitted a invalid ID'
         });
     }
 
-    var userObjectID = new ObjectId(id);
+    var mealObjectID = new ObjectId(id);
 
     module.model.findOne({
-        _id: userObjectID,
+        _id: mealObjectID,
         deleted: false
     }).exec(function(err, result) {
         if (!result || err) return respond(400, err);
@@ -110,25 +181,28 @@ exports.getById = function (respond, id) {
     });
 };
 
-exports.getList = function (respond, offset, limit, sort, order) {
+exports.getList = function (respond, offset, limit, sort, order, filter, filterVal) {
 
     limit  = limit  || 30;
     offset = offset || 0;
     sort   = sort   || 'created';
     order  = order == 'desc' ? '-' : '';
+    var query = {
+        deleted: false
+    };
+    query[filter] = filterOptions(filter, filterVal);
+    // show only available meals by default
+    if (!query['amount']) {
+        query['amount'] = filterOptions('amount', 'available');
+    }
 
     var seq = sequence();
 
     seq
 
     .then(function (next) {
-        module.model.find({
-            deleted: false,
-            amount : {
-                $gt: 0
-            }
-        })
-        .select('_id title category deleted votes amount')
+        module.model.find(query)
+        .select('_id title category deleted vegetarian votes amount')
         .limit(limit)
         .skip(offset)
         .sort(order + sort)
@@ -219,6 +293,12 @@ exports.amountUp = function (respond, id) {
 exports.amountDown = function (respond, id) {
     _updateById(respond, id, {
         $inc: { amount: -1 }
+    });
+};
+
+exports.setVegetarian = function (respond, id, vegetarian) {
+    _updateById(respond, id, {
+        $set: { vegetarian: vegetarian }
     });
 };
 

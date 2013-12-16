@@ -31,6 +31,19 @@ app.use(express.bodyParser({
     uploadDir: config.uploadDir
 }));
 
+app.use(function(req, res, next) {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
+
+    // intercept OPTIONS method
+    if ('OPTIONS' == req.method) {
+      res.send(200);
+    }
+    else {
+      next();
+    }
+});
+
 app.set('config', config);
 app.set('mongoose', mongoose);
 app.set('db', db);
@@ -79,7 +92,7 @@ app.all('*', function(req, res, next) {
     next();
 });
 
-app.get('/alife', function(req, res) {
+app.get('/alive', function(req, res) {
     res
         .status(418)
         .send('yep');
@@ -95,10 +108,12 @@ app.post('/orders/:id/delete', routes.order.delete);
 // routes - meal
 
 app.post('/meals/', routes.meal.add);
+app.put('/meals/:id', routes.meal.update);
 app.post('/meals/:id/voteup', routes.meal.voteUp);
 app.post('/meals/:id/votedown', routes.meal.voteDown);
 app.post('/meals/:id/amountup', routes.meal.amountUp);
 app.post('/meals/:id/amountdown', routes.meal.amountDown);
+app.post('/meals/:id/setvegetarian/:vegetarian', routes.meal.setVegetarian);
 app.get('/meals/count', routes.meal.count);
 app.get('/meals/votes/', routes.meal.getVotes);
 app.get('/meals/:id', routes.meal.getById);
@@ -118,6 +133,7 @@ app.post('/mealtimes/:id/delete', routes.mealtime.delete);
 app.post('/users/', routes.user.add);
 app.post('/users/:username/login', routes.user.login);
 app.get('/users/:username/orders/', routes.order.getListByUser);
+app.get('/users/:username/favoritemealtime', routes.order.getFavoriteMealtimeIdByUser);
 app.get('/users/:username', routes.user.getByUsername);
 app.post('/users/:id/delete', routes.user.delete);
 

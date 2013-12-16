@@ -16,6 +16,16 @@ module.exports = function (app, model) {
         title: {
             type    : String,
             required: true
+        },
+
+        date: {
+            type    : Date,
+            required: true
+        },
+
+        minutesBeforeLock : {
+            type    : Number,
+            default : config.mealtime.minutesBeforeLock.default
         }
 
     });

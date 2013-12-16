@@ -5,7 +5,32 @@
             <a href="#modal-meal-add" id="meal-modal-open" class="btn btn-success pull-right" data-toggle="modal">
                 <i class="icon-plus icon-white"></i> Add Meal
             </a>
+
+            <div class="btn-group pull-right" style="margin-right: 10px;">
+                <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+                    Filter Meals
+                    <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a href="/meals/amount/available/">Available</a></li>
+                    <li><a href="/meals/amount/outofstock/">Out of stock</a></li>
+                    <li><a href="/meals/amount/all/">All</a></li>
+                </ul>
+            </div>
+
+
         <% } %>
+        <div class="btn-group pull-right" style="margin-right: 10px;">
+            <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+                Category
+                <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu">
+                <% categories.map(function (category) { %>
+                <li><a href="/meals/category/<%= category.key %>/"><%= category.title %></a></li>
+                <% }); %>
+            </ul>
+        </div>
 
     <h1><i class="icon-truck"></i> All Meals <small>Order now</small></h1>
 </div>

@@ -1,9 +1,10 @@
 exports.getList = function (req, res) {
 
-    var offset  = req.param('offset');
-    var limit   = req.param('limit');
-    var sort    = req.param('sort');
-    var order   = req.param('order');
+    var offset    = req.param('offset');
+    var limit     = req.param('limit');
+    var sort      = req.param('sort');
+    var order     = req.param('order');
+    var available = req.param('available') || false;
 
     var callback = function (statusCode, response) {
         res
@@ -11,13 +12,14 @@ exports.getList = function (req, res) {
             .json(response);
     };
 
-    module.controller.getList(callback, offset, limit, sort, order);
+    module.controller.getList(callback, offset, limit, sort, order, available);
 };
 
 exports.add = function (req, res) {
 
     var id      = req.param('id') || null;
     var title   = req.param('title') || null;
+    var date    = req.param('date') || null;
 
     var callback = function (statusCode, response) {
         res
@@ -25,7 +27,7 @@ exports.add = function (req, res) {
             .json(response);
     };
 
-    module.controller.add(callback, id, title);
+    module.controller.add(callback, id, title, date);
 };
 
 exports.count = function (req, res) {

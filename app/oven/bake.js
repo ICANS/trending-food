@@ -85,7 +85,7 @@ var generalHandler = {
             '[q]'.green + ' – Quit baking',
             '',
         ],
-        notAlife: [
+        notAlive: [
             '',
             'Please start the API app. "cd ../../ && node app"'.red,
             '',
@@ -126,15 +126,15 @@ var generalHandler = {
         });
     },
 
-    checkALife: function (respond) {
+    checkAlive: function (respond) {
         request({
-            uri     :  config.url + '/alife',
+            uri     :  config.url + '/alive',
             method  : 'GET'
         }, function (error, response) {
             if(response && response.statusCode === 418) {
                 respond();
             } else {
-                say(generalHandler.messages.notAlife);
+                say(generalHandler.messages.notAlive);
                 process.exit();
             }
         });
@@ -142,12 +142,12 @@ var generalHandler = {
 }
 
 /**
- * Request alife status
+ * Request alive status
  *
  * Lets check if the app is already running
  */
 
-generalHandler.checkALife(validateInput);
+generalHandler.checkAlive(validateInput);
 
 /**
  * Meals Hanlder
@@ -212,9 +212,9 @@ var mealsHandler = {
 var mealtimesHandler = {
 
     data: [
-        { id: 'mealtime_1', title: 'A - 12:30'},
-        { id: 'mealtime_2', title: 'B - 13:15'},
-        { id: 'mealtime_3', title: 'C - 14:00'}
+        { id: 'mealtime_1', title: 'A - 12:30', date: new Date(1970, 1, 1, 12, 30)},
+        { id: 'mealtime_2', title: 'B - 13:15', date: new Date(1970, 1, 1, 13, 15)},
+        { id: 'mealtime_3', title: 'C - 14:00', date: new Date(1970, 1, 1, 14, 00)}
     ],
 
     messages: {
@@ -254,7 +254,8 @@ var mealtimesHandler = {
                     method  : 'POST',
                     body    : {
                         id   : item.id,
-                        title: item.title
+                        title: item.title,
+                        date : item.date
                     },
                     json: true
                 }, function () {
@@ -264,7 +265,7 @@ var mealtimesHandler = {
 
             console.log(data.length + ' mealtimes added'.green);
             respond();
-        });
+        }, respond);
     }
 }
 

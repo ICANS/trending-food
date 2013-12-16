@@ -1,4 +1,4 @@
-exports.renderMeals = function (respond, page, sort, order, limit) {
+exports.renderMeals = function (respond, page, sort, order, limit, filter, filterVal, session) {
 
     var seq = new module.requirements.futures.sequence();
 
@@ -8,7 +8,10 @@ exports.renderMeals = function (respond, page, sort, order, limit) {
 
         module.requirements.request({
             uri     : module.config.api.uri + '/mealtimes/',
-            method  : 'GET'
+            method  : 'GET',
+            qs      : {
+                available: true
+            }
         }, function (error, response, body) {
 
             if(error) module.utilities.handleError(error);
@@ -17,13 +20,17 @@ exports.renderMeals = function (respond, page, sort, order, limit) {
 
             next(mealtimes);
         });
-    })
+    })  
 
     .then(function (next, mealtimes) {
 
         module.requirements.request({
             uri     : module.config.api.uri + '/meals/count',
-            method  : 'GET'
+            method  : 'GET',
+            qs      : {
+                filter      : filter,
+                filterVal   : filterVal
+            }
         }, function (error, response, body) {
 
             if(error) module.utilities.handleError(error);
@@ -43,7 +50,9 @@ exports.renderMeals = function (respond, page, sort, order, limit) {
                 offset: page * limit,
                 limit : limit,
                 sort  : sort,
-                order : order
+                order : order,
+                filter: filter,
+                filterVal : filterVal
             }
         }, function (error, response, body) {
 
@@ -56,8 +65,23 @@ exports.renderMeals = function (respond, page, sort, order, limit) {
         });
     })
 
+    // Get the id of the mealtime the user has used the most when placing an order.
     .then(function (next, mealtimes, pages, meals) {
-        respond(mealtimes, pages, meals);
+        module.requirements.request({
+            uri     : module.config.api.uri + '/users/' + session.user_id + '/favoritemealtime',
+            method  : 'GET'
+        }, function (error, response, body) {
+
+            if(error) module.utilities.handleError();
+
+            var favoriteMealtimeId = module.utilities.parseJSON(body);
+
+            next(mealtimes, pages, meals, favoriteMealtimeId);
+        });
+    })
+
+    .then(function (next, mealtimes, pages, meals, favoriteMealtimeId) {
+        respond(mealtimes, pages, meals, favoriteMealtimeId);
     });
 
 };
@@ -72,10 +96,13 @@ exports.renderMeal = function (respond, id) {
 
         module.requirements.request({
             uri     : module.config.api.uri + '/mealtimes/',
-            method  : 'GET'
+            method  : 'GET',
+            qs      : {
+                available: true
+            }
         }, function (error, response, body) {
 
-            if(error) module.utilities.handleError(error);
+            if (error) module.utilities.handleError(error);
 
             var mealtimes = module.utilities.parseJSON(body);
 
@@ -83,7 +110,7 @@ exports.renderMeal = function (respond, id) {
 
         });
     })
-
+    
     .then(function (next, mealtimes) {
 
         module.requirements.request({
@@ -91,8 +118,7 @@ exports.renderMeal = function (respond, id) {
             method  : 'GET',
         }, function (error, response, body) {
 
-            if(error) module.utilities.handleError(error);
-
+            if (error) module.utilities.handleError(error);
             var meal = module.utilities.parseJSON(body);
 
             next(mealtimes, meal);
@@ -115,7 +141,7 @@ exports.getMeals = function (respond) {
         }
     }, function (error, response, body) {
 
-        if(error) module.utilities.handleError(error);
+        if (error) module.utilities.handleError(error);
 
         var meals = module.utilities.parseJSON(body);
 
@@ -130,7 +156,7 @@ exports.getVotes = function (respond) {
         method  : 'GET'
     }, function (error, response, body) {
 
-        if(error) module.utilities.handleError(error);
+        if (error) module.utilities.handleError(error);
 
         var votes = module.utilities.parseJSON(body);
 

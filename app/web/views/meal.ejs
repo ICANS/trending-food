@@ -3,7 +3,7 @@
 
         <% if(meal) { %>
 
-        <div 
+        <div
             id="meal-<%= meal._id %>"
             class="meal-item"
             data-meal-id="<%= meal._id %>"
@@ -11,6 +11,7 @@
             data-meal-votes="<%= meal.votes %>"
             data-meal-created="<%= new Date(meal.created).getTime() %>"
             data-meal-amount="<%= meal.amount %>"
+            data-meal-vegetarian="<%= meal.vegetarian %>"
         >
 
             <div class="span4">
@@ -18,12 +19,23 @@
             </div>
 
             <div class="span8">
+                <% if(isAdmin(session)) {  %>
+                    <a href="#modal-meal-edit" id="meal-modal-open" class="btn btn-success pull-right" data-toggle="modal">Edit</a>
+                <% } %>
 
                 <h2><%= meal.title %><h2>
 
+                <p class="meal-vegetarian" <% if (!meal.vegetarian) { %>style="display:none;"<% } %>>
+                    <span class="label label-success">
+                        <i class="icon icon-leaf icon-white"></i>
+                        vegetarian
+                    </span>
+                    <small>This meal does not contain any meat.</small>
+                </p>
+
                 <div class="lead">
                     <% if(meal.amount < 1) { %>
-                    <span class="text-error">This meal not available</span>
+                    <span class="text-error">This meal is not available</span>
                     <% } else { %>
                     <span class="text-success">This meal is available</span>
                     <% } %>
@@ -35,33 +47,59 @@
                 <hr>
 
                 <div class="row-fluid">
-                <div class="span9">
-                    <% if(isAdmin(session)) { %>
+                    <div class="span9">
+                        <% if(isAdmin(session)) { %>
 
-                    <span class="btn-group">
-                        <a class="btn btn-danger meal-delete-action">
-                            <i class="icon-trash"></i> Delete
+                        <span class="btn-group">
+                            <a class="btn btn-danger meal-delete-action">
+                                <i class="icon-trash"></i> Delete
+                            </a>
+                        </span>
+
+                        <span class="btn-group">
+
+                            <a class="btn meal-amount-up-action">
+                                <i class="icon-plus"></i>
+                            </a>
+                            <a class="btn meal-amount-down-action">
+                                <i class="icon-minus"></i>
+                            </a>
+
+                        </span>
+
+                        <span class="btn-group">
+                            <label class="checkbox">
+                                <input class="meal-vegetarian-toggle" type="checkbox" <% if (meal.vegetarian) { %>checked="checked"<% } %>>
+                                This is a vegetarian meal.
+                            </label>
+                        </span>
+
+                        <% } %>
+                    </div>
+
+                    <% if (meal.amount > 0) { %>
+                    <div class="span3 text-right">
+                        <a href="#modal-order-add-container" class="btn btn-primary order-modal-open" data-toggle="modal">
+                            Order <i class="icon-bullhorn"></i>
                         </a>
-                    </span>
-
-                    <span class="btn-group">
-
-                        <a class="btn meal-amount-up-action">
-                            <i class="icon-plus"></i>
-                        </a>
-                        <a class="btn meal-amount-down-action">
-                            <i class="icon-minus"></i>
-                        </a>
-
-                    </span>
+                    </div>
                     <% } %>
-                </div>
+                    <div id="disqus_thread"></div>
+                    <script type="text/javascript">
+                        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+                        var disqus_shortname = 'trendingfood'; // required: replace example with your forum shortname
+                        var disqus_identifier = '<%= meal._id %>';
 
-                <div class="span3 text-right">
-                    <a href="#modal-order-add-container" class="btn btn-primary order-modal-open" data-toggle="modal">
-                        Order <i class="icon-bullhorn"></i>
-                    </a>
-                </div>
+                        /* * * DON'T EDIT BELOW THIS LINE * * */
+                        (function() {
+                            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                        })();
+                    </script>
+                    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+                    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
                 </div>
             </div>
         </div>
@@ -78,3 +116,5 @@
     </div>
 
 <%- partial('partials/modals/meal_order') %>
+<%- partial('partials/modals/meal_edit') %>
+

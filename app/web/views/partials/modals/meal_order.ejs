@@ -8,31 +8,39 @@
     </div>
 
     <div class="modal-body">
-
-        <form class="form-horizontal">
-            <div class="control-group">
-                <label class="control-label" for="modal-order-add-title">Meal</label>
-                <div class="controls">
-                    <input type="text" id="modal-order-add-title" class="span3" disabled="disabled" value="">
-                </div>
+        <% if (0 === mealtimes.length) { %>
+            <div class="alert">
+                <strong>Ordering not possible</strong>
+                Looks like you're too late for today's lunch. Check back tomorrow!
             </div>
-            <div class="control-group">
-                <label class="control-label" for="modal-order-add-time">Time</label>
-                <div class="controls">
-                    <select id="modal-order-add-time" class="span3">
-                    <% for(var mt = 0; mt < mealtimes.length; mt++) { %>
-                        <option <% if(mealtimes[mt].id == config.mealtime.default) { %>selected="selected"<% } %> value="<%= mealtimes[mt]._id %>"><%= mealtimes[mt].title %></option>
-                    <% } %>
-                    </select>
+        <% } else { %>
+            <form class="form-horizontal">
+                <div class="control-group">
+                    <label class="control-label" for="modal-order-add-title">Meal</label>
+                    <div class="controls">
+                        <input type="text" id="modal-order-add-title" class="span3" disabled="disabled" value="">
+                    </div>
                 </div>
-            </div>
-        </form>
+                <div class="control-group">
+                    <label class="control-label" for="modal-order-add-time">Time</label>
+                    <div class="controls">
+                        <select id="modal-order-add-time" class="span3">
+                        <% for(var mt = 0; mt < mealtimes.length; mt++) { %>
+                            <option <% if(mealtimes[mt].id == selectedMealtimeId) { %>selected="selected"<% } %> value="<%= mealtimes[mt]._id %>"><%= mealtimes[mt].title %></option>
+                        <% } %>
+                        </select>
+                    </div>
+                </div>
+            </form>
+        <% } %>
 
     </div>
 
     <div class="modal-footer">
         <a href="javascript:;" data-dismiss="modal" class="btn">Close</a>
-        <a href="#" class="btn btn-primary modal-order-add-action">Send Order <i class="icon-bullhorn"></i></a>
+        <% if (0 < mealtimes.length) { %>
+            <a href="#" class="btn btn-primary modal-order-add-action">Send Order <i class="icon-bullhorn"></i></a>
+        <% } %>
     </div>
 
 </div>

@@ -4,8 +4,8 @@ node_modules
 *.sublime-workspace
 assets/
 uploads/
-npm-*
 .c9revisions/
 migration/assets/images/
 config.js
 debug/
+bin/

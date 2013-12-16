@@ -1,21 +1,24 @@
 exports.add = function (req, res) {
 
-    var title    = req.param('title');
-    var amount   = req.param('amount');
-    var category = req.param('category');
-    var image    = req.files && req.files.image ? req.files.image : null;
+    var title       = req.param('title');
+    var amount      = req.param('amount');
+    var category    = req.param('category');
+    var vegetarian  = req.param('vegetarian');
+    var image       = req.files && req.files.image ? req.files.image : null;
 
     var callback = function(statusCode, response) {
         res.status(statusCode).json(response);
     };
 
-    module.controller.add(callback, title, amount, image, category);
+    module.controller.add(callback, title, amount, vegetarian, image, category);
 };
 
 exports.count = function (req, res) {
 
-    var title  = req.param('title');
-    var amount = req.param('amount');
+    var title       = req.param('title');
+    var amount      = req.param('amount');
+    var filter      = req.param('filter');
+    var filterVal   = req.param('filterVal');
 
     var callback = function(statusCode, response) {
         res.status(statusCode).json({
@@ -23,7 +26,7 @@ exports.count = function (req, res) {
         });
     };
 
-    module.controller.count(callback, title, amount);
+    module.controller.count(callback, title, amount, filter, filterVal);
 };
 
 exports.getById = function (req, res) {
@@ -39,16 +42,32 @@ exports.getById = function (req, res) {
 
 exports.getList = function (req, res) {
 
-    var offset  = req.param('offset');
-    var limit   = req.param('limit');
-    var sort    = req.param('sort');
-    var order   = req.param('order');
+    var offset  = req.param('offset'),
+        limit   = req.param('limit'),
+        sort    = req.param('sort'),
+        order   = req.param('order'),
+        filter  = req.param('filter'),
+        filterVal = req.param('filterVal');
 
     var callback = function(statusCode, response) {
         res.status(statusCode).json(response);
     };
 
-    module.controller.getList(callback, offset, limit, sort, order);
+    module.controller.getList(callback, offset, limit, sort, order, filter, filterVal);
+};
+
+exports.update = function (req, res) {
+
+    var id       = req.param('id');
+    var title    = req.param('title');
+    var category = req.param('category');
+    var image    = req.files && req.files.image ? req.files.image : null;
+
+    var callback = function(statusCode, response) {
+        res.status(statusCode).json(response);
+    };
+
+    module.controller.update(callback, id, title, category, image);
 };
 
 exports.delete = function (req, res) {
@@ -104,6 +123,18 @@ exports.amountDown = function (req, res) {
     };
 
     module.controller.amountDown(callback, id);
+};
+
+exports.setVegetarian = function (req, res) {
+
+    var id          = req.param('id'),
+        vegetarian  = req.param('vegetarian');
+
+    var callback = function(statusCode, response) {
+        res.status(statusCode).json(response);
+    };
+
+    module.controller.setVegetarian(callback, id, vegetarian);
 };
 
 exports.getVotes = function (req, res) {

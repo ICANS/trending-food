@@ -1,4 +1,4 @@
-exports.renderOrders = function (respond, next, page, limit) {
+exports.renderOrders = function (respond, next, page, limit, date) {
 
     var seq = new module.requirements.futures.sequence();
 
@@ -11,7 +11,7 @@ exports.renderOrders = function (respond, next, page, limit) {
             method  : 'GET'
         }, function (error, response, body) {
 
-            if(error) module.utilities.handleError(error);
+            if (error) module.utilities.handleError(error);
 
             var mealtimes = module.utilities.parseJSON(body);
 
@@ -30,7 +30,7 @@ exports.renderOrders = function (respond, next, page, limit) {
             }
         }, function (error, response, body) {
 
-            if(error) module.utilities.handleError();
+            if (error) module.utilities.handleError();
 
             var total = module.utilities.parseJSON(body).count || 0;
 
@@ -45,14 +45,15 @@ exports.renderOrders = function (respond, next, page, limit) {
             method  : 'GET',
             qs      : {
                 offset: page * limit,
-                limit : limit
+                limit : limit,
+                dateStart : date
             }
         }, function (error, response, body) {
 
-            if(error) module.utilities.handleError();
+            if (error) module.utilities.handleError();
 
             var orders = module.utilities.parseJSON(body);
-            var pages = Math.ceil(total / limit);
+            // var pages = Math.ceil(total / limit);
 
             nextSeq(mealtimes, orders);
         });
@@ -62,12 +63,12 @@ exports.renderOrders = function (respond, next, page, limit) {
 
         mealtimes.forEach(function (mealtime) {
 
-            if(typeof mealtime.orderCount === 'undefined') {
+            if (typeof mealtime.orderCount === 'undefined') {
                 mealtime.orderCount = 0;
             }
 
             orders.forEach(function (order) {
-                if(order.mealtime && mealtime._id === order.mealtime._id && order.meal) {
+                if (order.mealtime && mealtime._id === order.mealtime._id && order.meal) {
                     mealtime.orderCount++;
                 }
             });
