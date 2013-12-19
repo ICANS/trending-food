@@ -68,19 +68,22 @@ exports.renderMeal = function (req, res, next) {
 
     var id = req.param('id');
 
-    var callback = function (mealtimes, meal) {
+    var callback = function (mealtimes, meal, favoriteMealtimeId) {
+        var defaultMealtime     = module.config.mealtime.default,
+            selectedMealtimeId  = 0 === favoriteMealtimeId.length ? defaultMealtime : favoriteMealtimeId;
 
         res.render('meal', {
-            config      : module.config,
-            session     : req.session,
-            meal        : meal,
-            mealtimes   : mealtimes,
-            categories  : module.config.categories,
-            isAdmin     : module.controllers.user.isAdmin
+            config              : module.config,
+            session             : req.session,
+            meal                : meal,
+            mealtimes           : mealtimes,
+            categories          : module.config.categories,
+            selectedMealtimeId  : selectedMealtimeId,
+            isAdmin             : module.controllers.user.isAdmin
         });
     };
 
-    module.controller.renderMeal(callback, id);
+    module.controller.renderMeal(callback, id, req.session);
 };
 
 module.exports = function (app) {
