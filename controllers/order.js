@@ -140,7 +140,7 @@ exports.getListByUser = function (respond, userID, offset, limit, sort, order) {
     limit  = limit || 30;
     offset = offset || 0;
     sort   = sort || 'created';
-    order  = order == 'desc' ? '-' : '';
+    order  = order == 'asc' ? '' : '-';
 
     if(userID.toString().length !== 24) {
         return respond(400, {});
