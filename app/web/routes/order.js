@@ -28,6 +28,7 @@ exports.renderOrdersByUser = function (req, res, next) {
     var page      = (parseInt(req.param('page'), 10) - 1) || 0;
     var limit     = module.config.pagination.perPage;
     var sort      = req.param('sort');
+    var sortOrder = req.param('order');
     var subdomain = 'account/orders'; // for pagination
 
     var callback = function (mealtimes, orders) {
@@ -42,7 +43,7 @@ exports.renderOrdersByUser = function (req, res, next) {
         });
     };
 
-    module.controller.renderOrdersByUser(callback, next, req.session, page, limit);
+    module.controller.renderOrdersByUser(callback, next, req.session, page, limit, sort, sortOrder);
 };
 
 module.exports = function (app) {

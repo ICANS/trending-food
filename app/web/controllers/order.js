@@ -78,7 +78,7 @@ exports.renderOrders = function (respond, next, page, limit, date) {
     });
 };
 
-exports.renderOrdersByUser = function (respond, next, session, page, limit, sort) {
+exports.renderOrdersByUser = function (respond, next, session, page, limit, sort, sortOrder) {
 
     var seq = new module.requirements.futures.sequence();
 
@@ -105,9 +105,10 @@ exports.renderOrdersByUser = function (respond, next, session, page, limit, sort
             uri     : module.config.api.uri + '/users/' + session.user_id + '/orders/',
             method  : 'GET',
             qs      : {
-                offset: page * limit,
-                limit : limit,
-                sort  : sort
+                offset      : page * limit,
+                limit       : limit,
+                sort        : sort,
+                order       : sortOrder
             }
         }, function (error, response, body) {
 
