@@ -90,14 +90,14 @@ app.get('/alive', function(req, res) {
 
 // routes - order
 
-app.post('/orders/', routes.order.add);
-app.get('/orders/', routes.order.getList);
+app.post('/orders', routes.order.add);
+app.get('/orders', routes.order.getList);
 app.get('/orders/count', routes.order.count);
 app.post('/orders/:id/delete', routes.order.delete);
 
 // routes - meal
 
-app.post('/meals/', routes.meal.add);
+app.post('/meals', routes.meal.add);
 app.put('/meals/:id', routes.meal.update);
 app.post('/meals/:id/voteup', routes.meal.voteUp);
 app.post('/meals/:id/votedown', routes.meal.voteDown);
@@ -105,24 +105,24 @@ app.post('/meals/:id/amountup', routes.meal.amountUp);
 app.post('/meals/:id/amountdown', routes.meal.amountDown);
 app.post('/meals/:id/setvegetarian/:vegetarian', routes.meal.setVegetarian);
 app.get('/meals/count', routes.meal.count);
-app.get('/meals/votes/', routes.meal.getVotes);
+app.get('/meals/votes', routes.meal.getVotes);
 app.get('/meals/:id', routes.meal.getById);
 app.get('/meals/:id/image', routes.meal.getImageById);
-app.get('/meals/', routes.meal.getList);
+app.get('/meals', routes.meal.getList);
 app.post('/meals/:id/delete', routes.meal.delete);
 
 // routes - mealtimes
 
-app.post('/mealtimes/', routes.mealtime.add);
-app.get('/mealtimes/', routes.mealtime.getList);
+app.post('/mealtimes', routes.mealtime.add);
+app.get('/mealtimes', routes.mealtime.getList);
 app.get('/mealtimes/count', routes.mealtime.count);
 app.post('/mealtimes/:id/delete', routes.mealtime.delete);
 
 // routes - user
 
-app.post('/users/', routes.user.add);
+app.post('/users', routes.user.add);
 app.post('/users/:username/login', routes.user.login);
-app.get('/users/:username/orders/', routes.order.getListByUser);
+app.get('/users/:username/orders', routes.order.getListByUser);
 app.get('/users/:userId/favorites', routes.favorite.getListByUser);
 app.get('/users/:username/favoritemealtime', routes.order.getFavoriteMealtimeIdByUser);
 app.get('/users/:username', routes.user.getByUsername);
