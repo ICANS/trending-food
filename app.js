@@ -1,34 +1,21 @@
-var express    = require('express'),
+var   express  = require('express'),
       http     = require('http'),
       mongoose = require('mongoose'),
       colors   = require('colors'),
       http     = require('http'),
-      config   = require('./config');
-
-var environmentDatabase = 'prod';
-
-if(process.argv.length > 1 && process.argv[2]) {
-    environmentDatabase = process.argv[2];
-}
+      CONFIG   = require('config');
 
 console.log();
 
-if(config.databases[environmentDatabase]) {
-    console.log('Running in ' + environmentDatabase.green + ' mode.');
-    environmentDatabaseObject = config.databases[environmentDatabase];
-} else {
-    console.log('The "'.red + environmentDatabase + '" database object was not found'.red);
-    process.exit();
-}
-
-console.log();
-
-var app = express();
-var db  = mongoose.createConnection(environmentDatabaseObject.domain);
+var app                 = express()
+    mongoDbUri          = CONFIG.db.host + ':'
+        + CONFIG.db.port + '/'
+        + CONFIG.db.name,
+    databaseConnection  = mongoose.createConnection(mongoDbUri);
 
 app.use(express.bodyParser({
     keepExtensions: true,
-    uploadDir: config.uploadDir
+    uploadDir: CONFIG.uploadDir
 }));
 
 app.use(function(req, res, next) {
@@ -44,9 +31,9 @@ app.use(function(req, res, next) {
     }
 });
 
-app.set('config', config);
+app.set('config', CONFIG);
 app.set('mongoose', mongoose);
-app.set('db', db);
+app.set('db', databaseConnection);
 
 var models = {
     user        : require('./models/user.js')(app),
@@ -74,7 +61,7 @@ var routes  = {
 };
 
 app.configure(function() {
-    app.set('port', config.port);
+    app.set('port', CONFIG.port);
     app.use(express.logger('dev'));
     app.use(express.bodyParser());
     app.use(express.methodOverride());

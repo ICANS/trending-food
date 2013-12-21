@@ -6,7 +6,7 @@ var express   = require('express'),
     http      = require('http'),
     fs        = require('fs'),
     colors    = require('colors'),
-    config    = require('./config'),
+    config    = require('config'),
     utilities = require('./utilities');
 
 var app = express();
