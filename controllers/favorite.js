@@ -73,43 +73,39 @@ exports.add = function (respond, userId, mealId) {
     });
 };
 
-// exports.getList = function (respond, offset, limit, sort, order, dateStart, dateEnd) {
+exports.getList = function (respond, userId) {
+    module.model.find()
+    .exec(function (err, results) {
+        var aggregatedFavorites = {};
 
-//     var date   = new Date();
-//     limit  = limit || 30;
-//     offset = offset || 0;
-//     sort   = sort || 'created';
-//     order  = order == 'desc' ? '-' : '';
-//     if (dateStart) {
-//         dateStart = new Date(dateStart);
-//     } else {
-//         dateStart = new Date(date.getFullYear(), date.getMonth(), date.getDate());
-//     }
+        if (err) return respond(400, err);
 
-//     if (dateEnd) {
-//         dateEnd = new Date(dateEnd);
-//     } else {
-//         dateEnd = new Date(dateStart.getTime() + (24 * 60 * 60 * 1000));
-//     }
+        results.map(function (favorite) {
+            var favoriteMealId  = favorite.meal,
+                favoriteUserId  = favorite.user;
 
-//     module.model.find({
-//         created : {
-//             $gte : dateStart,
-//             $lte : dateEnd
-//         }
-//     })
-//     .populate('mealtime')
-//     .populate('user', '_id username')
-//     .populate('meal', '_id title amount votes')
-//     .sort(order + sort)
-//     .limit(limit)
-//     .skip(offset)
-//     .exec(function (err, results) {
-//         if (err) return respond(400, err);
+            if ('undefined' === typeof aggregatedFavorites[favoriteMealId]) {
+                aggregatedFavorites[favoriteMealId] = {
+                    count   : 0
+                };
 
-//         return respond(200, results);
-//     });
-// };
+                if (userId) {
+                    aggregatedFavorites[favoriteMealId].isUserFavorite = false;
+                }
+            }
+
+            // Increase counter.
+            aggregatedFavorites[favoriteMealId].count++;
+
+            // Check wether this is a favorite by the user with the id provided.
+            if (userId && userId == favoriteUserId) {
+                aggregatedFavorites[favoriteMealId].isUserFavorite = true;
+            }
+        });
+
+        return respond(200, aggregatedFavorites);
+    });
+};
 
 exports.getListByUser = function (respond, userId) {
     var seq = sequence();

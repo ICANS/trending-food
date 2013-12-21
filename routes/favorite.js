@@ -12,6 +12,17 @@ exports.add = function (req, res) {
     module.controller.add(callback, userId, mealId);
 };
 
+exports.getList = function (req, res) {
+    var userId      = req.param('userId'),
+        callback    = function (statusCode, response) {
+            res
+                .status(statusCode)
+                .json(response);
+        };
+
+    module.controller.getList(callback, userId);
+};
+
 exports.getListByUser = function (req, res) {
     var userId = req.param('userId');
 
