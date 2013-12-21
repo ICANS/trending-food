@@ -39,7 +39,8 @@ var models = {
     user        : require('./models/user.js')(app),
     meal        : require('./models/meal.js')(app),
     mealtime    : require('./models/mealtime.js')(app),
-    order       : require('./models/order.js')(app)
+    order       : require('./models/order.js')(app),
+    favorite    : require('./models/favorite.js')(app)
 };
 
 app.set('models', models);
@@ -49,6 +50,7 @@ var controllers = {
     meal        : require('./controllers/meal.js')(app),
     mealtime    : require('./controllers/mealtime.js')(app),
     order       : require('./controllers/order.js')(app),
+    favorite    : require('./controllers/favorite.js')(app)
 };
 
 app.set('controllers', controllers);
@@ -57,7 +59,8 @@ var routes  = {
     user        : require('./routes/user.js')(app),
     meal        : require('./routes/meal.js')(app),
     mealtime    : require('./routes/mealtime.js')(app),
-    order       : require('./routes/order.js')(app)
+    order       : require('./routes/order.js')(app),
+    favorite    : require('./routes/favorite.js')(app)
 };
 
 app.configure(function() {
@@ -120,9 +123,15 @@ app.post('/mealtimes/:id/delete', routes.mealtime.delete);
 app.post('/users/', routes.user.add);
 app.post('/users/:username/login', routes.user.login);
 app.get('/users/:username/orders/', routes.order.getListByUser);
+app.get('/users/:userId/favorites', routes.favorite.getListByUser);
 app.get('/users/:username/favoritemealtime', routes.order.getFavoriteMealtimeIdByUser);
 app.get('/users/:username', routes.user.getByUsername);
 app.post('/users/:id/delete', routes.user.delete);
+
+// routes - favorites
+
+app.post('/favorites', routes.favorite.add);
+app.delete('/favorites/:id', routes.favorite.delete);
 
 http.createServer(app).listen(app.get('port'), function() {
     console.log("HTTP: " + app.get('port'));
