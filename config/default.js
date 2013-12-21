@@ -8,8 +8,8 @@ module.exports.name = 'trending-food';
 module.exports.port = port;
 module.exports.url = domain + ':' + port;
 
-module.exports.uploadDir = path.join(__dirname, 'uploads');
-module.exports.backupDir = path.join(__dirname, 'backups');
+module.exports.uploadDir = 'uploads';
+module.exports.backupDir = 'backups';
 
 /**
  * Database
