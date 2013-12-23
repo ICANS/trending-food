@@ -240,6 +240,118 @@ $(function() {
         });
     });
 
+    var getButtonTitleForNumberOfFavorites = function (numberOfFavorites) {
+        var buttonTitle = '';
+
+        if (0 === numberOfFavorites) {
+            buttonTitle = 'No favorites yet';
+        }
+        else if (1 === numberOfFavorites) {
+            buttonTitle = '1 favorite';
+        }
+        else {
+            buttonTitle = numberOfFavorites + ' favorites';
+        }
+
+        return buttonTitle;
+    };
+
+    var markMealAsFavorite = function (mealId, isFavorite) {
+        var isFavorite          = isFavorite !== false,
+            mealContainerId     = 'meal-' + mealId,
+            mealContainer       = jQuery('#' + mealContainerId),
+            button              = mealContainer.find('.toggleFavorite'),
+            icon                = button.find('.icon'),
+            countLabel          = button.find('.count-label'),
+            numFavorites        = mealContainer.data('meal-numberoffavorites'),
+            updatedNumFavorites = isFavorite ? numFavorites + 1 : numFavorites - 1,
+            buttonTitle         = getButtonTitleForNumberOfFavorites(updatedNumFavorites);
+
+        if (isFavorite) {
+            button.addClass('btn-success');
+
+            icon.removeClass('icon-star-empty').addClass('icon-star');
+        }
+        else {
+            button.removeClass('btn-success');
+
+            icon.removeClass('icon-star').addClass('icon-star-empty');
+        }
+
+        // Update count label.
+        countLabel.text(buttonTitle);
+
+        // Update data
+        mealContainer.data('meal-isuserfavorite', isFavorite);
+        mealContainer.data('meal-numberoffavorites', updatedNumFavorites);
+
+        button.blur();
+    };
+
+    var addMealAsFavorite = function (mealId) {
+        var userId  = jQuery('[data-user-id]').data('user-id');
+
+        jQuery.ajax({
+            type    : 'POST',
+            url     : api_url + '/favorites',
+            data    : {
+                userId  : userId,
+                mealId  : mealId
+            },
+            statusCode  : {
+                200 : function () {
+                    // The meal is already a favorite.
+                    markMealAsFavorite(mealId);
+                },
+                201 : function () {
+                    // The favorite has been added.
+                    markMealAsFavorite(mealId);
+                },
+                404 : function () {
+                    // Todo: Should we notify the user?
+                }
+            }
+        });
+    };
+
+    var removeMealFromFavorites = function (mealId) {
+        var userId  = jQuery('[data-user-id]').data('user-id');
+
+        jQuery.ajax({
+            type    : 'DELETE',
+            url     : api_url + '/favorites',
+            data    : {
+                userId  : userId,
+                mealId  : mealId
+            },
+            statusCode  : {
+                204 : function () {
+                    // The favorite has been deleted.
+                    markMealAsFavorite(mealId, false);
+                },
+                404 : function () {
+                    // The meal has not been a favorite.
+                    markMealAsFavorite(mealId, false);
+                }
+            }
+        });
+    };
+
+    $('.toggleFavorite').click(function(e) {
+        var mealContainer   = $(this).parents('.meal-item'),
+            mealId          = mealContainer.data('meal-id'),
+            isUserFavorite  = mealContainer.data('meal-isuserfavorite');
+
+        if (isUserFavorite) {
+            removeMealFromFavorites(mealId);
+        }
+        else {
+            addMealAsFavorite(mealId);
+        }
+
+        e.preventDefault();
+    });
+
     // container.isotope({
     //     itemSelector: '.meal-item',
     //     getSortData: {

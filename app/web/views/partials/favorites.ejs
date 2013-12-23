@@ -1,0 +1,16 @@
+<%
+    buttonTitle = ""
+    if (0 === numberOfFavorites) {
+        buttonTitle = "No favorites yet"
+    }
+    else if (1 === numberOfFavorites) {
+        buttonTitle = "1 favorite"
+    }
+    else {
+        buttonTitle = numberOfFavorites + " favorites"
+    }
+%>
+<button class="toggleFavorite btn btn-mini<% if (isUserFavorite) { %> btn-success<% } %>">
+    <i class="icon icon-star<% if (!isUserFavorite) { %>-empty<% } %>"></i>
+    <span class="count-label"><%= buttonTitle %></label>
+</button>
