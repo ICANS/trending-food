@@ -132,7 +132,7 @@ app.post('/users/:id/delete', routes.user.delete);
 
 app.post('/favorites', routes.favorite.add);
 app.get('/favorites', routes.favorite.getList);
-app.delete('/favorites/:id', routes.favorite.delete);
+app.delete('/favorites', routes.favorite.delete);
 
 http.createServer(app).listen(app.get('port'), function() {
     console.log("HTTP: " + app.get('port'));

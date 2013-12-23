@@ -3,14 +3,55 @@ var sequence = require('futures').sequence;
 exports.add = function (respond, userId, mealId) {
 
     var seq                 = sequence(),
-        ObjectId            = module.mongoose.Types.ObjectId,
-        userObjectId        = new ObjectId(userId),
-        mealObjectId        = new ObjectId(mealId);
+        ObjectId            = module.mongoose.Types.ObjectId;
 
     seq
 
-    // Check wether the favorite has already been added.
+    // Check wether the user exists.
     .then(function (next) {
+        module.models.user
+            .findOne({ _id: userId })
+            .exec(function (err, result) {
+                if (err) {
+                    // Assume that the id is not valid.
+                    return respond(404, err);
+                }
+                else if ('undefined' === typeof result) {
+                    // No user with this id found.
+                    return respond(404, {
+                        statusText: 'User not found.'
+                    });
+                }
+
+                var userObjectId = new ObjectId(userId);
+                next(userObjectId);
+            });
+    })
+
+    // Check wether the meal exists.
+    .then(function (next, userObjectId) {
+        module.models.meal
+            .findOne({ _id: mealId })
+            .exec(function (err, result) {
+                if (err) {
+                    // Assume that the id is not valid.
+                    return respond(404, err);
+                }
+                else if ('undefined' === typeof result) {
+                    // No meal with this id found.
+                    return respond(404, {
+                        statusText: 'Meal not found.'
+                    });
+                }
+
+                var mealObjectId = new ObjectId(mealId);
+
+                next(userObjectId, mealObjectId);
+            });
+    })
+
+    // Check wether the favorite has already been added.
+    .then(function (next, userObjectId, mealObjectId) {
         module.model
             .findOne({ user: userObjectId, meal: mealObjectId })
             .exec(function (err, result) {
@@ -23,39 +64,13 @@ exports.add = function (respond, userId, mealId) {
                     });
                 }
                 else {
-                    next();
-                }
-            });
-    })
-
-    // amount of meals < 0
-    .then(function (next) {
-
-        module.models.meal
-            .findOne({ _id: mealObjectId })
-            .exec(function (err, result) {
-                if (err) return respond(400, err);
-
-                if(!result) {
-                    return respond(400, {
-                        statusInternal: 3,
-                        statusText: 'meal not found'
-                    });
-                }
-
-                if(!result.amount || result.amount < 1) {
-                    return respond(400, {
-                        statusInternal: 2,
-                        statusText: 'amount of meal is too small'
-                    });
-                } else {
-                    next();
+                    next(userObjectId, mealObjectId);
                 }
             });
     })
 
     // save
-    .then(function (next) {
+    .then(function (next, userObjectId,  mealObjectId) {
 
         var favorite = new module.model({
             meal    : mealObjectId,
@@ -198,24 +213,38 @@ exports.getListByUser = function (respond, userId) {
 
 // };
 
-exports.delete = function (respond, id) {
-
+exports.delete = function (respond, userId, mealId) {
     var seq = sequence();
-    var ObjectId = module.mongoose.Types.ObjectId;
-    var orderObjectID = new ObjectId(id);
-
 
     seq
 
+    // Get id.
     .then(function (next) {
-        module.model.findByIdAndRemove(id, function (err, favorite) {
+        module.model
+            .findOne({
+                user    : userId,
+                meal    : mealId
+            })
+            .exec(function (err, result) {
+                if (err) return respond(400, err);
+
+                if (!result) {
+                    return respond(404, {
+                        statusText: 'The favorite could not be found.'
+                    });
+                }
+
+                next(result.id);
+            });
+    })
+
+    .then(function (next, favoriteId) {
+        module.model.findByIdAndRemove(favoriteId, function (err, favorite) {
             if (err) {
                 return respond(400, err);
             }
-            else if (!favorite) {
-                return respond(404, err);
-            }
             else {
+                // The favorite has been deleted.
                 respond(204);
             }
         });

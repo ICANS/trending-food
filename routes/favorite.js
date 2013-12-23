@@ -63,16 +63,15 @@ exports.getListByUser = function (req, res) {
 // };
 
 exports.delete = function (req, res) {
+    var mealId      = req.param('mealId') || null,
+        userId      = req.param('userId') || null,
+        callback    = function (statusCode) {
+            res
+                .status(statusCode)
+                .send();
+        };
 
-    var id = req.param('id') || null;
-
-    var callback = function (statusCode) {
-        res
-            .status(statusCode)
-            .send();
-    };
-
-    module.controller.delete(callback, id);
+    module.controller.delete(callback, userId, mealId);
 };
 
 module.exports = function(app, controller) {
