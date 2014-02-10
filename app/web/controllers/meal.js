@@ -65,8 +65,25 @@ exports.renderMeals = function (respond, page, sort, order, limit, filter, filte
         });
     })
 
-    // Get the id of the mealtime the user has used the most when placing an order.
+    // Get favorites.
     .then(function (next, mealtimes, pages, meals) {
+        console.log(session.user_id);
+        module.requirements.request({
+            uri     : module.config.api.uri + '/favorites?userIdToAggregateBy=' + session.user_id,
+            method  : 'GET'
+        }, function (error, response, body) {
+            var favorites;
+
+            if(error) module.utilities.handleError(error);
+
+            favorites = module.utilities.parseJSON(body);
+
+            next(favorites, mealtimes, pages, meals);
+        });
+    })
+
+    // Get the id of the mealtime the user has used the most when placing an order.
+    .then(function (next, favorites, mealtimes, pages, meals) {
         module.requirements.request({
             uri     : module.config.api.uri + '/users/' + session.user_id + '/favoritemealtime',
             method  : 'GET'
@@ -76,12 +93,12 @@ exports.renderMeals = function (respond, page, sort, order, limit, filter, filte
 
             var favoriteMealtimeId = module.utilities.parseJSON(body);
 
-            next(mealtimes, pages, meals, favoriteMealtimeId);
+            next(favorites, mealtimes, pages, meals, favoriteMealtimeId);
         });
     })
 
-    .then(function (next, mealtimes, pages, meals, favoriteMealtimeId) {
-        respond(mealtimes, pages, meals, favoriteMealtimeId);
+    .then(function (next, favorites, mealtimes, pages, meals, favoriteMealtimeId) {
+        respond(favorites, mealtimes, pages, meals, favoriteMealtimeId);
     });
 
 };

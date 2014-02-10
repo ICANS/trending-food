@@ -1,34 +1,21 @@
-var express    = require('express'),
+var   express  = require('express'),
       http     = require('http'),
       mongoose = require('mongoose'),
       colors   = require('colors'),
       http     = require('http'),
-      config   = require('./config');
-
-var environmentDatabase = 'prod';
-
-if(process.argv.length > 1 && process.argv[2]) {
-    environmentDatabase = process.argv[2];
-}
+      CONFIG   = require('config');
 
 console.log();
 
-if(config.databases[environmentDatabase]) {
-    console.log('Running in ' + environmentDatabase.green + ' mode.');
-    environmentDatabaseObject = config.databases[environmentDatabase];
-} else {
-    console.log('The "'.red + environmentDatabase + '" database object was not found'.red);
-    process.exit();
-}
-
-console.log();
-
-var app = express();
-var db  = mongoose.createConnection(environmentDatabaseObject.domain);
+var app                 = express()
+    mongoDbUri          = CONFIG.db.host + ':'
+        + CONFIG.db.port + '/'
+        + CONFIG.db.name,
+    databaseConnection  = mongoose.createConnection(mongoDbUri);
 
 app.use(express.bodyParser({
     keepExtensions: true,
-    uploadDir: config.uploadDir
+    uploadDir: CONFIG.uploadDir
 }));
 
 app.use(function(req, res, next) {
@@ -44,15 +31,16 @@ app.use(function(req, res, next) {
     }
 });
 
-app.set('config', config);
+app.set('config', CONFIG);
 app.set('mongoose', mongoose);
-app.set('db', db);
+app.set('db', databaseConnection);
 
 var models = {
     user        : require('./models/user.js')(app),
     meal        : require('./models/meal.js')(app),
     mealtime    : require('./models/mealtime.js')(app),
-    order       : require('./models/order.js')(app)
+    order       : require('./models/order.js')(app),
+    favorite    : require('./models/favorite.js')(app)
 };
 
 app.set('models', models);
@@ -62,6 +50,7 @@ var controllers = {
     meal        : require('./controllers/meal.js')(app),
     mealtime    : require('./controllers/mealtime.js')(app),
     order       : require('./controllers/order.js')(app),
+    favorite    : require('./controllers/favorite.js')(app)
 };
 
 app.set('controllers', controllers);
@@ -70,11 +59,12 @@ var routes  = {
     user        : require('./routes/user.js')(app),
     meal        : require('./routes/meal.js')(app),
     mealtime    : require('./routes/mealtime.js')(app),
-    order       : require('./routes/order.js')(app)
+    order       : require('./routes/order.js')(app),
+    favorite    : require('./routes/favorite.js')(app)
 };
 
 app.configure(function() {
-    app.set('port', config.port);
+    app.set('port', CONFIG.port);
     app.use(express.logger('dev'));
     app.use(express.bodyParser());
     app.use(express.methodOverride());
@@ -100,14 +90,14 @@ app.get('/alive', function(req, res) {
 
 // routes - order
 
-app.post('/orders/', routes.order.add);
-app.get('/orders/', routes.order.getList);
+app.post('/orders', routes.order.add);
+app.get('/orders', routes.order.getList);
 app.get('/orders/count', routes.order.count);
 app.post('/orders/:id/delete', routes.order.delete);
 
 // routes - meal
 
-app.post('/meals/', routes.meal.add);
+app.post('/meals', routes.meal.add);
 app.put('/meals/:id', routes.meal.update);
 app.post('/meals/:id/voteup', routes.meal.voteUp);
 app.post('/meals/:id/votedown', routes.meal.voteDown);
@@ -115,27 +105,46 @@ app.post('/meals/:id/amountup', routes.meal.amountUp);
 app.post('/meals/:id/amountdown', routes.meal.amountDown);
 app.post('/meals/:id/setvegetarian/:vegetarian', routes.meal.setVegetarian);
 app.get('/meals/count', routes.meal.count);
-app.get('/meals/votes/', routes.meal.getVotes);
+app.get('/meals/votes', routes.meal.getVotes);
 app.get('/meals/:id', routes.meal.getById);
 app.get('/meals/:id/image', routes.meal.getImageById);
-app.get('/meals/', routes.meal.getList);
+app.get('/meals', routes.meal.getList);
 app.post('/meals/:id/delete', routes.meal.delete);
 
 // routes - mealtimes
 
-app.post('/mealtimes/', routes.mealtime.add);
-app.get('/mealtimes/', routes.mealtime.getList);
+app.post('/mealtimes', routes.mealtime.add);
+app.get('/mealtimes', routes.mealtime.getList);
 app.get('/mealtimes/count', routes.mealtime.count);
 app.post('/mealtimes/:id/delete', routes.mealtime.delete);
 
 // routes - user
 
-app.post('/users/', routes.user.add);
+app.post('/users', routes.user.add);
 app.post('/users/:username/login', routes.user.login);
-app.get('/users/:username/orders/', routes.order.getListByUser);
+app.get('/users/:username/orders', routes.order.getListByUser);
+app.get('/users/:userId/favorites', routes.favorite.getListByUser);
 app.get('/users/:username/favoritemealtime', routes.order.getFavoriteMealtimeIdByUser);
 app.get('/users/:username', routes.user.getByUsername);
 app.post('/users/:id/delete', routes.user.delete);
+
+// routes - favorites
+
+app.post('/favorites', routes.favorite.add);
+app.get('/favorites', function (request, response) {
+    var userId          = request.param('userId'),
+        routingMethod;
+
+    if (userId) {
+        routingMethod = routes.favorite.getListByUser;
+    }
+    else {
+        routingMethod = routes.favorite.getList;
+    }
+
+    routingMethod(request, response);
+});
+app.delete('/favorites', routes.favorite.delete);
 
 http.createServer(app).listen(app.get('port'), function() {
     console.log("HTTP: " + app.get('port'));

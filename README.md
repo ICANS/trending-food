@@ -63,10 +63,35 @@ ______________
 
 <table>
 
-	<tr>
-		<td>add</td>
-		<td>get by username</td>
-		<td>delete</td>
-	</tr>
+    <tr>
+        <td>add</td>
+        <td>get by username</td>
+        <td>delete</td>
+    </tr>
 
+</table>
+
+#### Favorites
+
+<table>
+
+    <tr>
+        <th>Get all favorites</th>
+        <td><code>GET /favorites</code></td>
+    </tr>
+    <tr>
+        <th>Get all favorites and mark all favorites by a certain user</th>
+        <td><code>GET /favorites "userId=USER_ID"</code></td>
+    </tr>
+        <th>Get all favorites of a user</th>
+        <td><code>GET /user/USER_ID/favorites</code></td>
+    </tr>
+    <tr>
+        <th>Add meal to favorites</th>
+        <td><code>POST /favorites "userId=USER_ID&mealId=MEAL_ID"</code></td>
+    </tr>
+    <tr>
+        <th>Delete favorite</th>
+        <td><code>DELETE /favorites "userId=USER_ID&mealId=MEAL_ID"</code></td>
+    </tr>
 </table>

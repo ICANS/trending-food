@@ -19,7 +19,7 @@ exports.renderMeals = function (req, res, next) {
         subdomain += '/amount/' + req.param('value');
     }
 
-    var callback = function (mealtimes, pages, meals, favoriteMealtimeId) {
+    var callback = function (favorites, mealtimes, pages, meals, favoriteMealtimeId) {
         var keyValueCategories  = module.config.categories,
             categories          = [],
             key,
@@ -57,6 +57,7 @@ exports.renderMeals = function (req, res, next) {
             page                : page,
             pages               : pages,
             selectedMealtimeId  : selectedMealtimeId,
+            favorites           : favorites,
             isAdmin             : module.controllers.user.isAdmin
         });
     };

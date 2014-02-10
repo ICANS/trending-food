@@ -2,7 +2,7 @@
     "name": "trending-food",
     "version": "0.0.3",
     "private": true,
-    "description": "s simple web interface and backend to do food orders",
+    "description": "A simple tool to manage the ordering of meals for lunch in your company.",
     "scripts": {
         "start": "node app",
         "test": "vows --spec"
@@ -16,7 +16,8 @@
         "mongoose-file": ">=0.0.2",
         "mongoose-subpopulate": ">=0.0.7",
         "colors": ">=0.6.0",
-        "underscore": ">=1.4.2"
+        "underscore": ">=1.4.2",
+        "config": ">=0.4.33"
     },
     "devDependencies": {
         "vows": ">=0.6.4",

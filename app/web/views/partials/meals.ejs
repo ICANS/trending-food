@@ -7,6 +7,13 @@
     <% } %>
 
     <% for(var m = 0; m < meals.length; m++) { %>
+        <%
+            meal = meals[m]
+            mealId = meal._id
+            favorite = favorites[mealId] || {}
+            numberOfFavorites = favorite.count || 0
+            isUserFavorite = favorite.isUserFavorite || false
+        %>
 
         <% if(m % 4 === 0 && m > 0) { %>
         </div>
@@ -23,6 +30,8 @@
             data-meal-title="<%= meals[m].title %>"
             data-meal-index="<%= m %>"
             data-meal-vegetarian="<%= meals[m].vegetarian %>"
+            data-meal-numberOfFavorites="<%= numberOfFavorites %>"
+            data-meal-isUserFavorite="<%= isUserFavorite %>"
         >
         <div class="thumbnail">
             <div class="meal-item-inner">
@@ -49,7 +58,7 @@
 
                     <div class="row-fluid">
                         <div class="span12">
-                            <%- partial('partials/votes', { votes: meals[m].votes }) %>
+                            <%- partial('partials/favorites', { numberOfFavorites: numberOfFavorites, isUserFavorite: isUserFavorite }) %>
                         </div>
                     </div>
 

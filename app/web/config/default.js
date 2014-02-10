@@ -1,8 +1,8 @@
-exports.name = 'Trending Food';
-exports.port = 4000;
-exports.admins = ['']; // list of usernames
+module.exports.name = 'Trending Food';
+module.exports.port = 4000;
+module.exports.admins = ['']; // list of usernames
 
-exports.xmpp = {
+module.exports.xmpp = {
 	hosts: [{
         domain: 'talk.google.com',
         inUsername: false
@@ -11,17 +11,17 @@ exports.xmpp = {
 	default: 0 // index of hosts array
 };
 
-exports.pagination = {
+module.exports.pagination = {
 	sort: 'title',
 	order: 'asc',
 	perPage: 32
 };
 
-exports.filter = {
+module.exports.filter = {
     default: 'available'
 };
 
-exports.categories = {
+module.exports.categories = {
     chicken: 'Chicken',
     pork: "Pork",
     beef: "Beef",
@@ -32,12 +32,12 @@ exports.categories = {
     sweets: "Sweets"
 };
 
-exports.api = {
+module.exports.api = {
 	uri: 'http://127.0.0.1:3000'
 };
 
-exports.mealtime = {
+module.exports.mealtime = {
 	default: 'mealtime_2'
 };
 
-exports.hungry = ['hungrig', 'nälkäinen', 'flămând', 'svangur', 'aç', 'sulten', 'hungry', 'näljane', 'malsata'];
+module.exports.hungry = ['hungrig', 'nälkäinen', 'flămând', 'svangur', 'aç', 'sulten', 'hungry', 'näljane', 'malsata'];
