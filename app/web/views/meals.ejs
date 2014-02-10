@@ -35,6 +35,35 @@
     <h1><i class="icon-truck"></i> All Meals <small>Order now</small></h1>
 </div>
 
+<!-- <div id="myCarousel" class="carousel slide" style="height:300px">
+  <div class="carousel-inner">
+    <%
+        var numberOfFavorites = favorites.length,
+            favoriteIndex,
+            favorite;
+
+        for (favoriteIndex = 0; favoriteIndex < numberOfFavorites; favoriteIndex++) {
+            favorite = favorites[favoriteIndex];
+    %>
+    <div class="item<% if (0 == favoriteIndex) {%> active<%}%>">
+        <div class="row-fluid">
+            <div class="span1"></div>
+            <div class="span4">
+                <img width="300" height="300" src="<%= config.api.uri %>/meals/<%= favorite.meal._id %>/image" alt="" class="meal-image" style="float:left">
+            </div>
+            <div class="span1"></div>
+            <div class="span5">
+                <h2><%= favorite.meal.title %></h2>
+            </div>
+            <div class="span1"></div>
+        </div>
+    </div>
+    <%  } %>
+  </div>
+  <a class="carousel-control left" href="#myCarousel" data-slide="prev">&lsaquo;</a>
+  <a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a>
+</div> -->
+
 <div class="row-fluid meals-container">
     <%- partial('partials/meals') %>
     <%- partial('partials/pagination') %>
