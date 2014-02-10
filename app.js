@@ -131,7 +131,19 @@ app.post('/users/:id/delete', routes.user.delete);
 // routes - favorites
 
 app.post('/favorites', routes.favorite.add);
-app.get('/favorites', routes.favorite.getList);
+app.get('/favorites', function (request, response) {
+    var userId          = request.param('userId'),
+        routingMethod;
+
+    if (userId) {
+        routingMethod = routes.favorite.getListByUser;
+    }
+    else {
+        routingMethod = routes.favorite.getList;
+    }
+
+    routingMethod(request, response);
+});
 app.delete('/favorites', routes.favorite.delete);
 
 http.createServer(app).listen(app.get('port'), function() {

@@ -67,12 +67,10 @@ exports.renderMeals = function (respond, page, sort, order, limit, filter, filte
 
     // Get favorites.
     .then(function (next, mealtimes, pages, meals) {
+        console.log(session.user_id);
         module.requirements.request({
-            uri     : module.config.api.uri + '/favorites',
-            method  : 'GET',
-            qs      : {
-                userId  : session.user_id
-            }
+            uri     : module.config.api.uri + '/favorites?userIdToAggregateBy=' + session.user_id,
+            method  : 'GET'
         }, function (error, response, body) {
             var favorites;
 

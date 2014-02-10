@@ -13,7 +13,7 @@ exports.add = function (req, res) {
 };
 
 exports.getList = function (req, res) {
-    var userId      = req.param('userId'),
+    var userId      = req.param('userIdToAggregateBy'),
         callback    = function (statusCode, response) {
             res
                 .status(statusCode)
